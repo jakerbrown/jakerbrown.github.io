@@ -1,0 +1,11 @@
+@article{Ansolabehere2024Forecasting,
+	author = {Ansolabehere, Stephen and Brown, Jacob and Khanna, Kabir and Phillips, Connor and Stewart III, Charles},
+	journal = {Harvard Data Science Review},
+	number = {4},
+	year = {2024},
+	month = {oct 17},
+	note = {https://hdsr.mitpress.mit.edu/pub/0c5ylgo1},
+	publisher = {The MIT Press},
+	title = {Forecasting {Turnout}},
+	volume = {6},
+}
