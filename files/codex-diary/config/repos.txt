@@ -5,6 +5,7 @@
 /Users/jacobbrown/Documents/GitHub/jakerbrown.github.io
 /Users/jacobbrown/Documents/GitHub/maup_fix
 /Users/jacobbrown/Documents/GitHub/multiple_comparisons
+/Users/jacobbrown/Documents/GitHub/partisan_seg_chapter
 /Users/jacobbrown/Documents/GitHub/process_l2_snapshots
 /Users/jacobbrown/Documents/GitHub/referenda
 /Users/jacobbrown/Documents/GitHub/referenda_list
