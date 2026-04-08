@@ -1,0 +1,14 @@
+/Users/jacobbrown/Documents/GitHub/aggregate_causal
+/Users/jacobbrown/Documents/GitHub/ca_homeless
+/Users/jacobbrown/Documents/GitHub/codex-my-workflow
+/Users/jacobbrown/Documents/GitHub/decomp_seg
+/Users/jacobbrown/Documents/GitHub/jakerbrown.github.io
+/Users/jacobbrown/Documents/GitHub/maup_fix
+/Users/jacobbrown/Documents/GitHub/multiple_comparisons
+/Users/jacobbrown/Documents/GitHub/process_l2_snapshots
+/Users/jacobbrown/Documents/GitHub/referenda
+/Users/jacobbrown/Documents/GitHub/referenda_list
+/Users/jacobbrown/Documents/GitHub/source_seg_l2_2014_2025
+/Users/jacobbrown/Documents/GitHub/twitter
+/Users/jacobbrown/Documents/GitHub/usps_link
+/Users/jacobbrown/Documents/GitHub/ward_sim
