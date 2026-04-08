@@ -1,0 +1,123 @@
+.blog-content {
+    padding-top: 0.2rem;
+}
+
+.site-links {
+    margin: 0 0 1.75rem;
+}
+
+.lede {
+    max-width: 42rem;
+    margin: 0 0 1.75rem;
+}
+
+.post-card {
+    margin: 0 0 2rem;
+    padding: 1.25rem 1.35rem 1.4rem;
+    background-color: rgba(214, 204, 193, 0.92);
+    box-sizing: border-box;
+}
+
+.post-card-title {
+    margin: 0;
+}
+
+.post-card-title a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.post-card-title a:hover {
+    color: #000;
+}
+
+.post-meta,
+.post-subtitle,
+.blog-summary {
+    margin-top: 0.55rem;
+    margin-bottom: 0.8rem;
+}
+
+.post-subtitle {
+    font-style: italic;
+}
+
+.blog-summary {
+    font-style: italic;
+}
+
+.post-body p:first-child {
+    margin-top: 0;
+}
+
+.post-body p:last-child,
+.post-body ul:last-child,
+.post-body blockquote:last-child,
+.post-body pre:last-child {
+    margin-bottom: 0;
+}
+
+.post-body ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+}
+
+.post-body li {
+    margin-bottom: 0.45rem;
+}
+
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+    margin-top: 1.35rem;
+    margin-bottom: 0.7rem;
+    color: #000;
+    text-decoration: underline;
+}
+
+.post-body h2 {
+    font-size: 1.3em;
+}
+
+.post-body h3 {
+    font-size: 1.12em;
+}
+
+.post-body h4 {
+    font-size: 1em;
+}
+
+pre,
+code {
+    font-family: "Source Code Pro", monospace;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+code {
+    padding: 0.1rem 0.25rem;
+}
+
+pre {
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+blockquote {
+    margin-left: 0;
+    padding-left: 1rem;
+    border-left: 3px solid #cc0000;
+}
+
+.pagination {
+    margin: 2rem 0 1rem;
+}
+
+.pagination p {
+    margin: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .post-card {
+        padding: 1rem 1.05rem 1.15rem;
+    }
+}
