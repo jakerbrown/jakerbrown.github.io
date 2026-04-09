@@ -79,8 +79,34 @@ def parse_post_datetime(value: str) -> datetime:
     raise ValueError(f"Unsupported post date format: {value}")
 
 
-def render_inline(text: str) -> str:
+def extract_footnotes(markdown_text: str) -> tuple[str, dict[str, str]]:
+    footnotes: dict[str, str] = {}
+    body_lines: list[str] = []
+
+    for raw_line in markdown_text.splitlines():
+        match = re.match(r"\[\^([^\]]+)\]:\s+(.*)", raw_line.strip())
+        if match:
+            footnotes[match.group(1)] = match.group(2).strip()
+            continue
+        body_lines.append(raw_line)
+
+    return "\n".join(body_lines).strip(), footnotes
+
+
+def render_inline(text: str, footnotes: dict[str, str] | None = None) -> str:
     escaped = html.escape(text)
+    if footnotes:
+        escaped = re.sub(
+            r"\[\^([^\]]+)\]",
+            lambda match: (
+                f'<sup id="fnref-{match.group(1)}">'
+                f'<a href="#fn-{match.group(1)}">{match.group(1)}</a>'
+                "</sup>"
+                if match.group(1) in footnotes
+                else match.group(0)
+            ),
+            escaped,
+        )
     escaped = re.sub(
         r"!\[([^\]]*)\]\(([^)]+)\)",
         lambda match: (
@@ -105,6 +131,7 @@ def render_inline(text: str) -> str:
 
 
 def render_markdown(markdown_text: str) -> str:
+    markdown_text, footnotes = extract_footnotes(markdown_text)
     lines = markdown_text.splitlines()
     blocks: list[str] = []
     paragraph: list[str] = []
@@ -117,13 +144,15 @@ def render_markdown(markdown_text: str) -> str:
         nonlocal paragraph
         if paragraph:
             text = " ".join(line.strip() for line in paragraph)
-            blocks.append(f"<p>{render_inline(text)}</p>")
+            blocks.append(f"<p>{render_inline(text, footnotes)}</p>")
             paragraph = []
 
     def flush_list() -> None:
         nonlocal list_items, list_type
         if list_items and list_type:
-            items = "".join(f"<li>{render_inline(item)}</li>" for item in list_items)
+            items = "".join(
+                f"<li>{render_inline(item, footnotes)}</li>" for item in list_items
+            )
             blocks.append(f"<{list_type}>{items}</{list_type}>")
             list_items = []
             list_type = None
@@ -166,25 +195,27 @@ def render_markdown(markdown_text: str) -> str:
         if line.startswith("# "):
             flush_paragraph()
             flush_list()
-            blocks.append(f"<h2>{render_inline(line[2:].strip())}</h2>")
+            blocks.append(f"<h2>{render_inline(line[2:].strip(), footnotes)}</h2>")
             continue
 
         if line.startswith("## "):
             flush_paragraph()
             flush_list()
-            blocks.append(f"<h3>{render_inline(line[3:].strip())}</h3>")
+            blocks.append(f"<h3>{render_inline(line[3:].strip(), footnotes)}</h3>")
             continue
 
         if line.startswith("### "):
             flush_paragraph()
             flush_list()
-            blocks.append(f"<h4>{render_inline(line[4:].strip())}</h4>")
+            blocks.append(f"<h4>{render_inline(line[4:].strip(), footnotes)}</h4>")
             continue
 
         if line.startswith("> "):
             flush_paragraph()
             flush_list()
-            blocks.append(f"<blockquote><p>{render_inline(line[2:].strip())}</p></blockquote>")
+            blocks.append(
+                f"<blockquote><p>{render_inline(line[2:].strip(), footnotes)}</p></blockquote>"
+            )
             continue
 
         if line.startswith("- "):
@@ -209,6 +240,17 @@ def render_markdown(markdown_text: str) -> str:
     flush_list()
     if in_code_block:
         flush_code()
+    if footnotes:
+        footnote_items = "".join(
+            (
+                f'<li id="fn-{note_id}">'
+                f"{render_inline(note_text, footnotes)} "
+                f'<a href="#fnref-{note_id}" aria-label="Back to text">↩</a>'
+                "</li>"
+            )
+            for note_id, note_text in footnotes.items()
+        )
+        blocks.append(f'<section class="footnotes"><ol>{footnote_items}</ol></section>')
 
     return "\n".join(blocks)
 
@@ -326,6 +368,38 @@ def simplify_diary_text(text: str) -> str:
     return "\n".join(output_lines)
 
 
+def is_publishable_diary_entry(body: str) -> bool:
+    normalized = re.sub(r"\s+", " ", body).strip().lower()
+    if not normalized:
+        return False
+
+    no_activity_phrases = (
+        "no activity was found for the configured repos on this date.",
+        "no codex work today.",
+        "no codex activity today.",
+        "no codex work was recorded today.",
+        "no diary entry today.",
+    )
+    if normalized in no_activity_phrases:
+        return False
+
+    bullet_lines = [
+        line for line in body.splitlines() if line.lstrip().startswith("- ")
+    ]
+    if not bullet_lines:
+        return False
+
+    stripped_bullets = [
+        re.sub(r"\s+", " ", line.lstrip()[2:].strip()).lower() for line in bullet_lines
+    ]
+    if stripped_bullets and all(
+        bullet in no_activity_phrases for bullet in stripped_bullets
+    ):
+        return False
+
+    return True
+
+
 def load_codex_diary_posts() -> list[Post]:
     if not DIARY_PATH.exists():
         return []
@@ -344,7 +418,7 @@ def load_codex_diary_posts() -> list[Post]:
     for match in matches:
         iso_date = match.group(1)
         body = match.group(2).strip()
-        if not body:
+        if not is_publishable_diary_entry(body):
             continue
 
         date = datetime.strptime(f"{iso_date} 21:30", "%Y-%m-%d %H:%M")
