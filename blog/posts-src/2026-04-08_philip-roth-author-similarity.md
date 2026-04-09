@@ -1,8 +1,8 @@
 ---
 title: Who writes like Philip Roth?
-subtitle: AI automated research and writeup.
-date: 2026-04-08 20:05
-summary: I built a legal mini-corpus of fiction and excerpts, compared Philip Roth to a broader set of modern literary authors with several text-analysis methods, and then checked the results against my Goodreads history.
+subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add some figures, better explain methods, and do some personalized editting. You can find the original prompt here: LINK_TO_REPO_PROMPT
+date: 2026-04-08 22:30
+summary: Codex built a legal mini-corpus of fiction and excerpts, compared Philip Roth to a broader set of modern literary authors with several text-analysis methods, and then checked the results against Jacob's Goodreads history.
 ---
 
 People ask for a Roth analogue as though the answer should be obvious. But
@@ -17,21 +17,21 @@ confessing, prosecuting itself, justifying itself, and talking itself into the
 next trouble.
 
 That is why the usual "if you like Roth, read..." lists always feel a little
-thin. They collapse several different likenesses into one word. I wanted to
+thin. They collapse several different likenesses into one word. Codex wanted to
 know which authors in a legally accessible comparison corpus actually stay
 close to Roth across multiple dimensions, not just one.
 
-So I built a constrained but honest corpus and measured it.
+So Codex built a constrained but honest corpus and measured it.
 
 If you want the replication materials, code, intermediate outputs, and notes,
 they live here: [replication repo for this analysis](https://github.com/jakerbrown/claude-code-my-workflow/tree/main/explorations/philip-roth-author-similarity).
 
 ## The method, in plain English
 
-The strongest local corpus I could legally and reproducibly access during this
+The strongest local corpus Codex could legally and reproducibly access during this
 run was not a folder of full novels. It was a set of publicly available fiction
 pages from *The New Yorker*, which exposes article text cleanly enough to be
-parsed without scraping tricks. That matters, because I did not want the whole
+parsed without scraping tricks. That matters, because Codex did not want the whole
 exercise resting on fake access to copyrighted books or on vibes extracted from
 reviews.
 
@@ -40,27 +40,27 @@ authors: Philip Roth plus Don DeLillo, Jhumpa Lahiri, Zadie Smith, Mary
 Gaitskill, Jennifer Egan, Junot Diaz, George Saunders, Lorrie Moore,
 Aleksandar Hemon, and Tessa Hadley.
 
-The data-science part matters here, because I did not just read the stories and
-declare a winner. I turned the corpus into numbers several different ways.
+The data-science part matters here, because Codex did not just read the stories and
+declare a winner. Codex turned the corpus into numbers several different ways.
 
-First, I split the texts into roughly 350-word passages and built a
-high-dimensional term matrix using **TF-IDF** on words and bigrams. Then I used
+First, Codex split the texts into roughly 350-word passages and built a
+high-dimensional term matrix using **TF-IDF** on words and bigrams. Then Codex used
 **truncated singular-value decomposition** to compress that matrix into a lower-
 dimensional semantic space and measured each author's closeness to Roth with
-**cosine similarity**. That gave me a topic / semantic score.
+**cosine similarity**. That gave Codex a topic / semantic score.
 
-Second, I built a stylometric feature table: average sentence length, sentence-
+Second, Codex built a stylometric feature table: average sentence length, sentence-
 length dispersion, paragraph length, lexical diversity, punctuation habits,
-dialogue density, and a function-word profile. Again, I compared each author's
+dialogue density, and a function-word profile. Again, Codex compared each author's
 feature vector to Roth's with cosine similarity.
 
-Third, I built interpretable proxy scores for social world, confessional voice,
+Third, Codex built interpretable proxy scores for social world, confessional voice,
 and emotional-moral texture using explicit vocabularies: kinship words, sex and
 body language, politics terms, work and money terms, first-person pressure,
 self-justification markers, hedging, argument words, shame words, mortality
 language, and so on.
 
-Then I scored similarity to Roth along five dimensions:
+Then Codex scored similarity to Roth along five dimensions:
 
 1. **Topic / semantic field**: who writes about the most Roth-like worlds and
    conflicts.
@@ -73,20 +73,20 @@ Then I scored similarity to Roth along five dimensions:
 5. **Emotional / moral vocabulary**: shame, anger, affection, mortality,
    judgment.
 
-Only after showing those families separately did I combine them into a
-composite score. Even there, I did not trust one weighting scheme. I reran the
+Only after showing those families separately did Codex combine them into a
+composite score. Even there, Codex did not trust one weighting scheme. Codex reran the
 ranking with equal weights, topic-heavy weights, style-heavy weights,
 voice-heavy weights, and versions that dropped one major family entirely. The
 point was not to produce a single magic number. The point was to see which
 authors stayed near Roth when the measurement changed.
 
 The first figure to keep in mind is the overall leaderboard, which turns that
-composite into something easy to scan while also marking which authors I had
+composite into something easy to scan while also marking which authors Jacob had
 already read on Goodreads.
 
 ![Overall Roth similarity leaderboard](/files/philip-roth-author-similarity/figure_overall_leaderboard_goodreads.png)
 
-The green bars are authors already in my Goodreads history; the orange bars are
+The green bars are authors already in Jacob's Goodreads history; the orange bars are
 high-ranking authors not found in the export. That is what makes the Hemon /
 Hadley recommendation angle visible at a glance rather than only in prose.
 
@@ -181,7 +181,7 @@ really a bundle of smaller questions.
 
 The conventional shortlist around Roth tends to include Saul Bellow, John
 Updike, Don DeLillo, Jonathan Franzen, and Bernard Malamud. My current corpus
-cannot directly test Bellow, Updike, Franzen, or Malamud, because I was not
+cannot directly test Bellow, Updike, Franzen, or Malamud, because Codex was not
 able to assemble a legally accessible comparison corpus for them in this run.
 So this is background contrast, not a broader empirical benchmark.
 
@@ -201,10 +201,10 @@ lazy scalar and becomes a stack of separate tests.
 
 ## Goodreads overlap
 
-Once the Goodreads export was copied into the project output folder, I could
+Once the Goodreads export was copied into the project output folder, Codex could
 finally verify the personalized part instead of leaving it as a handoff note.
 
-Among the top Roth-adjacent authors in this corpus, I have **already read**
+Among the top Roth-adjacent authors in this corpus, Jacob has **already read**
 some of the most important ones:
 
 - **Junot Díaz**: *Drown*, *This Is How You Lose Her*, *The Brief Wondrous Life
@@ -219,7 +219,7 @@ The strongest high-ranking authors who do **not** appear in the export are:
 - **Tessa Hadley**
 
 That makes the cleanest personalized recommendation angle pretty straightforward:
-the analysis says I have already covered several of the best-supported matches,
+the analysis says Jacob has already covered several of the best-supported matches,
 and the two most obvious unread next authors are Hemon and Hadley.
 
 The compact table below is the cleanest summary of that recommendation logic.
@@ -230,13 +230,13 @@ The compact table below is the cleanest summary of that recommendation logic.
 
 Now that the export is verified, the clean recommendation shortlist is:
 
-1. **Aleksandar Hemon** if I want the strongest high-ranking match I have not
+1. **Aleksandar Hemon** if Jacob wants the strongest high-ranking match he has not
    yet logged on Goodreads.
-2. **Tessa Hadley** if I want another high-ranking unread author with strong
+2. **Tessa Hadley** if Jacob wants another high-ranking unread author with strong
    emotional and social-world proximity.
-3. **Junot Díaz** if I want the strongest overall match to reread or revisit.
-4. **Mary Gaitskill** if I want the sharpest confessional and erotic analogue.
-5. **Don DeLillo** if I want thematic and institutional adjacency rather than
+3. **Junot Díaz** if Jacob wants the strongest overall match to reread or revisit.
+4. **Mary Gaitskill** if Jacob wants the sharpest confessional and erotic analogue.
+5. **Don DeLillo** if Jacob wants thematic and institutional adjacency rather than
    the full Roth package.
 
 ## What this does not prove
@@ -253,7 +253,7 @@ and moral embarrassment in ways that survive the tests this corpus could
 support.
 
 That is a more interesting answer than "critics say X," and, within the limits
-of the corpus and the checks I actually ran, a more trustworthy one.
+of the corpus and the checks Codex actually ran, a more trustworthy one.
 
 Replication materials for the full pipeline, figures, and intermediate outputs
 are available here: [replication repo for this analysis](https://github.com/jakerbrown/claude-code-my-workflow/tree/main/explorations/philip-roth-author-similarity).

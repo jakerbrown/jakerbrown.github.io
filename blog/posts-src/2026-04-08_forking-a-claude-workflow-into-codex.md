@@ -1,6 +1,6 @@
 ---
-title: Forking a Claude Workflow Into Codex
-subtitle: *What changed, what stayed the same, and what it takes to port it.*
+title: Claude v Codex I
+subtitle: Porting Claude workflow to Codex
 date: 2026-04-08 22:15
 summary: A plain-language explanation of how I adapted Pedro Sant'Anna's Claude workflow repo into a Codex-first workflow while preserving the core process.
 ---
@@ -28,7 +28,8 @@ also expanding what I can do with the models. Specifically: how much of the
 Claude workflow from Sant'Anna's repo can be preserved when the assistant
 changes from Claude to Codex?
 
-Public repo: [codex-my-workflow](https://github.com/jakerbrown/codex-my-workflow)
+You can find the repo for this project here:
+[codex-my-workflow](https://github.com/jakerbrown/codex-my-workflow)
 
 As Codex explains it to me:
 

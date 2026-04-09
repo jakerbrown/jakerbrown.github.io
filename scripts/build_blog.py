@@ -331,6 +331,7 @@ def load_codex_diary_posts() -> list[Post]:
         return []
 
     text = DIARY_PATH.read_text(encoding="utf-8")
+    now = datetime.now()
     matches = list(
         re.finditer(
             r"^## (\d{4}-\d{2}-\d{2})\n(.*?)(?=^## \d{4}-\d{2}-\d{2}\n|\Z)",
@@ -347,6 +348,8 @@ def load_codex_diary_posts() -> list[Post]:
             continue
 
         date = datetime.strptime(f"{iso_date} 21:30", "%Y-%m-%d %H:%M")
+        if date > now:
+            continue
         display_date = date.strftime("%B %-d, %Y")
         subtitle = "AI summary of today's Codex work."
         simplified_body = simplify_diary_text(body)
