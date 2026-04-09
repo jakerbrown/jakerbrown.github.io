@@ -7,7 +7,7 @@ summary:
 
 It is increasingly clear that the infrastructure *around* the model is a force
 multiplier for what the model can achieve. I am still skeptical that I can
-always tell with 100% confidence when one top model is obviously better than a
+always tell when one top model is better than a
 competitor. But I am curious and ready to be proven wrong. Partly as an
 educational exercise, and partly to expand Codex's capacity in my workflow to
 do more autonomous work, I worked with ChatGPT and Codex to translate Pedro
@@ -35,13 +35,13 @@ As Codex explains it to me:
 
 > The simplest way to think about a workflow repo is as a toolbox plus a rulebook for working with an AI assistant.
 
-- instructions about how to behave
-- templates for plans and reports
-- reusable specialist roles
-- project memory that survives past one conversation
-- verification steps so "done" means something real
+> - instructions about how to behave
+> - templates for plans and reports
+> - reusable specialist roles
+> - project memory that survives past one conversation
+> - verification steps so "done" means something real
 
-That structure turns an AI assistant from "a smart autocomplete window" into
+> That structure turns an AI assistant from "a smart autocomplete window" into
 something closer to a junior contractor with a clipboard, a checklist, and a
 filing cabinet.
 
