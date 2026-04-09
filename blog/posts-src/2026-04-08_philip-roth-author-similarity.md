@@ -1,6 +1,6 @@
 ---
-title: Which Authors in a New Yorker Corpus Write Most Like Philip Roth?
-subtitle: *A small digital-humanities experiment in stylometry, semantic similarity, and reading-history overlap.*
+title: Who writes like Philip Roth?
+subtitle: AI automated research and writeup.
 date: 2026-04-08 20:05
 summary: I built a legal mini-corpus of fiction and excerpts, compared Philip Roth to a broader set of modern literary authors with several text-analysis methods, and then checked the results against my Goodreads history.
 ---
