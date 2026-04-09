@@ -111,13 +111,13 @@ There is a second complication too: the archive is pooled over a long time span.
 
 ## Figure 3: repeated origins are not a side issue
 
-![Top repeated exact locations in the raw report set](/files/coyote-gis-clustering/figure03_repeat_locations.png)
+![Top repeated report origins in the raw report set, with house numbers omitted from the labels for privacy](/files/coyote-gis-clustering/figure03_repeat_locations.png)
 
-*Figure 3. Top repeated exact locations in the raw report set.*
+*Figure 3. Top repeated report origins in the raw report set, with house numbers omitted from the labels for privacy.*
 
 If the whole map were being driven by one spectacular super-caller, the story would be easy. The public data do not let us prove that, and the evidence does not support that kind of dramatic claim anyway.
 
-But Figure 3 shows something important and more defensible: repeated origins are common enough to materially shape the map.
+But Figure 3 shows something important and more defensible: repeated origins are common enough to materially shape the map. To avoid pointing readers at a specific household, the figure omits house numbers from the labels rather than printing the full addresses.
 
 The duplicate and repeat-origin diagnostics show:
 
