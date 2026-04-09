@@ -81,6 +81,15 @@ def parse_post_datetime(value: str) -> datetime:
 
 def render_inline(text: str) -> str:
     escaped = html.escape(text)
+    escaped = re.sub(
+        r"!\[([^\]]*)\]\(([^)]+)\)",
+        lambda match: (
+            '<img class="post-image" '
+            f'src="{html.escape(match.group(2), quote=True)}" '
+            f'alt="{html.escape(match.group(1), quote=True)}">'
+        ),
+        escaped,
+    )
     escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
     escaped = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escaped)
     escaped = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", escaped)
@@ -100,6 +109,7 @@ def render_markdown(markdown_text: str) -> str:
     blocks: list[str] = []
     paragraph: list[str] = []
     list_items: list[str] = []
+    list_type: str | None = None
     in_code_block = False
     code_lines: list[str] = []
 
@@ -111,11 +121,12 @@ def render_markdown(markdown_text: str) -> str:
             paragraph = []
 
     def flush_list() -> None:
-        nonlocal list_items
-        if list_items:
+        nonlocal list_items, list_type
+        if list_items and list_type:
             items = "".join(f"<li>{render_inline(item)}</li>" for item in list_items)
-            blocks.append(f"<ul>{items}</ul>")
+            blocks.append(f"<{list_type}>{items}</{list_type}>")
             list_items = []
+            list_type = None
 
     def flush_code() -> None:
         nonlocal code_lines
@@ -146,7 +157,9 @@ def render_markdown(markdown_text: str) -> str:
             flush_list()
             continue
 
-        if list_items and raw_line[:1].isspace() and not line.lstrip().startswith("- "):
+        ordered_list_match = re.match(r"(\d+)\.\s+(.*)", line)
+
+        if list_items and raw_line[:1].isspace() and not line.lstrip().startswith("- ") and not ordered_list_match:
             list_items[-1] = f"{list_items[-1]} {line.strip()}"
             continue
 
@@ -176,7 +189,18 @@ def render_markdown(markdown_text: str) -> str:
 
         if line.startswith("- "):
             flush_paragraph()
+            if list_type not in (None, "ul"):
+                flush_list()
+            list_type = "ul"
             list_items.append(line[2:].strip())
+            continue
+
+        if ordered_list_match:
+            flush_paragraph()
+            if list_type not in (None, "ol"):
+                flush_list()
+            list_type = "ol"
+            list_items.append(ordered_list_match.group(2).strip())
             continue
 
         paragraph.append(line)
@@ -378,18 +402,16 @@ def render_post(post: Post, page_number: int) -> str:
     summary_html = ""
     if post.summary:
         summary_html = f'\n        <p class="blog-summary">{render_inline(post.summary)}</p>'
+    footer_html = f'\n        <p class="post-meta">Posted: {post.display_timestamp}</p>'
     subtitle_html = ""
     if post.subtitle:
         subtitle_html = f'\n        <p class="post-subtitle">{render_inline(post.subtitle)}</p>'
-    meta_html = f'\n        <p class="post-meta">{post.display_timestamp}</p>'
-    if post.subtitle:
-        meta_html = ""
     return f"""      <article id="{post.slug}" class="post-card">
         <h2 class="post-card-title"><a href="{permalink}">{html.escape(post.title)}</a></h2>
-        {meta_html}{subtitle_html}{summary_html}
+        {subtitle_html}{summary_html}
         <div class="post-body">
           {post.body_html.replace(chr(10), chr(10) + "          ")}
-        </div>
+        </div>{footer_html}
       </article>"""
 
 

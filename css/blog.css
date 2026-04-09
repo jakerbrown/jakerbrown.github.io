@@ -16,6 +16,8 @@
     padding: 1.25rem 1.35rem 1.4rem;
     background-color: rgba(214, 204, 193, 0.92);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .post-card-title {
@@ -31,11 +33,15 @@
     color: #000;
 }
 
-.post-meta,
 .post-subtitle,
 .blog-summary {
     margin-top: 0.55rem;
     margin-bottom: 0.8rem;
+}
+
+.post-meta {
+    margin: 1rem 0 0;
+    font-size: 0.92em;
 }
 
 .post-subtitle {
@@ -62,8 +68,19 @@
     padding-left: 1.25rem;
 }
 
+.post-body ol {
+    padding-left: 1.35rem;
+}
+
 .post-body li {
     margin-bottom: 0.45rem;
+}
+
+.post-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1rem auto;
 }
 
 .post-body h2,

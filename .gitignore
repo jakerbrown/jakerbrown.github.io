@@ -1,6 +1,4 @@
 files/codex-diary/daily_digest/*.md
 !files/codex-diary/daily_digest/.gitkeep
 blog/.DS_Store
-blog/index.html
-blog/posts-src/2026-04-08_welcome.md
-blog/README.md
+scripts/__pycache__/
