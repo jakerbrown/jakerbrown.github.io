@@ -23,115 +23,6 @@
         </div>
         <p class="post-meta">Posted: April 9, 2026 at 1:00 PM</p>
       </article>
-      <article id="belmont-coyote-clusters" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#belmont-coyote-clusters">Automation experiment II: Do Belmont&#x27;s coyote clusters show where coyotes are, or where people report them?</a></h2>
-        
-        <p class="post-subtitle">Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add figures, better explain the methods and clustering statistics, and tighten the claims after adversarial review. You can find the original prompt here: <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/coyote-gis-clustering/CODEX_PROMPT.md">CODEX_PROMPT.md</a></p>
-        <div class="post-body">
-          <p>Belmont&#x27;s public coyote map is the kind of thing that dares you to overinterpret it. The points are visibly uneven. They look denser in some parts of town than others, especially toward Belmont&#x27;s greener western side. If you were moving quickly, you could look at that map and say: there, that&#x27;s where the coyotes are.</p>
-          <p>That is exactly the temptation this post is trying to resist.</p>
-          <p>Opportunistic wildlife sightings are not telemetry. They are not a census. They are not a uniform sample of animal locations. They are a human reporting process laid on top of an animal process. A cluster of reports can mean more coyotes, more people noticing coyotes, more people willing to file reports, repeated reports from the same vantage point, or some combination of all of those.</p>
-          <p>Belmont&#x27;s data are unusually useful because the public map exposes enough structure to let us test some of those possibilities directly. We can recover the point geometry, report date, report time, and reporting address. We cannot identify reporters by name, and we cannot read narrative notes. So this is not a detective story about proving a literal super-caller. It is a spatial-analysis story about what kinds of clustering survive once we confront duplicate locations, repeated addresses, temporal concentration, and weak ecological controls.</p>
-          <p>My bottom line is careful but not trivial: Belmont&#x27;s public coyote reports are clearly non-uniform in space, but the strongest interpretation supported here is non-uniform report concentration, not a clean map of coyote behavior. Repeated origins matter a lot. A simple habitat story is not well supported by the first-pass contextual tests. The right conclusion is a mixture, with reporting concentration carrying more of the evidentiary weight than habitat concentration in this version of the analysis.</p>
-          <h3>The data we actually have</h3>
-          <p>Belmont&#x27;s public PeopleGIS viewer includes a <code>Coyote Sightings</code> layer. The town does not expose it as an easy one-click download, but the web app&#x27;s own query endpoint returns a structured record set. Recovering that public payload yielded 290 reports with:</p>
-          <ul><li>point geometry</li><li>reporting address</li><li>report date</li><li>time string</li><li>internal record identifiers</li></ul>
-          <p>What the public layer does not expose is just as important:</p>
-          <ul><li>no reporter identifier</li><li>no narrative note text</li><li>no explicit duplicate flag</li></ul>
-          <p>That means the analysis can test for repeated locations and repeated addresses, but not for repeated named reporters. It also means every claim in this piece has to stay one step more modest than it otherwise might.</p>
-          <p>To put the reports in context, I joined the points to a Belmont town boundary and clipped in two official statewide context layers from MassGIS:</p>
-          <ul><li>protected and recreational open space</li><li>National Wetlands Inventory wetlands</li></ul>
-          <p>Those are useful first-pass context layers, but they are not an exposure-aware model of where people live, walk, or decide to report. That matters later.</p>
-          <h3>Figure 1: the raw map already hints at the problem</h3>
-          <p><img class="post-image" src="/files/coyote-gis-clustering/figure01_points_context.png" alt="Belmont coyote reports with open space, wetlands, and repeated points"></p>
-          <p><em>Figure 1. Raw Belmont coyote reports over Belmont boundary, open space, wetlands, and repeated exact locations. Larger dark-red symbols mark exact coordinates that appear more than once.</em></p>
-          <p>Figure 1 is the obvious starting point. The reports are not spread evenly across Belmont. But just as important, some places recur. The larger dark-red points show exact coordinates that appear repeatedly in the public archive. That is the first reason not to read the map as direct habitat telemetry. The same mapped place can contribute multiple reports over time.</p>
-          <p>Even visually, this is a mixed signal. There is some western-side concentration, but there are also central and south-central reports. And the repeated points are often on ordinary residential streets, not just on the edges of mapped open space. So before doing anything more sophisticated, the raw map already tells us that two stories are plausible at once:</p>
-          <ul><li>a spatial pattern in where coyotes are encountered</li><li>a spatial pattern in where people repeatedly observe and report them</li></ul>
-          <h3>The statistical setup</h3>
-          <p>Because the audience here is data-science-y, it is worth being explicit about what was actually estimated.</p>
-          <p>The analysis pipeline treated Belmont as a bounded observation window and ran several complementary diagnostics:</p>
-          <ol><li><strong>Nearest-neighbor ratio against CSR</strong> For each scenario, I computed the mean nearest-neighbor distance among points and divided it by the expected mean nearest-neighbor distance under simulated complete spatial randomness inside Belmont. The ratio is below 1 when points are more tightly packed than the null. This is useful as a non-uniformity diagnostic, but here it is a test of <em>report concentration under a uniform-placement null</em>, not a clean ecological test.</li></ol>
-          <ol><li><strong>Quadrat test</strong> Belmont was partitioned into a 4x4 grid and the count pattern was tested against uniform intensity. This is a blunt but interpretable test for uneven spatial counts. Again, in this setting it is a reporting-process benchmark more than a behavioral one.</li></ol>
-          <ol><li><strong>Ripley&#x27;s L</strong> I estimated Ripley&#x27;s L and compared it to a Monte Carlo CSR envelope. This helps show whether the pattern is more clustered than CSR over a range of distances instead of at just one nearest-neighbor scale.</li></ol>
-          <ol><li><strong>Kernel density estimation</strong> I fit a KDE using Diggle&#x27;s bandwidth rule. KDE is descriptive, not dispositive. It can summarize where reports pile up under one smoothing choice, but it is not itself a causal argument.</li></ol>
-          <ol><li><strong>Local Moran hotspot map</strong> I aggregated reports to a Belmont-clipped fishnet and ran local Moran&#x27;s I. This is also descriptive and scale-sensitive. I explicitly saved a sensitivity table across 150 m, 250 m, 400 m, and 600 m grids because one hotspot map can easily look more definitive than it really is.</li></ol>
-          <p>- raw reports - unique exact coordinates - a version with the five most repeated exact locations removed</p>
-          <ol><li><strong>Duplicate and repeat-origin diagnostics</strong> This is the real center of gravity of the piece. I compared:</li></ol>
-          <p>I also summarized repeated reporting addresses, same-address same-day repeats, same-address same-week repeats, and addresses that map to more than one coordinate.</p>
-          <ol><li><strong>Ecological-context comparisons</strong> I compared unique sighting locations to random points inside Belmont using distance to open space and distance to wetlands, plus a simple logistic model on log-distance predictors. These are only first-pass diagnostics because the controls are not exposure-aware. A random point inside a wetland is not a realistic stand-in for a human reporting opportunity.</li></ol>
-          <p>That setup matters because every conclusion below depends on what the null is. If you compare a human-origin reporting archive to uniform random points over all of Belmont, rejecting that null tells you the reports are not uniform. It does <strong>not</strong> tell you, by itself, that coyotes are choosing those exact places.</p>
-          <h3>Figure 2: yes, the reports are clustered under a simple null</h3>
-          <p><img class="post-image" src="/files/coyote-gis-clustering/figure02_kde_context.png" alt="Kernel density of reported coyote sightings under one smoothing choice"></p>
-          <p><em>Figure 2. Kernel density surface for raw reports under one smoothing choice. This is descriptive smoothing of a reporting archive, not direct evidence of coyote habitat use.</em></p>
-          <p>Under a simple CSR benchmark, Belmont&#x27;s reports are clearly non-uniform.</p>
-          <p>The main clustering results are:</p>
-          <ul><li>raw nearest-neighbor ratio: <strong>0.697</strong> with Monte Carlo <strong>p = 0.005</strong></li><li>unique-location nearest-neighbor ratio: <strong>0.833</strong> with Monte Carlo <strong>p = 0.005</strong></li><li>raw quadrat test <strong>p = 1.6e-07</strong></li><li>unique-location quadrat test <strong>p = 2.01e-05</strong></li><li>Ripley&#x27;s L exceeds the CSR envelope in the tested distance range for all three scenarios saved in the output</li></ul>
-          <p>So if the question is &quot;are these reports spatially uniform over Belmont?&quot;, the answer is clearly no.</p>
-          <p>But that is only the first question. Figure 2 is useful because it shows where the archive looks dense under one smoothing rule. It is <strong>not</strong> useful as a shortcut to &quot;this is where coyotes live.&quot; KDE will always make repeated and nearby reports look like a broad underlying surface, even when some of the structure comes from repeated origins.</p>
-          <p>There is a second complication too: the archive is pooled over a long time span. About <strong>46.0%</strong> of the dated reports fall in <strong>2011-2012</strong> alone. So any all-years density surface is blending together different reporting eras as well as different locations.</p>
-          <h3>Figure 3: repeated origins are not a side issue</h3>
-          <p><img class="post-image" src="/files/coyote-gis-clustering/figure03_repeat_locations.png" alt="Top repeated exact locations in the raw report set"></p>
-          <p><em>Figure 3. Top repeated exact locations in the raw report set.</em></p>
-          <p>If the whole map were being driven by one spectacular super-caller, the story would be easy. The public data do not let us prove that, and the evidence does not support that kind of dramatic claim anyway.</p>
-          <p>But Figure 3 shows something important and more defensible: repeated origins are common enough to materially shape the map.</p>
-          <p>The duplicate and repeat-origin diagnostics show:</p>
-          <ul><li><strong>22.8%</strong> of all reports fall on exact coordinates that repeat</li><li><strong>27.0%</strong> of nonblank-address reports come from addresses that repeat</li><li><strong>25</strong> reporting addresses appear at least twice</li><li><strong>6</strong> addresses recur in more than one mapped coordinate</li><li><strong>5</strong> same-address same-day repeat events appear in the public layer</li><li><strong>6</strong> same-address same-week repeat events appear in the public layer</li></ul>
-          <p>That is not evidence of fraud, fakery, or one obsessive resident running the entire map. It is evidence that repeated report origins are structurally important. Once roughly a quarter of reports come from repeated exact points or repeated addresses, any naive heatmap interpretation becomes much too strong.</p>
-          <h3>Figure 4: clustering survives deduplication, but it weakens</h3>
-          <p><img class="post-image" src="/files/coyote-gis-clustering/figure04_clustering_robustness.png" alt="Robustness of clustering after deduplication and after removing the five most repeated exact locations"></p>
-          <p><em>Figure 4. Robustness check using the nearest-neighbor ratio. Moving from raw reports to unique exact locations weakens clustering, but does not eliminate non-uniformity.</em></p>
-          <p>Figure 4 is the most important figure in the post.</p>
-          <p>The raw archive contains <strong>290</strong> reports, but only <strong>251</strong> unique exact locations. When repeated exact points are collapsed, the nearest-neighbor ratio moves from <strong>0.697</strong> to <strong>0.833</strong>. That is still below 1. The pattern is still non-uniform. But the clustering gets less dramatic once repeated coordinates stop counting as independent observations.</p>
-          <p>That is the strongest clean result in the package:</p>
-          <ul><li>there really is spatial concentration in the reporting archive</li><li>some of that concentration survives deduplication</li><li>but the raw archive makes the pattern look sharper than it is</li></ul>
-          <p>The top-five-location removal check points in the same general direction, though less cleanly across every metric. That is why the post now treats the robustness result as &quot;clustering weakens&quot; rather than &quot;the truth emerges once duplicates are removed.&quot; Even after deduplication, the residual pattern could still reflect broader reporting opportunity rather than coyote behavior per se.</p>
-          <h3>Figure 5: hotspot geography is descriptive and scale-sensitive</h3>
-          <p><img class="post-image" src="/files/coyote-gis-clustering/figure05_grid_hotspots.png" alt="One 250-meter descriptive hotspot view of reported-sighting concentration"></p>
-          <p><em>Figure 5. One 250-meter hotspot view of reported-sighting concentration. This map is descriptive; the hotspot footprint changes materially with grid size.</em></p>
-          <p>Figure 5 is useful, but only if it is read skeptically.</p>
-          <p>At a 250 m grid, the local Moran map suggests a concentrated set of report hotspots. But the sensitivity table shows how unstable that picture is across spatial resolutions:</p>
-          <ul><li>raw-report hotspot cells: <strong>27</strong> at 150 m, <strong>13</strong> at 250 m, <strong>10</strong> at 400 m, <strong>6</strong> at 600 m</li><li>unique-location hotspot cells: <strong>26</strong> at 150 m, <strong>12</strong> at 250 m, <strong>10</strong> at 400 m, <strong>3</strong> at 600 m</li></ul>
-          <p>That is not a stable hotspot footprint in the strong sense. It is a scale-dependent descriptive pattern. The map is still worth showing because it helps readers see how a municipal archive can generate visually compelling clusters. But the right interpretation is: <em>here is one way the report concentration looks under one aggregation choice</em>, not <em>here is the true set of coyote hotspots</em>.</p>
-          <p>This is also where the western-side story has to be handled carefully. Some maps do place more visual emphasis on Belmont&#x27;s west side near Rock Meadow and other greener edge areas. But the same outputs also show central activity, and the hotspot footprint moves around with cell size. So the west-side read is a clue, not a settled result.</p>
-          <h3>Habitat story or reporting story?</h3>
-          <p>The first-pass habitat diagnostics are weaker than the maps make you want them to be.</p>
-          <p>When unique sighting locations are compared to uniform random points inside Belmont:</p>
-          <ul><li>median distance to open space is <strong>138 m</strong> for sightings versus <strong>99 m</strong> for controls</li><li>median distance to wetlands is <strong>277 m</strong> for sightings versus <strong>251 m</strong> for controls</li><li>the wetland comparison is weak statistically</li><li>the open-space comparison actually runs <em>against</em> the simple idea that the reports cluster right next to mapped open space</li></ul>
-          <p>That does <strong>not</strong> prove the western-edge story is wrong. It does mean the first-pass official layers do not strongly validate it.</p>
-          <p>There are two reasons to be cautious here.</p>
-          <p>First, the controls are weak. Uniform random points over Belmont are not a realistic model of where people encounter and report coyotes. An exposure-aware design would sample from places people plausibly observe from: residential parcels, address points, road frontage, or some other human-accessible background.</p>
-          <p>Second, &quot;open space&quot; is not the same thing as &quot;coyote corridor.&quot; Coyotes may move along edges, backyards, informal green strips, cemeteries, rail-adjacent spaces, or other features that this first-pass context set does not capture well.</p>
-          <p>So the habitat-versus-reporting verdict is asymmetric:</p>
-          <ul><li>the reporting-bias evidence is concrete and fairly strong</li><li>the habitat evidence is plausible visually but weak in the first-pass formal tests</li></ul>
-          <h3>What can we say about the super-caller hypothesis?</h3>
-          <p>Not as much as a dramatic version of the story would like.</p>
-          <p>The public data do <strong>not</strong> identify reporters. So this analysis cannot prove that one household or one especially dedicated resident generated a large share of the archive. It also cannot prove that repeated addresses correspond to the same person over time.</p>
-          <p>What it <em>can</em> say is narrower and still important:</p>
-          <ul><li>repeated exact points matter</li><li>repeated addresses matter</li><li>repeated address-week combinations exist</li><li>clustering weakens when repeated exact points are collapsed</li></ul>
-          <p>That is evidence consistent with observer concentration. It is not evidence of a single dominant named reporter.</p>
-          <p>The safest phrasing is that Belmont&#x27;s raw map looks more like a mixture of:</p>
-          <ul><li>a non-uniform reporting process</li><li>repeat observations from recurring origins</li><li>and possibly some underlying spatial structure in coyote encounters</li></ul>
-          <p>with the current design unable to separate those cleanly.</p>
-          <h3>A compact methods note for people who want the implementation details</h3>
-          <p>The full workflow is in the exploration outputs, but the high-level implementation choices were:</p>
-          <ul><li>the public PeopleGIS query was scripted and saved as a raw JSON artifact</li><li>point geometry was recovered and transformed into Massachusetts mainland meters for spatial analysis</li><li>randomized procedures were seeded with <code>set.seed(20260408)</code> for reproducibility</li><li>all main outputs were regenerated from a single R script</li><li>robustness work compared raw reports, unique exact locations, and a top-repeat-removed variant</li><li>time concentration was summarized separately because the archive spans more than twenty years</li><li>hotspot sensitivity was tabulated across multiple grid sizes instead of relying on one map</li></ul>
-          <p>If I were taking this into a second, stronger round, the next methodological upgrades would be:</p>
-          <ol><li>build an exposure-aware background model</li><li>validate a few point locations directly against known addresses or landmarks as a stronger CRS audit</li><li>stratify or model the archive by time period instead of leaning so heavily on a pooled 2003-2025 surface</li><li>add richer context layers such as rail corridors, cemeteries, parcels, and street network structure</li></ol>
-          <h3>Side quest: weird Massachusetts municipal GIS</h3>
-          <p>This project also turned up a sidecar catalog of other Massachusetts municipal GIS layers that deserve future attention. A few especially promising examples:</p>
-          <ul><li>Weston wildlife-reporting infrastructure</li><li>Dedham&#x27;s tree inventory and sewer infrastructure layers</li><li>Cambridge&#x27;s street-tree data</li></ul>
-          <p>Those datasets are not the main event here, but they are a reminder that town GIS portals sometimes contain surprisingly rich raw material for small-scale empirical work.</p>
-          <h3>Limitations</h3>
-          <p>This entire analysis is built on opportunistic public reports rather than a controlled survey or animal-tracking data. The records are pooled across more than two decades. Reporter IDs and narrative notes are absent. The ecological controls are not exposure-aware. KDE and hotspot maps are descriptive and scale-sensitive. The geometry required CRS validation because the viewer metadata could not simply be trusted. And the context layers used here are first-pass rather than exhaustive.</p>
-          <p>Those are real limitations, but they are not fatal. They just determine what kind of claim this post is allowed to make.</p>
-          <h3>The takeaway</h3>
-          <p>Belmont&#x27;s public coyote reports are clearly non-uniform, but that is not the same thing as a clean behavioral map of coyotes. The strongest evidence in this package is evidence about reporting concentration: repeated coordinates, repeated addresses, temporal bunching, and clustering that softens after deduplication. The habitat story remains possible, especially in a broad western-edge sense, but the first-pass formal context tests do not carry that story very far.</p>
-          <p>If you want the disciplined interpretation, it is this: Belmont&#x27;s coyote map is informative, but mostly as a map of reported encounters shaped by both animal movement and human observation. The raw clusters are real as features of the archive. They are not clean proof of where coyotes &quot;really are.&quot;</p>
-          <p>If you want the replication materials, code, intermediate outputs, and notes, they live here: <a href="https://github.com/jakerbrown/codex-my-workflow/tree/main/explorations/coyote-gis-clustering">analysis folder for this project</a>. The main executable pipeline, including the public-data recovery step, is <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/coyote-gis-clustering/src/run_analysis.R"><code>src/run_analysis.R</code></a>.</p>
-        </div>
-        <p class="post-meta">Posted: April 9, 2026 at 9:00 AM</p>
-      </article>
       <article id="codex-diary-2026-04-08" class="post-card">
         <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-08">Codex diary - April 8, 2026</a></h2>
         
@@ -240,9 +131,16 @@
         </div>
         <p class="post-meta">Posted: April 8, 2026 at 8:00 PM</p>
       </article>
-      <nav class="pagination" aria-label="Blog pagination">
-        <p><a href="/blog/page/2/">Older Posts</a></p>
-      </nav>
+      <article id="welcome" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#welcome">Welcome</a></h2>
+        
+        <p class="blog-summary">first post</p>
+        <div class="post-body">
+          <p>Exciting times for data science. So this is a new space for random thoughts on research, teaching, hobbyistic data science experiments, and trying to extract the highest intelligence from new AI tools.</p>
+          <p>Some posts automated using AI, noted as such.</p>
+        </div>
+        <p class="post-meta">Posted: April 8, 2026 at 9:00 AM</p>
+      </article>
 
     </div>
   </body>
