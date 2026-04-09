@@ -1,8 +1,8 @@
 ---
-title: Who writes like Philip Roth?
-subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add some figures, better explain methods, and do some personalized editting. You can find the original prompt here: LINK_TO_REPO_PROMPT
+title: Automation experiment I: Who writes like Philip Roth?
+subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add some figures, better explain methods, and do some personalized editting. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/philip-roth-author-similarity/CODEX_PROMPT.md)
 date: 2026-04-08 22:30
-summary: Codex built a legal mini-corpus of fiction and excerpts, compared Philip Roth to a broader set of modern literary authors with several text-analysis methods, and then checked the results against Jacob's Goodreads history.
+summary:
 ---
 
 People ask for a Roth analogue as though the answer should be obvious. But

@@ -2,7 +2,7 @@
 title: Claude v Codex I
 subtitle: Porting Claude workflow to Codex
 date: 2026-04-08 22:15
-summary: A plain-language explanation of how I adapted Pedro Sant'Anna's Claude workflow repo into a Codex-first workflow while preserving the core process.
+summary:
 ---
 
 It is increasingly clear that the infrastructure *around* the model is a force
