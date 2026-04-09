@@ -1,7 +1,7 @@
 ---
 title: Claude v Codex I
 subtitle: Porting Claude workflow to Codex
-date: 2026-04-08 22:15
+date: 2026-04-08 20:00
 summary:
 ---
 
