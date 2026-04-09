@@ -49,7 +49,9 @@ implementation details.
 - prefer plain-language descriptions of the work over repo names, file names, or internal tool names
 - if a project needs to be identified, describe it by topic or purpose rather than by repository name
 - summarize outcomes and purpose rather than implementation mechanics
-- stay brief: prefer compact bullets that preserve the main point without piling on detail
+- stay brief: prefer more bullets with less text in each one
+- most bullets should be a single short sentence
+- if a bullet starts accumulating clauses, split it into two bullets instead
 - allow enough specificity that a regular reader can understand the general
   kind of project or research area involved
 - keep the tone matter-of-fact and avoid piling on adjectives

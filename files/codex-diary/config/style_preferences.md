@@ -7,6 +7,7 @@ Use these preferences whenever writing or revising the Codex diary.
 - Use plain English.
 - Keep the tone specific but not overly revealing.
 - Prefer short, clean bullets over long chains of clauses.
+- Push brevity hard: prefer more bullets with less text in each one.
 - Emphasize what was accomplished and why it mattered.
 - Avoid implementation-heavy language unless it is necessary for clarity.
 - Use fewer adjectives and let the facts carry the point.
@@ -27,6 +28,10 @@ Use these preferences whenever writing or revising the Codex diary.
 ## Level of detail
 
 - Keep each bullet to one main idea when possible.
+- Prefer one sentence per bullet.
+- Favor 5 to 8 bullets when the day supports it, rather than packing several
+  ideas into 3 or 4 longer bullets.
+- Keep most bullets very short. Trim setup, qualifiers, and secondary detail.
 - Be concrete enough that the reader learns something real.
 - Avoid low-level mechanics, internal workflow jargon, and exhaustive lists.
 - Prefer outcomes, decisions, and significance over process narration.
@@ -49,6 +54,8 @@ Use these preferences whenever writing or revising the Codex diary.
 Before finalizing a diary entry, check:
 
 - Are the bullets brief?
+- Could any bullet be split into two shorter bullets?
+- Could any bullet lose a clause without losing the point?
 - Is the wording plain?
 - Is the tone matter-of-fact rather than adjective-heavy?
 - Does the entry read like a calm diary note rather than an explainer?
