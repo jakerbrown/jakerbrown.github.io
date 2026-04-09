@@ -1,6 +1,6 @@
 ---
 title: Automation experiment I: Who writes like Philip Roth?
-subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add some figures, better explain methods, and do some personalized editting. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/claude-code-my-workflow/blob/main/explorations/philip-roth-author-similarity/CODEX_PROMPT.md)
+subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add some figures, better explain methods, and do some personalized editting. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/philip-roth-author-similarity/CODEX_PROMPT.md)
 date: 2026-04-08 20:30
 summary:
 ---
@@ -24,7 +24,7 @@ close to Roth across multiple dimensions, not just one.
 So Codex built a constrained but honest corpus and measured it.
 
 If you want the replication materials, code, intermediate outputs, and notes,
-they live here: [replication folder for this analysis](https://github.com/jakerbrown/claude-code-my-workflow/tree/main/explorations/philip-roth-author-similarity).
+they live here: [replication folder for this analysis](https://github.com/jakerbrown/codex-my-workflow/tree/main/explorations/philip-roth-author-similarity).
 The key scripts are `src/run_pipeline.py`, which downloads the source pages and
 builds the corpus, and `src/make_figures.py`, which generates the figures.
 
@@ -258,4 +258,4 @@ That is a more interesting answer than "critics say X," and, within the limits
 of the corpus and the checks Codex actually ran, a more trustworthy one.
 
 Replication materials for the full pipeline, figures, and intermediate outputs
-are available here: [replication folder for this analysis](https://github.com/jakerbrown/claude-code-my-workflow/tree/main/explorations/philip-roth-author-similarity).
+are available here: [replication folder for this analysis](https://github.com/jakerbrown/codex-my-workflow/tree/main/explorations/philip-roth-author-similarity).
