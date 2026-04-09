@@ -463,7 +463,13 @@ def main() -> None:
     SOURCE_DIR.mkdir(parents=True, exist_ok=True)
     BLOG_DIR.mkdir(parents=True, exist_ok=True)
 
-    posts = [load_post(path) for path in sorted(SOURCE_DIR.glob("*.md"))]
+    now = datetime.now()
+    posts = []
+    for path in sorted(SOURCE_DIR.glob("*.md")):
+        post = load_post(path)
+        if post.date > now:
+            continue
+        posts.append(post)
     posts.extend(load_codex_diary_posts())
     posts.sort(key=lambda post: post.date, reverse=True)
 

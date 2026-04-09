@@ -1,7 +1,7 @@
 ---
 title: Automation experiment II: Do Belmont's coyote clusters show where coyotes are, or where people report them?
 subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot, I prodded Codex to add figures, better explain the methods and clustering statistics, and tighten the claims after adversarial review. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/coyote-gis-clustering/CODEX_PROMPT.md)
-date: 2026-04-08 23:30
+date: 2026-04-09 09:00
 summary:
 ---
 
