@@ -1,0 +1,1 @@
+blog post on teaching with superman picture
