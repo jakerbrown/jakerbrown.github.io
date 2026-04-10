@@ -12,6 +12,15 @@
     <div class="content blog-content">
       <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
+      <article id="codex-diary-2026-04-08" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/page/2/#codex-diary-2026-04-08">Codex diary - April 8, 2026</a></h2>
+        
+        <p class="post-subtitle">AI summary of today&#x27;s Codex work.</p>
+        <div class="post-body">
+          <ul><li>Gave an elections and redistricting project a more durable Codex workflow.</li><li>Added clearer places for planning, review notes, and repeated research tasks.</li><li>Put the first cross-project Codex diary system in place.</li><li>The nightly summary now comes from saved breadcrumbs and git history, not chat memory.</li><li>Cleaned up the personal academic website and blog for launch.</li><li>Newer posts with images and numbered lists now render correctly.</li><li>Tightened blog timing so the daily diary stays hidden until the evening.</li><li>Wrapped up a Philip Roth text-analysis package for public release.</li><li>A coyote-sightings analysis now makes a narrower claim about reporting clusters rather than animal behavior.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 8, 2026 at 9:30 PM</p>
+      </article>
       <article id="philip-roth-author-similarity" class="post-card">
         <h2 class="post-card-title"><a href="/blog/page/2/#philip-roth-author-similarity">Automation experiment I: Who writes like Philip Roth?</a></h2>
         
@@ -105,7 +114,7 @@
           <p>The first lesson is that, at a high level, Claude and Codex are similar enough that a port is genuinely possible. They can both read repository content, edit files, follow detailed instructions, run shell commands, work iteratively, and use role-like specializations. They also both benefit greatly from foundational project guidance rather than one-off prompts. But the interesting part of porting this workflow was where they differ.</p>
           <p>As Codex put it:</p>
           <blockquote><p>Claude and Codex are similar in the way two kitchens are similar: both have heat, knives, and counters, but the appliances are in different places and some of them work differently. A recipe can survive that move, but not by copying the layout blindly.</p></blockquote>
-          <p>There are some important differences. The syntax of guiding documents varies, so the repo structure through which Claude and Codex receive guidance differs. Codex translated Claude project guidance into root and nested <code>AGENTS.md</code> files. Claude settings became Codex config, hooks, and rules. Claude agent definitions became <code>.codex/agents/*.toml</code>. Claude skills became repo-local skills under <code>.agents/skills/</code>.</p>
+          <p>There are some important differences. The syntax of guiding documents varies, so the repo structure through which Claude and Codex receive guidance differs. Codex translated Claude project guidance into root and nested <code>.codex/agents/*.toml</code>. Claude settings became Codex config, hooks, and rules. Claude agent definitions became <code>.codex/agents/*.toml</code>. Claude skills became repo-local skills under <code>.agents/skills/</code>.</p>
           <p>Another difference is that Codex makes explicitness more important. Codex is less likely to automatically spawn agents such as the adversarial reviewer or specialist agents. This functionality can still be achieved, but prompts need to ask for it explicitly to better ensure those agents get deployed. That changes how the workflow has to be written.</p>
           <p>One takeaway is that in the original Claude-centered workflow, Claude can feel more anticipatory of likely researcher desires, and therefore more autonomous. In Codex, the safer pattern is to be more explicit. Prompts generally should name the specialists to be spun up, tell Codex what to do with them, and state verification expectations directly. Codex thus feels a little less magical and in need of a bit more handholding from the researcher and the workflow structure around it. But this is one of the most useful lessons from the port. When platforms differ, a good fallback is often not &quot;invent more automation.&quot; It is &quot;store the important files so the model can read them and stay on target.&quot;</p>
         </div>
