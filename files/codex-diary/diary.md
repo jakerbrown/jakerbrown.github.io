@@ -13,3 +13,15 @@
 - Wrapped up a Philip Roth text-analysis package for public release.
 - A coyote-sightings analysis now makes a narrower claim about reporting
   clusters rather than animal behavior.
+
+## 2026-04-09
+
+- Completed a multi-league test of an early-season underdog betting idea.
+- Finished the Oscar portion of a film-podcast analysis.
+- Organized and reviewed two replication repos for accepted papers.
+- Automated validation of ballot referenda data.
+- Hardened timeout recovery in an elections and redistricting workflow.
+- Checked the remaining backlog in that same elections workflow.
+- Tightened diagnostics and startup-plan handling in a political simulation
+  project.
+- Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.

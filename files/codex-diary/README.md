@@ -49,9 +49,16 @@ implementation details.
 - prefer plain-language descriptions of the work over repo names, file names, or internal tool names
 - if a project needs to be identified, describe it by topic or purpose rather than by repository name
 - summarize outcomes and purpose rather than implementation mechanics
+- prefer "worked on X for Y" over "did X, which meant Y"
+- prioritize substantive work from research and analysis repos before workflow
+  or website maintenance
+- use at most one bullet from `codex-my-workflow` on any given day
+- use at most one bullet from `jakerbrown.github.io` on any given day
 - stay brief: prefer more bullets with less text in each one
 - most bullets should be a single short sentence
+- keep most bullets to the first clause: what was done, and for what project
 - if a bullet starts accumulating clauses, split it into two bullets instead
+- avoid the common pattern "did X, then explained what doing X accomplished"
 - allow enough specificity that a regular reader can understand the general
   kind of project or research area involved
 - keep the tone matter-of-fact and avoid piling on adjectives
@@ -60,6 +67,9 @@ implementation details.
   pace of progress
 - prefer a calm diary voice over an explanatory AI-systems voice
 - each bullet should usually be one clean idea, not a chain of clauses
+- if the day includes enough activity elsewhere, let `codex-my-workflow` and
+  `jakerbrown.github.io` recede into brief supporting context rather than
+  dominate the entry
 
 The canonical style rules live in `config/style_preferences.md`.
 

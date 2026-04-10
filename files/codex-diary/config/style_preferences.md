@@ -35,6 +35,12 @@ Use these preferences whenever writing or revising the Codex diary.
 - Be concrete enough that the reader learns something real.
 - Avoid low-level mechanics, internal workflow jargon, and exhaustive lists.
 - Prefer outcomes, decisions, and significance over process narration.
+- Default to the first clause: what got done, and for what project.
+- Avoid follow-on clauses that explain what doing the work accomplished unless
+  that extra phrase is truly needed for clarity.
+- Prefer "finished the Oscar portion of a film-podcast analysis" over
+  "finished the Oscar portion of a film-podcast analysis, replacing placeholder
+  discussion with artifact-backed results."
 - Lean slightly more specific when it helps readers understand the shape of the
   work.
 - When relevant, highlight how Codex or AI support changed the pace, structure,
@@ -43,6 +49,19 @@ Use these preferences whenever writing or revising the Codex diary.
   legible and interesting on their own.
 - Mention AI or Codex when it matters, but do not force every bullet to explain
   the system itself.
+
+## Repo balance
+
+- Prioritize substantive work from research and analysis repos over workflow
+  maintenance or website upkeep when choosing bullets.
+- Use at most one bullet drawn mainly from `codex-my-workflow` in a daily
+  entry.
+- Use at most one bullet drawn mainly from `jakerbrown.github.io` in a daily
+  entry.
+- If those repos mattered on a busy day, compress them into brief supporting
+  context rather than letting them dominate the entry.
+- If the day is otherwise sparse, it is still fine to mention them, but keep
+  the same one-bullet cap for each repo.
 
 ## Current project descriptions
 
@@ -54,12 +73,15 @@ Use these preferences whenever writing or revising the Codex diary.
 Before finalizing a diary entry, check:
 
 - Are the bullets brief?
+- Do the bullets mostly stop after the first clear clause?
 - Could any bullet be split into two shorter bullets?
 - Could any bullet lose a clause without losing the point?
 - Is the wording plain?
 - Is the tone matter-of-fact rather than adjective-heavy?
 - Does the entry read like a calm diary note rather than an explainer?
 - Are project names described by topic rather than repo name?
+- Does the entry avoid over-weighting `codex-my-workflow` and
+  `jakerbrown.github.io` relative to substantive work in other repos?
 - Is the entry specific enough to give readers a real sense of the work,
   without exposing unnecessary internal detail?
 - Would a reader interested in AI for research learn something useful from the
