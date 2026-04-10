@@ -70,6 +70,11 @@ implementation details.
 - if the day includes enough activity elsewhere, let `codex-my-workflow` and
   `jakerbrown.github.io` recede into brief supporting context rather than
   dominate the entry
+- treat any deliberate manual edit to `diary.md` as a strong signal about the
+  user's wording and topic preferences
+- when such an edit appears, add a short note to
+  `config/style_preferences.md` explaining the inferred preference, unless the
+  edit was plainly an accidental wipe or similar mistake
 
 The canonical style rules live in `config/style_preferences.md`.
 

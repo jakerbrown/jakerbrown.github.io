@@ -63,6 +63,19 @@ Use these preferences whenever writing or revising the Codex diary.
 - If the day is otherwise sparse, it is still fine to mention them, but keep
   the same one-bullet cap for each repo.
 
+## Learning from edits
+
+- Treat deliberate manual edits to `diary.md` as high-signal evidence about the
+  user's preferences.
+- Unless the change was plainly accidental, add a short note here explaining
+  what the edit suggests about preferred wording, pacing, topic mix, or level
+  of detail.
+- Prefer concrete interpretations over vague ones. Example: "the user cut
+  second-clause explanations, so prefer first-clause bullets" is more useful
+  than "the user likes concise writing."
+- When later edits conflict with earlier notes, treat the newer manual edit as
+  the better signal.
+
 ## Current project descriptions
 
 - `referenda` -> "an elections and redistricting project"
@@ -82,6 +95,8 @@ Before finalizing a diary entry, check:
 - Are project names described by topic rather than repo name?
 - Does the entry avoid over-weighting `codex-my-workflow` and
   `jakerbrown.github.io` relative to substantive work in other repos?
+- Have recent manual edits to `diary.md` been reflected in the style notes
+  here?
 - Is the entry specific enough to give readers a real sense of the work,
   without exposing unnecessary internal detail?
 - Would a reader interested in AI for research learn something useful from the
