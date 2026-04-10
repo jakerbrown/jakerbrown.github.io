@@ -24,6 +24,7 @@ class Post:
     slug: str
     title: str
     date: datetime
+    publish_at: datetime | None
     subtitle: str
     summary: str
     body_html: str
@@ -259,6 +260,11 @@ def load_post(path: Path) -> Post:
     metadata, body = parse_front_matter(path.read_text())
     title = metadata["title"]
     date = parse_post_datetime(metadata["date"])
+    publish_at = (
+        parse_post_datetime(metadata["publish_at"])
+        if metadata.get("publish_at")
+        else None
+    )
     subtitle = metadata.get("subtitle", "")
     summary = metadata.get("summary", "")
     slug = slugify(path.stem.split("_", 1)[-1])
@@ -266,6 +272,7 @@ def load_post(path: Path) -> Post:
         slug=slug,
         title=title,
         date=date,
+        publish_at=publish_at,
         subtitle=subtitle,
         summary=summary,
         body_html=render_markdown(body),
@@ -432,6 +439,7 @@ def load_codex_diary_posts() -> list[Post]:
                 slug=f"codex-diary-{iso_date}",
                 title=f"Codex diary - {display_date}",
                 date=date,
+                publish_at=None,
                 subtitle=subtitle,
                 summary="",
                 body_html=render_markdown(simplified_body),
@@ -541,7 +549,8 @@ def main() -> None:
     posts = []
     for path in sorted(SOURCE_DIR.glob("*.md")):
         post = load_post(path)
-        if post.date > now:
+        visible_at = post.publish_at or post.date
+        if visible_at > now:
             continue
         posts.append(post)
     posts.extend(load_codex_diary_posts())

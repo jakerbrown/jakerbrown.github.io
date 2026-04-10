@@ -87,6 +87,25 @@
     margin: 1rem auto;
 }
 
+.post-body sup {
+    font-size: 0.78em;
+}
+
+.post-body sup a {
+    text-decoration: none;
+}
+
+.footnotes {
+    margin-top: 1.2rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.18);
+    font-size: 0.92em;
+}
+
+.footnotes ol {
+    margin-bottom: 0;
+}
+
 .post-body h2,
 .post-body h3,
 .post-body h4 {
