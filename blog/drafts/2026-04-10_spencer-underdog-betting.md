@@ -1,6 +1,6 @@
 ---
-title: Automation experiment III: Did Spencer's early-season underdog strategy ever work?
-subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot. I pushed Codex to tighten the claims, add benchmark comparisons, build a replication package, and survive specialist plus adversarial review. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/CODEX_PROMPT.md)
+title: Automation experiment III: Does Spencer's early-season underdog strategy work?
+subtitle: Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot. I pushed Codex to tighten the claims, add benchmark comparisons, build a replication package, and survive specialist plus adversarial review. You can find the original prompt here: [CODEX_PROMPT.md](https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/CODEX_PROMPT.md) -- note that the prompt itself was drafted by Chatgpt Pro after a briefer description from me.
 date: 2026-04-10 12:00
 summary: 
 ---

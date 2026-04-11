@@ -1,0 +1,4 @@
+- Worked on formatting and scheduling the Codex diary explainer blog post.
+- Moved the draft into the published blog source folder, cleaned up the prose, and added direct links to the Codex diary notes file and the main Codex diary folder in the repo.
+- This mattered because the post now has real reference links and a clear scheduled publication time instead of placeholder text in a draft.
+- Verified that the blog rebuild succeeded and that the post is time-gated for Monday, April 13, 2026 at 10:00 AM, so it is not supposed to appear on the blog yet.

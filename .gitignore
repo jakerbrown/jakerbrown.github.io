@@ -2,3 +2,7 @@ files/codex-diary/daily_digest/*.md
 !files/codex-diary/daily_digest/.gitkeep
 blog/.DS_Store
 scripts/__pycache__/
+.claude/settings.local.json
+.claude/state/
+.claude/worktrees/
+CLAUDE.local.md

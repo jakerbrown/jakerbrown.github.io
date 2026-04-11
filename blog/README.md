@@ -17,6 +17,11 @@ The `date` field can be either `YYYY-MM-DD` or `YYYY-MM-DD HH:MM`. Including a
 time is the best way to preserve ordering when multiple posts happen on the
 same day.
 
+If you want a post to go live earlier than the displayed/sorting timestamp, add
+an optional `publish_at:` field in the same format. The generator uses
+`publish_at` for visibility timing and `date` for ordering and the visible
+"Posted:" line.
+
 Then add the body in Markdown below the front matter.
 
 To publish a new post:
