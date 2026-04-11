@@ -25,3 +25,15 @@
 - Tightened diagnostics and startup-plan handling in a political simulation
   project.
 - Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.
+
+## 2026-04-10
+
+- Added a first deterministic repair for disconnected observed plans in a
+  political simulation project.
+- Focused that repair on the main Utah failure case rather than widening the
+  automatic policy.
+- Mapped the next hardening pass so the repair path is more reproducible and
+  easier to validate.
+- Wrote a clearer plan for which disconnected cases should be repaired and
+  which should stay explicit failures.
+- Published a teaching post about AI on the personal academic website and blog.
