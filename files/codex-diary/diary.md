@@ -36,5 +36,6 @@
   easier to validate.
 - Wrote a clearer plan for which disconnected cases should be repaired and
   which should stay explicit failures.
- - Consolidated replication repo and verified reproducibility.
+- Consolidated replication repo and verified reproducibility.
 - Published a teaching post about AI on the blog.
+
