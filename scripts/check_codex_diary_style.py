@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lightweight checks for Codex diary style preferences."""
+"""Lightweight checks for Claude/Codex diary style preferences."""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
-# Codex Diary Style Preferences
+# Claude/Codex Diary Style Preferences
 
-Use these preferences whenever writing or revising the Codex diary.
+Use these preferences whenever writing or revising the Claude/Codex diary.
 
 ## Core tone
 
@@ -43,12 +43,22 @@ Use these preferences whenever writing or revising the Codex diary.
   discussion with artifact-backed results."
 - Lean slightly more specific when it helps readers understand the shape of the
   work.
-- When relevant, highlight how Codex or AI support changed the pace, structure,
-  or quality of the research workflow.
+- When relevant, highlight how Codex, Claude, or AI support changed the pace,
+  structure, or quality of the research workflow.
 - It is fine if readers do not have full context; the bullets should still be
   legible and interesting on their own.
-- Mention AI or Codex when it matters, but do not force every bullet to explain
-  the system itself.
+- Mention AI, Codex, or Claude when it matters, but do not force every bullet
+  to explain the system itself.
+
+## Diary entry format
+
+- Each day's entry uses `### Claude` and `### Codex` sub-headers to group
+  bullets by which tool did the work. Claude comes first (alphabetical).
+- If only one tool was active on a given day, still use the header for that
+  tool so readers can tell which AI system did the work.
+- Keep the same bullet style under both headers.
+- Do not duplicate work across headers; each bullet belongs to whichever tool
+  actually did it.
 
 ## Repo balance
 
@@ -75,6 +85,12 @@ Use these preferences whenever writing or revising the Codex diary.
   than "the user likes concise writing."
 - When later edits conflict with earlier notes, treat the newer manual edit as
   the better signal.
+- 2026-04-10 late edit: if there is a second substantive project from the day,
+  give it its own short bullet rather than forcing one dominant topic to carry
+  the whole entry.
+- 2026-04-10 late edit: for familiar recurring projects, simple common-noun
+  references like "the blog" can be better than repeating the full project
+  description.
 
 ## Current project descriptions
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect daily Codex breadcrumbs and git activity across repos."""
+"""Collect daily Claude and Codex breadcrumbs and git activity across repos."""
 
 from __future__ import annotations
 
@@ -12,10 +12,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIARY_ROOT = ROOT / "files" / "codex-diary"
 REPO_CONFIG = DIARY_ROOT / "config" / "repos.txt"
-CANDIDATE_LOG_DIRS = (
+CODEX_LOG_DIRS = (
     "memos/codex_activity",
     "quality_reports/codex_activity",
     "logs/codex_activity",
+)
+CLAUDE_LOG_DIRS = (
+    "memos/claude_activity",
+    "quality_reports/claude_activity",
+    "logs/claude_activity",
 )
 
 
@@ -36,10 +41,10 @@ def load_repos() -> list[Path]:
     return repos
 
 
-def find_breadcrumbs(repo: Path, day: dt.date) -> list[Path]:
+def find_breadcrumbs(repo: Path, day: dt.date, dirs: tuple[str, ...]) -> list[Path]:
     matches: list[Path] = []
     date_prefix = day.isoformat()
-    for rel in CANDIDATE_LOG_DIRS:
+    for rel in dirs:
         directory = repo / rel
         if not directory.exists():
             continue
@@ -91,29 +96,41 @@ def read_snippet(path: Path, limit: int = 12) -> list[str]:
 
 def build_report(day: dt.date) -> str:
     lines: list[str] = []
-    lines.append(f"# Codex Diary Digest for {day.isoformat()}")
+    lines.append(f"# Claude/Codex Diary Digest for {day.isoformat()}")
     lines.append("")
     lines.append(
-        "Use this digest to write a short plain-language diary entry with 3 to 8"
-        " bullets. Prefer outcomes and significance over implementation detail."
+        "Use this digest to write a short plain-language diary entry."
+        " Group bullets under ### Claude and ### Codex headers (Claude first)."
+        " Prefer outcomes and significance over implementation detail."
     )
     lines.append("")
 
     for repo in load_repos():
         if not repo.exists():
             continue
-        breadcrumbs = find_breadcrumbs(repo, day)
+        claude_crumbs = find_breadcrumbs(repo, day, CLAUDE_LOG_DIRS)
+        codex_crumbs = find_breadcrumbs(repo, day, CODEX_LOG_DIRS)
         commits = git_log(repo, day)
-        if not breadcrumbs and not commits:
+        if not claude_crumbs and not codex_crumbs and not commits:
             continue
 
         lines.append(f"## {repo.name}")
         lines.append("")
 
-        if breadcrumbs:
-            lines.append("### Breadcrumbs")
+        if claude_crumbs:
+            lines.append("### Claude Breadcrumbs")
             lines.append("")
-            for path in breadcrumbs:
+            for path in claude_crumbs:
+                rel = path.relative_to(repo)
+                lines.append(f"- `{rel}`")
+                for snippet in read_snippet(path):
+                    lines.append(f"  - {snippet}")
+            lines.append("")
+
+        if codex_crumbs:
+            lines.append("### Codex Breadcrumbs")
+            lines.append("")
+            for path in codex_crumbs:
                 rel = path.relative_to(repo)
                 lines.append(f"- `{rel}`")
                 for snippet in read_snippet(path):

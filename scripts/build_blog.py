@@ -343,35 +343,35 @@ def simplify_diary_text(text: str) -> str:
             bullet += "."
         return bullet
 
-    paragraphs: list[str] = []
-    bullets: list[str] = []
+    output_lines: list[str] = []
     current_bullet: str | None = None
 
     for raw_line in text.splitlines():
         line = raw_line.rstrip()
         if not line.strip():
             if current_bullet is not None:
-                bullets.append(simplify_bullet(current_bullet))
+                output_lines.append(f"- {simplify_bullet(current_bullet)}")
                 current_bullet = None
+            continue
+        if line.lstrip().startswith("### "):
+            if current_bullet is not None:
+                output_lines.append(f"- {simplify_bullet(current_bullet)}")
+                current_bullet = None
+            output_lines.append(line)
             continue
         if line.lstrip().startswith("- "):
             if current_bullet is not None:
-                bullets.append(simplify_bullet(current_bullet))
+                output_lines.append(f"- {simplify_bullet(current_bullet)}")
             current_bullet = line.lstrip()[2:].strip()
             continue
         if current_bullet is not None:
             current_bullet = f"{current_bullet} {line.strip()}"
         else:
-            paragraphs.append(apply_replacements(line))
+            output_lines.append(apply_replacements(line))
 
     if current_bullet is not None:
-        bullets.append(simplify_bullet(current_bullet))
+        output_lines.append(f"- {simplify_bullet(current_bullet)}")
 
-    output_lines: list[str] = []
-    for paragraph in paragraphs:
-        output_lines.append(paragraph)
-    for bullet in bullets:
-        output_lines.append(f"- {bullet}")
     return "\n".join(output_lines)
 
 
@@ -386,6 +386,8 @@ def is_publishable_diary_entry(body: str) -> bool:
         "no codex activity today.",
         "no codex work was recorded today.",
         "no diary entry today.",
+        "no claude or codex work today.",
+        "no claude/codex activity today.",
     )
     if normalized in no_activity_phrases:
         return False
@@ -432,12 +434,12 @@ def load_codex_diary_posts() -> list[Post]:
         if date > now:
             continue
         display_date = date.strftime("%B %-d, %Y")
-        subtitle = "AI summary of today's Codex work."
+        subtitle = "AI summary of today's Claude and Codex work."
         simplified_body = simplify_diary_text(body)
         posts.append(
             Post(
                 slug=f"codex-diary-{iso_date}",
-                title=f"Codex diary - {display_date}",
+                title=f"Claude/Codex diary - {display_date}",
                 date=date,
                 publish_at=None,
                 subtitle=subtitle,

@@ -1,4 +1,4 @@
-# Codex Diary
+# Claude/Codex Diary
 
 ## 2026-04-08
 
@@ -28,14 +28,22 @@
 
 ## 2026-04-10
 
+### Claude
+
+- Ported a structured AI workflow to thirteen research repos at once.
+- Each project now has specialist review agents, quality gates, and session
+  management for Claude Code.
+- Added Claude activity logging alongside the existing Codex diary system.
+- The nightly blog digest now groups work by which AI tool did it.
+
+### Codex
+
 - Added a first deterministic repair for disconnected observed plans in a
   political simulation project.
 - Focused that repair on the main Utah failure case rather than widening the
   automatic policy.
 - Mapped the next hardening pass so the repair path is more reproducible and
   easier to validate.
-- Wrote a clearer plan for which disconnected cases should be repaired and
-  which should stay explicit failures.
-- Consolidated replication repo and verified reproducibility.
+- Consolidated a replication repo and verified reproducibility.
 - Published a teaching post about AI on the blog.
 
