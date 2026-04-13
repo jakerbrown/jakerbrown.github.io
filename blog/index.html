@@ -12,6 +12,124 @@
     <div class="content blog-content">
       <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
+      <article id="codex-diary-2026-04-12" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-12">Claude/Codex diary - April 12, 2026</a></h2>
+        
+        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
+        <div class="post-body">
+          <h4>Claude</h4>
+          <ul><li>Expanded an elections and redistricting project to collect North Carolina results.</li><li>Downloaded the full North Carolina results set and forty-five shapefiles for that workflow.</li></ul>
+          <h4>Codex</h4>
+          <ul><li>Ran the nightly diary pass for the blog after the evening publish window opened.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 12, 2026 at 9:30 PM</p>
+      </article>
+      <article id="2stage-confounding-place" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#2stage-confounding-place">Parallel confounding in identification of place effects</a></h2>
+        
+        <p class="blog-summary">Identifying a specific place characteristic usually requires solving both selection into place and confounding from overlapping place attributes.</p>
+        <div class="post-body">
+          <p>Suppose I have some characteristic of place $X_p$ that I think causes an outcome $Y_i$, such as the effect of racial context on vote choice. There are two distinct sources of confounding to worry about:</p>
+          <ol><li>Place assignment itself may be non-random. Place, or time spent in place if the treatment is duration of exposure, needs to be as-if randomly assigned conditional on observables.</li><li>Other place characteristics may move together with $X$. Everything about places with higher $X$ besides $X$ itself can confound the relationship if it also affects $Y_i$.</li></ol>
+          <p><strong>Notation:</strong></p>
+          <ul><li>$P_i \in \{1, \dots, J\}$: place assignment for individual $i$ (or exposure duration $D_i$ if treatment is length of exposure)</li><li>$X_p \in \mathbb{R}$: focal characteristic of place $p$</li><li>$\mathbf{Z}_p \in \mathbb{R}^K$: all other characteristics of place $p$ (the &quot;overlapping&quot; attributes)</li><li>$\mathbf{W}_i$: pre-treatment individual covariates</li><li>$Y_i(p)$: potential outcome for $i$ under assignment to place $p$</li><li>$Y_i(x)$: potential outcome for $i$ under intervention setting the focal characteristic to $x$</li><li>$Y_i = Y_i(P_i)$ is the observed outcome</li></ul>
+          <h3>Estimands</h3>
+          <p>The <strong>overall place effect</strong> is:</p>
+          <p>$$\tau^{\text{place}}(p, p&#x27;) = \mathbb{E}[Y_i(p) - Y_i(p&#x27;)]$$</p>
+          <p>The <strong>characteristic effect</strong> is:</p>
+          <p>$$\tau^{X}(x, x&#x27;) = \mathbb{E}[Y_i(x) - Y_i(x&#x27;)]$$</p>
+          <h3>Two Threats to Identification of $\tau^X$</h3>
+          <p>Identifying the causal effect of a specific place characteristic $X_p$ on outcomes requires closing two distinct backdoor paths from $X_p$ to $Y_i$. These paths operate through different mechanisms and can be open or closed independently.</p>
+          <h4>Path 1: Individual Selection into Place</h4>
+          <p>$$X_p \leftarrow P_i \leftarrow \mathbf{W}_i \rightarrow Y_i$$</p>
+          <p>Individuals sort into places non-randomly. If pre-treatment characteristics $\mathbf{W}_i$ both drive place choice and directly affect outcomes, then any place characteristic — including $X_p$ — inherits a spurious correlation with $Y_i$ through the sorting process. Closing this path requires:</p>
+          <p>$$P_i \perp\!\!\!\perp Y_i(p) \mid \mathbf{W}_i \quad \forall \, p$$</p>
+          <p>This is the standard place-ignorability assumption. Under overlap ($0 &lt; \Pr(P_i = p \mid \mathbf{W}_i) &lt; 1$), it is sufficient to identify $\tau^{\text{place}}$ — the overall effect of place — because the entire bundle of place characteristics is rendered uncorrelated with potential outcomes conditional on $\mathbf{W}_i$.</p>
+          <p>Note, however, that Path 1 may be innocuous for a <em>specific</em> characteristic $X$ even when place assignment is endogenous. If $X_p \perp\!\!\!\perp \mathbf{W}_i$ — that is, $X$ is orthogonal to the dimensions along which individuals sort — then the individual selection path does not confound the $X \to Y$ relationship. For instance, if people sort into cities based on job opportunities but $X$ is average annual rainfall, Path 1 may be irrelevant for $\tau^X$ even though $\tau^{\text{place}}$ is confounded.</p>
+          <h4>Path 2: Overlapping Place Characteristics</h4>
+          <p>$$X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$$</p>
+          <p>Place jointly determines $X_p$ and all other place characteristics $\mathbf{Z}_p$. Even if individual selection is resolved, variation in $X$ across places is bundled with variation in $\mathbf{Z}$. Closing this path requires:</p>
+          <p>$$X_p \perp\!\!\!\perp Y_i(x) \mid \mathbf{W}_i, \mathbf{Z}_p$$</p>
+          <p>This is a distinct identification challenge from Path 1. It concerns the internal structure of places — how to separate the contribution of one characteristic from the contributions of all others — rather than the selection of individuals into places.</p>
+          <p><img class="post-image" src="/files/two_stage_confounding_dag.svg" alt="Two-stage confounding DAG"></p>
+          <p>Related file: <a href="/files/two_stage_confounding_dag.svg"><code>two_stage_confounding_dag.svg</code></a>.</p>
+          <p>The two paths can be open or closed independently:</p>
+          <ul><li><strong>Path 1 open, Path 2 closed.</strong> People sort into places non-randomly, but $X$ happens to be the only place characteristic that affects $Y$ (or the only one correlated with $\mathbf{W}_i$). Solving selection is sufficient.</li><li><strong>Path 1 closed, Path 2 open.</strong> Place assignment is as-if random (or $X$ is orthogonal to sorting), but places with different $X$ also differ in other outcome-relevant characteristics. Selection is irrelevant, but overlapping characteristics confound $\tau^X$.</li><li><strong>Both open.</strong> The typical case. Individual selection <em>and</em> overlapping characteristics both confound $\tau^X$.</li></ul>
+          <p>$\tau^{\text{place}}$ requires closing only Path 1. $\tau^{X}$ requires closing both, or establishing that one is innocuous. The typical case is that both paths are open, making identification of causal place <em>characteristic</em> effects doubly hard. If $X$ is orthogonal to the selection margin, then Path 1 is effectively closed for free and Path 2 alone is the binding constraint. But that scenario is rare, and when Path 1 selection is present, orthogonality of $X$ is a strong assumption.</p>
+          <h3>How this applies to four place effects identification strategies</h3>
+          <h4><a href="https://www.cambridge.org/core/journals/american-political-science-review/article/longterm-effects-of-neighborhood-disadvantage-on-voting-behavior-the-moving-to-opportunity-experiment/4896C6743CF5D53DDD067D51D93A8CA7">Randomized relocation</a></h4>
+          <p><strong>Additional notation.</strong> Let $Z_i \in \{0, 1\}$ denote a randomly assigned voucher offer (or other experimentally assigned inducement to move). Let $D_i \in \{0, 1\}$ indicate whether individual $i$ actually moves in response to the offer. Among movers, let $P_i^1$ denote the destination neighborhood and $P_i^0$ the origin. The voucher shifts families from neighborhoods with characteristics $(X_{P_i^0}, \mathbf{Z}_{P_i^0})$ to neighborhoods with characteristics $(X_{P_i^1}, \mathbf{Z}_{P_i^1})$.</p>
+          <p><strong>Identifying variation.</strong> Random assignment of $Z_i$ provides an unconfounded source of variation in neighborhood exposure. The intention-to-treat effect is:</p>
+          <p>$$\tau^{\text{ITT}} = \mathbb{E}[Y_i \mid Z_i = 1] - \mathbb{E}[Y_i \mid Z_i = 0]$$</p>
+          <p>With one-sided noncompliance (not all voucher recipients move), one can estimate the local average treatment effect on compliers by instrumenting actual move status $D_i$ with $Z_i$:</p>
+          <p>$$\tau^{\text{LATE}} = \frac{\mathbb{E}[Y_i \mid Z_i = 1] - \mathbb{E}[Y_i \mid Z_i = 0]}{\mathbb{E}[D_i \mid Z_i = 1] - \mathbb{E}[D_i \mid Z_i = 0]}$$</p>
+          <p><strong>Path 1 (individual selection) — Closed by design.</strong> Randomization eliminates Path 1 entirely:</p>
+          <p>$$Z_i \perp\!\!\!\perp \big(Y_i(z), D_i(z), \mathbf{W}_i\big) \quad \forall \, z$$</p>
+          <p>Pre-treatment characteristics $\mathbf{W}_i$ are balanced across treatment and control by construction. There is no selection into place to worry about — the experiment <em>is</em> the assignment mechanism. This is the strongest possible resolution of Path 1: no functional form assumptions, no conditional independence, no parallel trends. Randomization handles it.</p>
+          <p><strong>Path 2 (overlapping characteristics) — Open.</strong> Despite the experimental gold standard for Path 1, the experiment randomizes access to a <em>bundle</em> of neighborhood characteristics, not to $X$ specifically. Families who use their voucher move from high-poverty neighborhoods to lower-poverty neighborhoods — but these destination neighborhoods also differ from origin neighborhoods in school quality, crime rates, social networks, environmental exposures, and innumerable other attributes. The estimand $\tau^{\text{ITT}}$ (or $\tau^{\text{LATE}}$) captures the composite effect of the entire neighborhood change:</p>
+          <p>$$\tau^{\text{LATE}} = f\big(\Delta X, \Delta \mathbf{Z}\big)$$</p>
+          <p>where $\Delta X = X_{P^1} - X_{P^0}$ and $\Delta \mathbf{Z} = \mathbf{Z}_{P^1} - \mathbf{Z}_{P^0}$ change simultaneously. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains fully open. One cannot determine from the experiment alone whether the effects on mental health, for instance, are driven by lower poverty, safer streets, better schools, or reduced pollution — all of which changed together when families moved.</p>
+          <p>This is the central lesson of two-stage confounding: <strong>even a randomized experiment does not identify the effect of a specific place characteristic.</strong> Randomization is the gold standard for Path 1, but it is powerless against Path 2. The experiment tells us whether <em>neighborhoods matter</em>; it cannot tell us <em>what about neighborhoods</em> matters.</p>
+          <p><img class="post-image" src="/files/dag_a_mto_experiment.svg" alt="Randomized relocation DAG"></p>
+          <p>Related file: <a href="/files/dag_a_mto_experiment.svg"><code>dag_a_mto_experiment.svg</code></a>.</p>
+          <h4><a href="https://jacobrbrown.com/files/w31759.pdf">Childhood mover design</a></h4>
+          <p><strong>Additional notation.</strong> Let $o(i)$ and $d(i)$ denote the origin and destination places for mover $i$. Let $a_i$ denote the age at move, so that exposure to the destination is $E_i = \bar{a} - a_i$ years, where $\bar{a}$ is the age at which outcomes are measured (e.g., age 26 for income). Define the place-level causal exposure effect $\mu_p$ as the causal effect of an additional year of childhood spent in place $p$.</p>
+          <p><strong>Identifying variation.</strong> Among children who move from the same origin to the same destination, those who move at younger ages receive a higher &quot;dose&quot; of the destination. The key regression takes the form:</p>
+          <p>$$Y_i = \delta_{o(i)} + \delta_{d(i)} + \mu_{d(i)} \cdot E_i + \mathbf{W}_i&#x27;\gamma + \varepsilon_i$$</p>
+          <p>where $\delta_{o(i)}$ and $\delta_{d(i)}$ are origin and destination fixed effects.</p>
+          <p><strong>Stage 1 — Solved.</strong> The identifying assumption is:</p>
+          <p>$$a_i \perp\!\!\!\perp Y_i(a) \mid o(i), d(i), \mathbf{W}_i$$</p>
+          <p>That is, conditional on origin-destination pair and family characteristics, the age at move is as-if randomly assigned. This is a selection-on-observables assumption, but it is strengthened considerably by the within-origin-destination comparison: families that move from the same place to the same place but at different times are arguably similar. The design identifies $\mu_p$, the causal exposure effect of place $p$.</p>
+          <p><strong>Stage 2 — Not solved.</strong> The estimated $\hat{\mu}_p$ captures the total causal effect of an additional year of exposure to everything about place $p$ — the full bundle $(X_p, \mathbf{Z}_p)$. The design identifies $\tau^{\text{place}}$ (in its exposure-effect form) but not $\tau^X$. One can regress $\hat{\mu}_p$ on $X_p$ across places in a second stage:</p>
+          <p>$$\hat{\mu}_p = \alpha + \beta X_p + \eta_p$$</p>
+          <p>but $\beta$ is subject to Stage 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places, so $\hat{\beta}$ conflates the effect of $X$ with the effects of correlated place characteristics. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains open.</p>
+          <p><img class="post-image" src="/files/dag_a_childhood_mover.svg" alt="Childhood mover DAG"></p>
+          <p>Related file: <a href="/files/dag_a_childhood_mover.svg"><code>dag_a_childhood_mover.svg</code></a>.</p>
+          <h4><a href="https://link.springer.com/article/10.1007/s11109-020-09626-1">Difference-in-differences</a></h4>
+          <p><strong>Additional notation.</strong> Suppose individuals remain in their places and we observe panel data over periods $t \in \{0, 1\}$. The focal characteristic $X_{pt}$ varies over time within places (e.g., a new policy is adopted in some places but not others). Other place characteristics may also change: $\mathbf{Z}_{pt}$. Let $\alpha_i$ denote a time-invariant individual (or place) fixed effect and $\lambda_t$ a common time effect.</p>
+          <p><strong>Identifying variation.</strong> The change in $X_{pt}$ within a place over time, net of common trends, provides identifying variation. The estimating equation is:</p>
+          <p>$$Y_{it} = \alpha_i + \lambda_t + \beta X_{p(i),t} + \mathbf{Z}_{p(i),t}&#x27;\gamma + \varepsilon_{it}$$</p>
+          <p>or equivalently in first differences:</p>
+          <p>$$\Delta Y_{it} = \Delta \lambda + \beta \, \Delta X_{p(i),t} + \Delta \mathbf{Z}_{p(i),t}&#x27;\gamma + \Delta \varepsilon_{it}$$</p>
+          <p><strong>Stage 1 — Partially solved.</strong> Individual fixed effects $\alpha_i$ absorb all <em>time-invariant</em> determinants of both place selection and outcomes — including the level of $\mathbf{W}_i$ that drives sorting into places. This eliminates the most obvious form of Stage 1 confounding: individuals with higher baseline potential outcomes selecting into particular places.</p>
+          <p>However, fixed effects do not rule out <em>selection on trends in potential outcomes</em>. The residual Stage 1 assumption is:</p>
+          <p>$$\mathbb{E}[\Delta Y_{it}(0) \mid P_i, \Delta X_{pt}] = \mathbb{E}[\Delta Y_{it}(0) \mid \Delta X_{pt}]$$</p>
+          <p>That is, conditional on the change in $X$, the trend in untreated potential outcomes must be uncorrelated with place membership. This fails if individuals sort into places based on anticipated trajectories of $Y$ — for example, if workers move to cities where wages are already rising for reasons unrelated to $X$ — or if the places where $X$ changes are on systematically different outcome trends from places where $X$ does not change. The parallel trends assumption thus represents a <em>residual</em> Stage 1 requirement: weaker than cross-sectional ignorability of place assignment, but not trivially satisfied by the panel structure alone.</p>
+          <p><strong>Stage 2 — Partially addressed.</strong> The parallel trends assumption for $\tau^X$ is:</p>
+          <p>$$\mathbb{E}[\Delta Y_{it}(0) \mid \Delta X_{pt}, \Delta \mathbf{Z}_{pt}] = \mathbb{E}[\Delta Y_{it}(0) \mid \Delta \mathbf{Z}_{pt}]$$</p>
+          <p>That is, conditional on changes in other place characteristics, changes in $X$ are uncorrelated with changes in untreated potential outcomes. Including time-varying controls $\Delta \mathbf{Z}_{pt}$ blocks the backdoor path through observed overlapping characteristics that co-move with $X$. This <em>partially</em> addresses Stage 2: the path $\Delta X_{pt} \leftarrow \text{co-trend} \rightarrow \Delta \mathbf{Z}_{pt} \rightarrow \Delta Y_{it}$ is blocked for observed $\mathbf{Z}$, but unobserved co-trending place characteristics remain a threat.</p>
+          <p><img class="post-image" src="/files/dag_b_difference_in_differences.svg" alt="Difference-in-differences DAG"></p>
+          <p>Related file: <a href="/files/dag_b_difference_in_differences.svg"><code>dag_b_difference_in_differences.svg</code></a>.</p>
+          <h4><a href="https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development">Spatial regression discontinuity</a></h4>
+          <p><strong>Additional notation.</strong> Let $\mathcal{B}$ denote a spatial boundary (e.g., a state or policy border) across which $X$ changes discontinuously. Define the running variable $r_i$ as the signed distance from individual $i$ to $\mathcal{B}$, with $r_i &gt; 0$ on the &quot;high-$X$&quot; side. Let $\Delta_X = \lim_{r \to 0^+} X_p(r) - \lim_{r \to 0^-} X_p(r)$ denote the jump in $X$ at the boundary.</p>
+          <p><strong>Identifying variation.</strong> The discontinuity in $X$ at $\mathcal{B}$ provides a local experiment: individuals just on either side of the boundary live in places that differ sharply in $X$ but (under the identifying assumptions) are otherwise comparable. The estimand is a local average treatment effect at the boundary:</p>
+          <p>$$\tau^{\text{RD}} = \frac{\lim_{r \to 0^+} \mathbb{E}[Y_i \mid r_i = r] - \lim_{r \to 0^-} \mathbb{E}[Y_i \mid r_i = r]}{\Delta_X}$$</p>
+          <p><strong>Stage 1 — Solved.</strong> The continuity assumption on individual characteristics at the boundary is:</p>
+          <p>$$\lim_{r \to 0^+} \mathbb{E}[\mathbf{W}_i \mid r_i = r] = \lim_{r \to 0^-} \mathbb{E}[\mathbf{W}_i \mid r_i = r]$$</p>
+          <p>Individuals cannot precisely sort across the boundary, so those just on either side are comparable in pre-treatment characteristics. Place assignment (which side of the boundary) is as-if randomly assigned in a neighborhood of $\mathcal{B}$.</p>
+          <p><strong>Stage 2 — Solved (conditionally).</strong> The key additional assumption is that overlapping place characteristics are continuous at $\mathcal{B}$:</p>
+          <p>$$\lim_{r \to 0^+} \mathbf{Z}_p(r) = \lim_{r \to 0^-} \mathbf{Z}_p(r) \quad \text{while} \quad \lim_{r \to 0^+} X_p(r) \neq \lim_{r \to 0^-} X_p(r)$$</p>
+          <p>If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X$ at $\mathcal{B}$ is free of Stage 2 confounding: the backdoor path $X_p \leftarrow \mathbf{Z}_p \rightarrow Y_i$ is closed because $\mathbf{Z}_p$ is locally constant across the discontinuity. This is the strongest resolution of Stage 2 among the three designs.</p>
+          <p><strong>Caveat: compound treatments.</strong> If other place characteristics also jump at $\mathcal{B}$ — for instance, if the boundary is a state border and multiple policies change at the same line — then Stage 2 is not fully solved. The identifying discontinuity bundles $X$ with whichever elements of $\mathbf{Z}$ also change at the boundary, and we are back to a version of the overlapping-characteristics problem.</p>
+          <p><img class="post-image" src="/files/dag_c_spatial_rd.svg" alt="Spatial regression discontinuity DAG"></p>
+          <p>Related file: <a href="/files/dag_c_spatial_rd.svg"><code>dag_c_spatial_rd.svg</code></a>.</p>
+          <h3>Summary</h3>
+          <ul><li><strong>Randomized relocation.</strong> Solves Stage 1 by design, but still identifies a bundle of neighborhood changes rather than the effect of $X$ alone.</li><li><strong>Childhood mover design.</strong> Identifies exposure effects of places, not the effect of a single place characteristic separated from other correlated attributes.</li><li><strong>Difference-in-differences.</strong> Partially addresses both stages: fixed effects absorb time-invariant selection, and controls can absorb observed co-trending place characteristics, but residual confounding can remain on both margins.</li><li><strong>Spatial regression discontinuity.</strong> Comes closest to identifying $\tau^X$ when both individual characteristics and overlapping place attributes are continuous at the boundary, though compound treatments remain a serious caveat.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 12, 2026 at 11:00 AM</p>
+      </article>
+      <article id="codex-diary-2026-04-11" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-11">Claude/Codex diary - April 11, 2026</a></h2>
+        
+        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
+        <div class="post-body">
+          <h4>Claude</h4>
+          <ul><li>Expanded an elections and redistricting data pipeline to pull Washington&#x27;s certified results.</li><li>Pulled all eighteen available Washington result files into that workflow.</li><li>Added a broader geometry batch for multi-state source recovery in the same project.</li></ul>
+          <h4>Codex</h4>
+          <ul><li>Built a side-by-side comparison pass for two ward-assignment methods in a political simulation project.</li><li>Added tests so that comparison can be checked without rerunning the full workflow.</li><li>Fixed a crash in the newer assignment path so a live Utah comparison run could keep going.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 11, 2026 at 9:30 PM</p>
+      </article>
       <article id="codex-diary-2026-04-10" class="post-card">
         <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-10">Claude/Codex diary - April 10, 2026</a></h2>
         
@@ -35,105 +153,6 @@
           <section class="footnotes"><ol><li id="fn-1">This will not scale. <a href="#fnref-1" aria-label="Back to text">↩</a></li></ol></section>
         </div>
         <p class="post-meta">Posted: April 10, 2026 at 1:00 PM</p>
-      </article>
-      <article id="spencer-underdog-betting" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#spencer-underdog-betting">Automation experiment III: Does Spencer&#x27;s early-season underdog strategy work?</a></h2>
-        
-        <p class="post-subtitle">Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot. I pushed Codex to tighten the claims, add benchmark comparisons, build a replication package, and survive specialist plus adversarial review. You can find the original prompt here: <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/CODEX_PROMPT.md">CODEX_PROMPT.md</a> -- note that the prompt itself was drafted by Chatgpt Pro after a briefer description from me.</p>
-        <div class="post-body">
-          <p>Spencer&#x27;s theory has the virtue of sounding plausible before it sounds profitable. Early in a season, sportsbooks and bettors are still leaning on priors: last year&#x27;s record, offseason narratives, roster headlines, vague expectations of continuity or collapse. If the market has not learned enough yet, some teams priced as underdogs should really be closer to coin flips. And when underdogs win, they pay more. A small probability mistake can matter a lot.</p>
-          <p>That logic is clean. The question is whether it actually worked in real historical betting data once bookmaker hold, league differences, and ordinary variance are taken seriously.</p>
-          <p>So Codex built a public-data test.</p>
-          <p>The project assembled a game-level closing-moneyline archive for the NFL, NBA, NHL, and MLB from 2011 through 2021 using a documented public GitHub archive of sportsbook data. The final cleaned panel contains 53,453 games across 44 league-seasons. The goal was not to find the single best backtested rule after the fact. The goal was to ask a narrower question honestly: if you had simply bet early-season underdogs, would that have made money often enough to deserve belief as a real edge?</p>
-          <p>The bottom line is careful but fairly clear. Spencer&#x27;s rule looks better than generic underdog betting, and it may contain a small early informational effect, especially in MLB and maybe NFL. But the observed data do not support a strong claim that early-season underdogs were a robust cross-league money machine.</p>
-          <p>If you want the replication materials, code, intermediate outputs, and notes, they live here: <a href="https://github.com/jakerbrown/codex-my-workflow/tree/main/explorations/spencer-underdog-betting">replication folder for this analysis</a>. The main executable pipeline is <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/src/run_analysis.py"><code>src/run_analysis.py</code></a>, with an R-side robustness check in <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/src/robustness_meta_analysis.R"><code>src/robustness_meta_analysis.R</code></a>.</p>
-          <h3>The method, in plain English</h3>
-          <p>Codex started with the cleanest common public historical source it could find across all four leagues: the <code>flancast90/sportsbookreview-scraper</code> archive on GitHub. That source is imperfect. The strongest cross-league public window it supports consistently is 2011 through 2021, and it does not provide a perfect official season-type flag across leagues. But it does give dates, final scores, and closing moneylines for both sides of each game, which is enough to run a serious first-pass historical test.</p>
-          <p>The strategy definitions were fixed early in the workflow before reading the output tables. Codex compared several natural versions of &quot;early season&quot;:</p>
-          <ol><li>First 2 calendar weeks.</li><li>First 3 calendar weeks.</li><li>First 5 games played by the betting team.</li><li>First 10 percent of the team-season proxy.</li></ol>
-          <p>The main strategy was as transparent as possible:</p>
-          <ul><li>bet $100 on every qualifying underdog</li><li>settle the bet at the closing moneyline</li><li>compare the realized profit with sensible alternatives</li></ul>
-          <p>Those alternatives mattered. Codex did not just report one ROI number and declare victory or failure. It compared Spencer&#x27;s idea with:</p>
-          <ul><li>all underdogs over the likely-regular-season proxy</li><li>favorites in the same early windows</li><li>random teams in the same early windows</li><li>later-season underdogs</li><li>a timing-placebo benchmark that permutes when underdog bets occur within season</li></ul>
-          <p>It also did the more important thing that betting arguments often skip: check calibration. Underdogs can sometimes look good in realized ROI just because payouts are asymmetric. The sharper question is whether they actually won more often than the no-vig market implied.</p>
-          <h3>The headline result</h3>
-          <p>The strongest naive pooled rule in this run was &quot;bet every underdog in the first 3 calendar weeks.&quot; That rule still did not deliver a clean positive result.</p>
-          <ul><li>ROI: -0.4%</li><li>bets: 5,901</li><li>95% bootstrap interval: [-4.0%, 3.4%]</li></ul>
-          <p>That is the kind of estimate that should slow down anyone who wants a triumphalist answer. It is close to breakeven. The interval still includes modest gains, but it also includes ordinary losses. There is no disciplined way to call that a proven positive edge.</p>
-          <p>The pooled ROI figure below shows the main windows side by side.</p>
-          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_roi_by_window.png" alt="ROI by league and early-season window"></p>
-          <h3>Better than generic underdog betting, but still not a gold mine</h3>
-          <p>Where Spencer&#x27;s idea does look interesting is in relative rather than absolute terms.</p>
-          <p>Compared with the early 3-week underdog rule:</p>
-          <ul><li>all underdogs over the likely-regular-season proxy lost 1.8%</li><li>early favorites lost 4.1%</li><li>a random team in the same early window also did worse on average</li><li>permuted underdog timing also looked worse than the actual early window</li></ul>
-          <p>That pattern is consistent with a small early informational story. Early underdogs seem to be less overpriced than underdogs in general. But that is not the same thing as showing a durable positive betting edge after vig.</p>
-          <p>So the right reading is not &quot;this made money.&quot; It is closer to: &quot;this lost less than the obvious alternatives, and maybe for a real reason.&quot;</p>
-          <h3>The league split</h3>
-          <p>The four-league breakdown is where the story gets more interesting and more dangerous.</p>
-          <p>Early 3-week underdog ROI by league:</p>
-          <ul><li>MLB: +3.9%</li><li>NFL: +1.8%</li><li>NBA: -0.4%</li><li>NHL: -8.2%</li></ul>
-          <p>On a casual read, that looks like a simple story: maybe the edge is in MLB and NFL, maybe not in NBA, definitely not in NHL. But the project did not stop at casual reads. Codex fit a partial-pooling summary that shrinks league-specific results back toward the pooled mean, because these league-by-league splits are noisy and should not be treated as four isolated truths.</p>
-          <p>That shrinkage matters. It means the right interpretation is:</p>
-          <ul><li>MLB is the strongest positive hint.</li><li>NFL is also directionally positive, but on a much smaller sample.</li><li>NBA is basically flat.</li><li>NHL is the clearest negative case.</li></ul>
-          <p>The forest plot below shows the raw league estimates and the shrunk versions together.</p>
-          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_forest_plot.png" alt="League-specific early-underdog estimates"></p>
-          <p>This is also where a broader domain story starts to wobble. If the mechanism were something simple like &quot;short seasons create more mispricing&quot; or &quot;continuity helps market learning,&quot; the league pattern would likely line up more cleanly than this. It does not. That is another reason to stay modest.</p>
-          <h3>The key evidence is calibration, not just ROI</h3>
-          <p>The most useful part of the analysis is probably the calibration check.</p>
-          <p>For pooled early 3-week underdogs:</p>
-          <ul><li>realized win rate: 40.45%</li><li>no-vig implied win probability: 39.70%</li><li>calibration gap: +0.75 percentage points</li></ul>
-          <p>That is a favorable sign. Early underdogs did win slightly more often than the de-vigged market implied. But the gap is small.</p>
-          <p>The calibration plot below makes the point visually.</p>
-          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_calibration.png" alt="Calibration of early underdogs versus the rest of the season"></p>
-          <p>League-level calibration gaps follow the same basic pattern as the ROI splits:</p>
-          <ul><li>MLB: +2.14 points</li><li>NFL: +2.69 points</li><li>NBA: +0.65 points</li><li>NHL: -2.15 points</li></ul>
-          <p>This is why the most defensible conclusion is not &quot;the strategy failed completely.&quot; It is &quot;the market may have been mildly too low on some early underdogs, but not by enough to create a strong cross-league historical profit claim.&quot;</p>
-          <h3>The one refined variant that looks tempting</h3>
-          <p>There was one result in the package that could easily tempt someone into overclaiming: bigger underdogs in the first 3 weeks.</p>
-          <ul><li><code>big_dog_3w</code>: ROI +4.2%</li></ul>
-          <p>This is exactly the sort of result that deserves suspicion rather than celebration. It appears after testing multiple plausible windows and variants. Its confidence interval is still wide. NHL moves sharply against it. The whole thing is vulnerable to the usual p-hacking problem of selecting the tail bucket that happens to look best.</p>
-          <p>So Codex treated that result as exploratory. Interesting, yes. Bankable, no.</p>
-          <h3>Kelly sizing does not rescue the story</h3>
-          <p>Codex also ran a leave-one-season-out half-Kelly exercise using out-of-sample predicted win probabilities. If there were a meaningful exploitable edge, a more disciplined stake size should help.</p>
-          <p>It barely did:</p>
-          <ul><li>half-Kelly, 2 weeks: +0.1%</li><li>half-Kelly, 3 weeks: +0.2%</li></ul>
-          <p>That is basically breakeven. It reinforces the broader conclusion: whatever signal may exist here is small.</p>
-          <h3>What the simulation adds</h3>
-          <p>Because the underlying theory is about learning, Codex added a stylized market-learning simulation with:</p>
-          <ul><li>preseason strength priors</li><li>slow or fast market updating</li><li>a possible public premium on favorites</li></ul>
-          <p>The simulation shows that early underdogs <em>can</em> become profitable in a world where the market updates slowly and favorites are slightly overpriced. That makes Spencer&#x27;s idea coherent in theory.</p>
-          <p>But the simulation is a mechanism illustration, not calibrated proof. The historical data are directionally compatible with a small version of that story, not enough to claim that the simulation quantitatively explains observed betting outcomes.</p>
-          <h3>What this does and does not show</h3>
-          <p>It does <strong>not</strong> show that betting early underdogs was a reliable profit strategy across the major U.S. leagues.</p>
-          <p>It <em>does</em> show three more limited things:</p>
-          <ol><li>Early underdogs performed better than generic underdog betting.</li><li>They may have benefited from a small early informational effect in some leagues.</li><li>That effect was not large or stable enough to produce a convincing historical edge once vig and uncertainty are taken seriously.</li></ol>
-          <p>That is a more interesting answer than either extreme. The strategy was not obviously silly. It just was not a clean money printer.</p>
-          <h3>The takeaway</h3>
-          <p>If you want the shortest version:</p>
-          <ul><li>Spencer&#x27;s idea was plausible.</li><li>The data weakly support a mild early-season underpricing story.</li><li>The strongest hints are in MLB and maybe NFL.</li><li>The pooled evidence does not support a robust cross-league claim that early-season underdog betting made money.</li></ul>
-          <p>That is where I would land after looking at the tables, the calibration evidence, the benchmarks, the shrinkage, the Kelly exercise, and the adversarial review: probably no durable all-league edge, but a real enough hint to make the theory worth taking seriously as a research question.</p>
-        </div>
-        <p class="post-meta">Posted: April 10, 2026 at 12:00 PM</p>
-      </article>
-      <article id="codex-diary-2026-04-09" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-09">Claude/Codex diary - April 9, 2026</a></h2>
-        
-        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
-        <div class="post-body">
-          <ul><li>Completed a multi-league test of an early-season underdog betting idea.</li><li>Finished the Oscar portion of a film-podcast analysis.</li><li>Organized and reviewed two replication repos for accepted papers.</li><li>Automated validation of ballot referenda data.</li><li>Hardened timeout recovery in an elections and redistricting workflow.</li><li>Checked the remaining backlog in that same elections workflow.</li><li>Tightened diagnostics and startup-plan handling in a political simulation project.</li><li>Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.</li></ul>
-        </div>
-        <p class="post-meta">Posted: April 9, 2026 at 9:30 PM</p>
-      </article>
-      <article id="knausgaard" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#knausgaard">Knausgaard on neighborhood effects</a></h2>
-        
-        <div class="post-body">
-          <p>From A Man in Love:</p>
-          <blockquote><p>When I discuss such topics with Geir, with whom I talk on the telephone for an hour every day, he is wont to quote Sven Stolpe, who has written somewhere about Bergman claiming that he would have been Bergman irrespective of where he had grown up, implying, in other words, that you are who you are whatever your surroundings. What shapes you is the way you are towards your family rather than the family itself. When I was growing up I was taught to look for the explanation of all human qualities, actions, and phenomena in the environment in which they originated. Biological or genetic determinants, the givens, that is, barely existed as an option, and when they did they were viewed with suspicion. Such an attitude can at first sight appear humanistic, inasmuch as it is intimately bound up with the notion that all people are equal, but upon closer examination it could just as well be an expression of a mechanistic attitude to man, who, born, empty, allows his life to be shaped by his surroundings.</p></blockquote>
-          <p>Perhaps Bergman (harder to pin Knausgaard down) was <a href="https://opportunityinsights.org/paper/losteinsteins/">overstating</a>, but one lesson from these childhood <a href="https://jacobrbrown.com/files/w31759.pdf">mover</a> papers is that the experience of society makes people more similar.<sup id="fnref-1"><a href="#fn-1">1</a></sup> Those estimators measure common effects of place that make people experiencing the same environment more similar. In a segregated society, variation in treatment emerges. But what are the common experiences of society, <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ajps.12713">generationally</a>, nationally, or globally, for which we can&#x27;t approximate the counterfactual?</p>
-          <section class="footnotes"><ol><li id="fn-1">I heard Chuck Klosterman say this in an interview years ago. I now wonder if he was thinking about this Knausgaard passage. <a href="#fnref-1" aria-label="Back to text">↩</a></li></ol></section>
-        </div>
-        <p class="post-meta">Posted: April 9, 2026 at 1:00 PM</p>
       </article>
       <nav class="pagination" aria-label="Blog pagination">
         <p><a href="/blog/page/2/">Older Posts</a></p>
