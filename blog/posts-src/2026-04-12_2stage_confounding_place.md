@@ -57,8 +57,6 @@ This is a distinct identification challenge from Path 1. It concerns the interna
 
 ![Two-stage confounding DAG](/files/two_stage_confounding_dag.svg)
 
-Related file: [`two_stage_confounding_dag.svg`](/files/two_stage_confounding_dag.svg).
-
 The two paths can be open or closed independently:
 
 - **Path 1 open, Path 2 closed.** People sort into places non-randomly, but $X$ happens to be the only place characteristic that affects $Y$ (or the only one correlated with $\mathbf{W}_i$). Solving selection is sufficient.
@@ -97,8 +95,6 @@ This is a central lesson: **even a randomized experiment does not identify the e
 
 ![Randomized relocation DAG](/files/dag_a_mto_experiment.svg)
 
-Related file: [`dag_a_mto_experiment.svg`](/files/dag_a_mto_experiment.svg).
-
 ### [Childhood mover design](https://jacobrbrown.com/files/w31759.pdf)
 
 **Additional notation.** Let $o(i)$ and $d(i)$ denote the origin and destination places for mover $i$. Let $a_i$ denote the age at move, so that exposure to the destination is $E_i = \bar{a} - a_i$ years, where $\bar{a}$ is the age at which outcomes are measured (e.g., age 26 for income). Define the place-level causal exposure effect $\mu_p$ as the causal effect of an additional year of childhood spent in place $p$.
@@ -122,8 +118,6 @@ $$\hat{\mu}_p = \alpha + \beta X_p + \eta_p$$
 but $\beta$ is subject to Path 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places, so $\hat{\beta}$ conflates the effect of $X$ with the effects of correlated place characteristics. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains open.
 
 ![Childhood mover DAG](/files/dag_a_childhood_mover.svg)
-
-Related file: [`dag_a_childhood_mover.svg`](/files/dag_a_childhood_mover.svg).
 
 ### [Difference-in-differences](https://link.springer.com/article/10.1007/s11109-020-09626-1)
 
@@ -153,8 +147,6 @@ That is, conditional on changes in other place characteristics, changes in $X$ a
 
 ![Difference-in-differences DAG](/files/dag_b_difference_in_differences.svg)
 
-Related file: [`dag_b_difference_in_differences.svg`](/files/dag_b_difference_in_differences.svg).
-
 ### [Spatial regression discontinuity](https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development)
 
 **Additional notation.** Let $\mathcal{B}$ denote a spatial boundary (e.g., a state or policy border) across which $X$ changes discontinuously. Define the running variable $r_i$ as the signed distance from individual $i$ to $\mathcal{B}$, with $r_i > 0$ on the "high-$X$" side. Let $\Delta_X = \lim_{r \to 0^+} X_p(r) - \lim_{r \to 0^-} X_p(r)$ denote the jump in $X$ at the boundary.
@@ -178,8 +170,6 @@ If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X
 **Caveat: compound treatments.** If other place characteristics also jump at $\mathcal{B}$ — for instance, if the boundary is a state border and multiple policies change at the same line — then Path 2 is not fully solved. The identifying discontinuity bundles $X$ with whichever elements of $\mathbf{Z}$ also change at the boundary, and we are back to a version of the overlapping-characteristics problem.
 
 ![Spatial regression discontinuity DAG](/files/dag_c_spatial_rd.svg)
-
-Related file: [`dag_c_spatial_rd.svg`](/files/dag_c_spatial_rd.svg).
 
 ## Last thoughts: Path 2 is a construct validity problem
 
