@@ -93,7 +93,7 @@ $$\tau^{\text{LATE}} = f\big(\Delta X, \Delta \mathbf{Z}\big)$$
 
 where $\Delta X = X_{P^1} - X_{P^0}$ and $\Delta \mathbf{Z} = \mathbf{Z}_{P^1} - \mathbf{Z}_{P^0}$ change simultaneously. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains fully open. One cannot determine from the experiment alone whether the effects on mental health, for instance, are driven by lower poverty, safer streets, better schools, or reduced pollution — all of which changed together when families moved.
 
-This is the central lesson of two-stage confounding: **even a randomized experiment does not identify the effect of a specific place characteristic.** Randomization is the gold standard for Path 1, but it is powerless against Path 2. The experiment tells us whether *neighborhoods matter*; it cannot tell us *what about neighborhoods* matters.
+This is a central lesson: **even a randomized experiment does not identify the effect of a specific place characteristic.** The experiment tells us whether *neighborhoods matter*; it cannot tell us *what about neighborhoods* matters. Randomization solves assignment to bundles, it does nothing to separate components within bundles. 
 
 ![Randomized relocation DAG](/files/dag_a_mto_experiment.svg)
 
@@ -181,10 +181,7 @@ If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X
 
 Related file: [`dag_c_spatial_rd.svg`](/files/dag_c_spatial_rd.svg).
 
-## Summary
+## Last thoughts: Path 2 is a construct validity problem
 
-- **Randomized relocation.** Solves Path 1 by design, but still identifies a bundle of neighborhood changes rather than the effect of $X$ alone.
-- **Childhood mover design.** Identifies exposure effects of places, not the effect of a single place characteristic separated from other correlated attributes.
-- **Difference-in-differences.** Partially addresses both stages: fixed effects absorb time-invariant selection, and controls can absorb observed co-trending place characteristics, but residual confounding can remain on both margins.
-- **Spatial regression discontinuity.** Comes closest to identifying $\tau^X$ when both individual characteristics and overlapping place attributes are continuous at the boundary, though compound treatments remain a serious caveat.
+In practice, Path 2 is a construct validity problem. Does assignment to place measure what we think it measures? If so, as-if random assumptions about place may lead us to convincing arguments about the effect of $X_i$ on $Y_i$. This is akin to a survey experiment that aims to prime one emotion but perhaps primes other feeling as well. A design gives us credible variation in something, and whether that something corresponds to the theoretical construct we care about is a separate claim. In absence of clean identification closing Path 2, researchers fall back to [inference to the best explanation](https://arthurspirling.org/documents/whatgood.pdf), arguing for $\tau^{X}$ through abductive reasoning.
  
