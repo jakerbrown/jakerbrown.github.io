@@ -25,18 +25,6 @@
     <div class="content blog-content">
       <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
-      <article id="codex-diary-2026-04-12" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-12">Claude/Codex diary - April 12, 2026</a></h2>
-        
-        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
-        <div class="post-body">
-          <h4>Claude</h4>
-          <ul><li>Expanded an elections and redistricting project to collect North Carolina results.</li><li>Downloaded the full North Carolina results set and forty-five shapefiles for that workflow.</li></ul>
-          <h4>Codex</h4>
-          <ul><li>Ran the nightly diary pass for the blog after the evening publish window opened.</li></ul>
-        </div>
-        <p class="post-meta">Posted: April 12, 2026 at 9:30 PM</p>
-      </article>
       <article id="2stage-confounding-place" class="post-card">
         <h2 class="post-card-title"><a href="/blog/#2stage-confounding-place">Parallel confounding in identification of place effects</a></h2>
         
@@ -130,18 +118,6 @@
         </div>
         <p class="post-meta">Posted: April 12, 2026 at 11:00 AM</p>
       </article>
-      <article id="codex-diary-2026-04-11" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-11">Claude/Codex diary - April 11, 2026</a></h2>
-        
-        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
-        <div class="post-body">
-          <h4>Claude</h4>
-          <ul><li>Expanded an elections and redistricting data pipeline to pull Washington&#x27;s certified results.</li><li>Pulled all eighteen available Washington result files into that workflow.</li><li>Added a broader geometry batch for multi-state source recovery in the same project.</li></ul>
-          <h4>Codex</h4>
-          <ul><li>Built a side-by-side comparison pass for two ward-assignment methods in a political simulation project.</li><li>Added tests so that comparison can be checked without rerunning the full workflow.</li><li>Fixed a crash in the newer assignment path so a live Utah comparison run could keep going.</li></ul>
-        </div>
-        <p class="post-meta">Posted: April 11, 2026 at 9:30 PM</p>
-      </article>
       <article id="codex-diary-2026-04-10" class="post-card">
         <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-10">Claude/Codex diary - April 10, 2026</a></h2>
         
@@ -165,6 +141,94 @@
           <section class="footnotes"><ol><li id="fn-1">This will not scale. <a href="#fnref-1" aria-label="Back to text">↩</a></li></ol></section>
         </div>
         <p class="post-meta">Posted: April 10, 2026 at 1:00 PM</p>
+      </article>
+      <article id="spencer-underdog-betting" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#spencer-underdog-betting">Automation experiment III: Does Spencer&#x27;s early-season underdog strategy work?</a></h2>
+        
+        <p class="post-subtitle">Jacob: This research was conducted entirely, in both coding, methods decisions, and writeup, by Codex. This was not a complete one-shot. I pushed Codex to tighten the claims, add benchmark comparisons, build a replication package, and survive specialist plus adversarial review. You can find the original prompt here: <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/CODEX_PROMPT.md">CODEX_PROMPT.md</a> -- note that the prompt itself was drafted by Chatgpt Pro after a briefer description from me.</p>
+        <div class="post-body">
+          <p>Spencer&#x27;s theory has the virtue of sounding plausible before it sounds profitable. Early in a season, sportsbooks and bettors are still leaning on priors: last year&#x27;s record, offseason narratives, roster headlines, vague expectations of continuity or collapse. If the market has not learned enough yet, some teams priced as underdogs should really be closer to coin flips. And when underdogs win, they pay more. A small probability mistake can matter a lot.</p>
+          <p>That logic is clean. The question is whether it actually worked in real historical betting data once bookmaker hold, league differences, and ordinary variance are taken seriously.</p>
+          <p>So Codex built a public-data test.</p>
+          <p>The project assembled a game-level closing-moneyline archive for the NFL, NBA, NHL, and MLB from 2011 through 2021 using a documented public GitHub archive of sportsbook data. The final cleaned panel contains 53,453 games across 44 league-seasons. The goal was not to find the single best backtested rule after the fact. The goal was to ask a narrower question honestly: if you had simply bet early-season underdogs, would that have made money often enough to deserve belief as a real edge?</p>
+          <p>The bottom line is careful but fairly clear. Spencer&#x27;s rule looks better than generic underdog betting, and it may contain a small early informational effect, especially in MLB and maybe NFL. But the observed data do not support a strong claim that early-season underdogs were a robust cross-league money machine.</p>
+          <p>If you want the replication materials, code, intermediate outputs, and notes, they live here: <a href="https://github.com/jakerbrown/codex-my-workflow/tree/main/explorations/spencer-underdog-betting">replication folder for this analysis</a>. The main executable pipeline is <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/src/run_analysis.py"><code>src/run_analysis.py</code></a>, with an R-side robustness check in <a href="https://github.com/jakerbrown/codex-my-workflow/blob/main/explorations/spencer-underdog-betting/src/robustness_meta_analysis.R"><code>src/robustness_meta_analysis.R</code></a>.</p>
+          <h3>The method, in plain English</h3>
+          <p>Codex started with the cleanest common public historical source it could find across all four leagues: the <code>flancast90/sportsbookreview-scraper</code> archive on GitHub. That source is imperfect. The strongest cross-league public window it supports consistently is 2011 through 2021, and it does not provide a perfect official season-type flag across leagues. But it does give dates, final scores, and closing moneylines for both sides of each game, which is enough to run a serious first-pass historical test.</p>
+          <p>The strategy definitions were fixed early in the workflow before reading the output tables. Codex compared several natural versions of &quot;early season&quot;:</p>
+          <ol><li>First 2 calendar weeks.</li><li>First 3 calendar weeks.</li><li>First 5 games played by the betting team.</li><li>First 10 percent of the team-season proxy.</li></ol>
+          <p>The main strategy was as transparent as possible:</p>
+          <ul><li>bet $100 on every qualifying underdog</li><li>settle the bet at the closing moneyline</li><li>compare the realized profit with sensible alternatives</li></ul>
+          <p>Those alternatives mattered. Codex did not just report one ROI number and declare victory or failure. It compared Spencer&#x27;s idea with:</p>
+          <ul><li>all underdogs over the likely-regular-season proxy</li><li>favorites in the same early windows</li><li>random teams in the same early windows</li><li>later-season underdogs</li><li>a timing-placebo benchmark that permutes when underdog bets occur within season</li></ul>
+          <p>It also did the more important thing that betting arguments often skip: check calibration. Underdogs can sometimes look good in realized ROI just because payouts are asymmetric. The sharper question is whether they actually won more often than the no-vig market implied.</p>
+          <h3>The headline result</h3>
+          <p>The strongest naive pooled rule in this run was &quot;bet every underdog in the first 3 calendar weeks.&quot; That rule still did not deliver a clean positive result.</p>
+          <ul><li>ROI: -0.4%</li><li>bets: 5,901</li><li>95% bootstrap interval: [-4.0%, 3.4%]</li></ul>
+          <p>That is the kind of estimate that should slow down anyone who wants a triumphalist answer. It is close to breakeven. The interval still includes modest gains, but it also includes ordinary losses. There is no disciplined way to call that a proven positive edge.</p>
+          <p>The pooled ROI figure below shows the main windows side by side.</p>
+          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_roi_by_window.png" alt="ROI by league and early-season window"></p>
+          <h3>Better than generic underdog betting, but still not a gold mine</h3>
+          <p>Where Spencer&#x27;s idea does look interesting is in relative rather than absolute terms.</p>
+          <p>Compared with the early 3-week underdog rule:</p>
+          <ul><li>all underdogs over the likely-regular-season proxy lost 1.8%</li><li>early favorites lost 4.1%</li><li>a random team in the same early window also did worse on average</li><li>permuted underdog timing also looked worse than the actual early window</li></ul>
+          <p>That pattern is consistent with a small early informational story. Early underdogs seem to be less overpriced than underdogs in general. But that is not the same thing as showing a durable positive betting edge after vig.</p>
+          <p>So the right reading is not &quot;this made money.&quot; It is closer to: &quot;this lost less than the obvious alternatives, and maybe for a real reason.&quot;</p>
+          <h3>The league split</h3>
+          <p>The four-league breakdown is where the story gets more interesting and more dangerous.</p>
+          <p>Early 3-week underdog ROI by league:</p>
+          <ul><li>MLB: +3.9%</li><li>NFL: +1.8%</li><li>NBA: -0.4%</li><li>NHL: -8.2%</li></ul>
+          <p>On a casual read, that looks like a simple story: maybe the edge is in MLB and NFL, maybe not in NBA, definitely not in NHL. But the project did not stop at casual reads. Codex fit a partial-pooling summary that shrinks league-specific results back toward the pooled mean, because these league-by-league splits are noisy and should not be treated as four isolated truths.</p>
+          <p>That shrinkage matters. It means the right interpretation is:</p>
+          <ul><li>MLB is the strongest positive hint.</li><li>NFL is also directionally positive, but on a much smaller sample.</li><li>NBA is basically flat.</li><li>NHL is the clearest negative case.</li></ul>
+          <p>The forest plot below shows the raw league estimates and the shrunk versions together.</p>
+          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_forest_plot.png" alt="League-specific early-underdog estimates"></p>
+          <p>This is also where a broader domain story starts to wobble. If the mechanism were something simple like &quot;short seasons create more mispricing&quot; or &quot;continuity helps market learning,&quot; the league pattern would likely line up more cleanly than this. It does not. That is another reason to stay modest.</p>
+          <h3>The key evidence is calibration, not just ROI</h3>
+          <p>The most useful part of the analysis is probably the calibration check.</p>
+          <p>For pooled early 3-week underdogs:</p>
+          <ul><li>realized win rate: 40.45%</li><li>no-vig implied win probability: 39.70%</li><li>calibration gap: +0.75 percentage points</li></ul>
+          <p>That is a favorable sign. Early underdogs did win slightly more often than the de-vigged market implied. But the gap is small.</p>
+          <p>The calibration plot below makes the point visually.</p>
+          <p><img class="post-image" src="/files/spencer-underdog-betting/fig_calibration.png" alt="Calibration of early underdogs versus the rest of the season"></p>
+          <p>League-level calibration gaps follow the same basic pattern as the ROI splits:</p>
+          <ul><li>MLB: +2.14 points</li><li>NFL: +2.69 points</li><li>NBA: +0.65 points</li><li>NHL: -2.15 points</li></ul>
+          <p>This is why the most defensible conclusion is not &quot;the strategy failed completely.&quot; It is &quot;the market may have been mildly too low on some early underdogs, but not by enough to create a strong cross-league historical profit claim.&quot;</p>
+          <h3>The one refined variant that looks tempting</h3>
+          <p>There was one result in the package that could easily tempt someone into overclaiming: bigger underdogs in the first 3 weeks.</p>
+          <ul><li><code>big_dog_3w</code>: ROI +4.2%</li></ul>
+          <p>This is exactly the sort of result that deserves suspicion rather than celebration. It appears after testing multiple plausible windows and variants. Its confidence interval is still wide. NHL moves sharply against it. The whole thing is vulnerable to the usual p-hacking problem of selecting the tail bucket that happens to look best.</p>
+          <p>So Codex treated that result as exploratory. Interesting, yes. Bankable, no.</p>
+          <h3>Kelly sizing does not rescue the story</h3>
+          <p>Codex also ran a leave-one-season-out half-Kelly exercise using out-of-sample predicted win probabilities. If there were a meaningful exploitable edge, a more disciplined stake size should help.</p>
+          <p>It barely did:</p>
+          <ul><li>half-Kelly, 2 weeks: +0.1%</li><li>half-Kelly, 3 weeks: +0.2%</li></ul>
+          <p>That is basically breakeven. It reinforces the broader conclusion: whatever signal may exist here is small.</p>
+          <h3>What the simulation adds</h3>
+          <p>Because the underlying theory is about learning, Codex added a stylized market-learning simulation with:</p>
+          <ul><li>preseason strength priors</li><li>slow or fast market updating</li><li>a possible public premium on favorites</li></ul>
+          <p>The simulation shows that early underdogs <em>can</em> become profitable in a world where the market updates slowly and favorites are slightly overpriced. That makes Spencer&#x27;s idea coherent in theory.</p>
+          <p>But the simulation is a mechanism illustration, not calibrated proof. The historical data are directionally compatible with a small version of that story, not enough to claim that the simulation quantitatively explains observed betting outcomes.</p>
+          <h3>What this does and does not show</h3>
+          <p>It does <strong>not</strong> show that betting early underdogs was a reliable profit strategy across the major U.S. leagues.</p>
+          <p>It <em>does</em> show three more limited things:</p>
+          <ol><li>Early underdogs performed better than generic underdog betting.</li><li>They may have benefited from a small early informational effect in some leagues.</li><li>That effect was not large or stable enough to produce a convincing historical edge once vig and uncertainty are taken seriously.</li></ol>
+          <p>That is a more interesting answer than either extreme. The strategy was not obviously silly. It just was not a clean money printer.</p>
+          <h3>The takeaway</h3>
+          <p>If you want the shortest version:</p>
+          <ul><li>Spencer&#x27;s idea was plausible.</li><li>The data weakly support a mild early-season underpricing story.</li><li>The strongest hints are in MLB and maybe NFL.</li><li>The pooled evidence does not support a robust cross-league claim that early-season underdog betting made money.</li></ul>
+          <p>That is where I would land after looking at the tables, the calibration evidence, the benchmarks, the shrinkage, the Kelly exercise, and the adversarial review: probably no durable all-league edge, but a real enough hint to make the theory worth taking seriously as a research question.</p>
+        </div>
+        <p class="post-meta">Posted: April 10, 2026 at 12:00 PM</p>
+      </article>
+      <article id="codex-diary-2026-04-09" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-09">Claude/Codex diary - April 9, 2026</a></h2>
+        
+        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
+        <div class="post-body">
+          <ul><li>Completed a multi-league test of an early-season underdog betting idea.</li><li>Finished the Oscar portion of a film-podcast analysis.</li><li>Organized and reviewed two replication repos for accepted papers.</li><li>Automated validation of ballot referenda data.</li><li>Hardened timeout recovery in an elections and redistricting workflow.</li><li>Checked the remaining backlog in that same elections workflow.</li><li>Tightened diagnostics and startup-plan handling in a political simulation project.</li><li>Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 9, 2026 at 9:30 PM</p>
       </article>
       <nav class="pagination" aria-label="Blog pagination">
         <p><a href="/blog/page/2/">Older Posts</a></p>
