@@ -63,7 +63,8 @@
 .post-body p:last-child,
 .post-body ul:last-child,
 .post-body blockquote:last-child,
-.post-body pre:last-child {
+.post-body pre:last-child,
+.post-body .math-display:last-child {
     margin-bottom: 0;
 }
 
@@ -85,6 +86,24 @@
     max-width: 100%;
     height: auto;
     margin: 1rem auto;
+}
+
+.math-display {
+    margin: 1rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.math-display mjx-container {
+    min-width: max-content;
+}
+
+.post-body mjx-container[jax="CHTML"][display="true"] {
+    margin: 0.75rem 0;
+}
+
+.post-body mjx-container[jax="CHTML"] {
+    max-width: 100%;
 }
 
 .post-body sup {

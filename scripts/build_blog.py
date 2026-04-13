@@ -94,8 +94,32 @@ def extract_footnotes(markdown_text: str) -> tuple[str, dict[str, str]]:
     return "\n".join(body_lines).strip(), footnotes
 
 
+def protect_math(text: str) -> tuple[str, dict[str, str]]:
+    placeholders: dict[str, str] = {}
+
+    def store_math(value: str) -> str:
+        key = f"@@MATH{len(placeholders)}@@"
+        placeholders[key] = value
+        return key
+
+    protected = re.sub(
+        r"(?<!\\)(\${1,2})(.+?)(?<!\\)\1",
+        lambda match: store_math(match.group(0)),
+        text,
+    )
+    return protected, placeholders
+
+
+def restore_math(text: str, placeholders: dict[str, str]) -> str:
+    restored = text
+    for key, value in placeholders.items():
+        restored = restored.replace(key, value)
+    return restored
+
+
 def render_inline(text: str, footnotes: dict[str, str] | None = None) -> str:
-    escaped = html.escape(text)
+    protected_text, math_placeholders = protect_math(text)
+    escaped = html.escape(protected_text)
     if footnotes:
         escaped = re.sub(
             r"\[\^([^\]]+)\]",
@@ -128,7 +152,7 @@ def render_inline(text: str, footnotes: dict[str, str] | None = None) -> str:
         ),
         escaped,
     )
-    return escaped
+    return restore_math(escaped, math_placeholders)
 
 
 def render_markdown(markdown_text: str) -> str:
@@ -140,6 +164,8 @@ def render_markdown(markdown_text: str) -> str:
     list_type: str | None = None
     in_code_block = False
     code_lines: list[str] = []
+    in_display_math = False
+    display_math_lines: list[str] = []
 
     def flush_paragraph() -> None:
         nonlocal paragraph
@@ -165,6 +191,13 @@ def render_markdown(markdown_text: str) -> str:
             blocks.append(f"<pre><code>{code}</code></pre>")
             code_lines = []
 
+    def flush_display_math() -> None:
+        nonlocal display_math_lines
+        if display_math_lines:
+            math_text = "\n".join(display_math_lines)
+            blocks.append(f'<div class="math-display">{math_text}</div>')
+            display_math_lines = []
+
     for raw_line in lines:
         line = raw_line.rstrip()
 
@@ -182,7 +215,30 @@ def render_markdown(markdown_text: str) -> str:
             code_lines.append(raw_line)
             continue
 
-        if not line.strip():
+        stripped = line.strip()
+
+        if in_display_math:
+            display_math_lines.append(stripped)
+            if stripped.endswith("$$") and stripped != "$$":
+                flush_display_math()
+                in_display_math = False
+            continue
+
+        if stripped == "$$":
+            flush_paragraph()
+            flush_list()
+            in_display_math = True
+            display_math_lines = ["$$"]
+            continue
+
+        if stripped.startswith("$$") and stripped.endswith("$$") and len(stripped) > 4:
+            flush_paragraph()
+            flush_list()
+            display_math_lines = [stripped]
+            flush_display_math()
+            continue
+
+        if not stripped:
             flush_paragraph()
             flush_list()
             continue
@@ -241,6 +297,8 @@ def render_markdown(markdown_text: str) -> str:
     flush_list()
     if in_code_block:
         flush_code()
+    if in_display_math:
+        flush_display_math()
     if footnotes:
         footnote_items = "".join(
             (
@@ -474,6 +532,19 @@ def page_template(title: str, body: str, description: str) -> str:
     <meta name="description" content="{html.escape(description, quote=True)}">
     <link rel="stylesheet" href="/css/site-base.css">
     <link rel="stylesheet" href="/css/blog.css">
+    <script>
+      window.MathJax = {{
+        tex: {{
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true
+        }},
+        options: {{
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }}
+      }};
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   </head>
   <body>
     <div class="content blog-content">
