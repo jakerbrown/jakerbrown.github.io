@@ -5,7 +5,7 @@ date: 2026-04-12 11:00
 summary:
 ---
 
-Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$, like vote choice. There are twi challenges to inference. 
+Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$, like vote choice. There are two challenges to inference. 
 
 First, people sort into places. If the kind of person who moves to a high-$X$ place would have had different outcomes regardless, then comparing across places confounds $X$ with individual selection. This is the standard worry in observational causal inference: place assignment is endogenous.
 
