@@ -16,7 +16,8 @@ MAX_BULLET_WORDS = 28
 def find_latest_entry(text: str) -> tuple[str, list[str]] | None:
     matches = list(
         re.finditer(
-            r"^## (\d{4}-\d{2}-\d{2})\n(.*?)(?=^## \d{4}-\d{2}-\d{2}\n|\Z)",
+            r"^## (\d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?)\n"
+            r"(.*?)(?=^## \d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?\n|\Z)",
             text,
             flags=re.MULTILINE | re.DOTALL,
         )

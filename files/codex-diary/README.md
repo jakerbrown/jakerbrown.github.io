@@ -1,18 +1,21 @@
 # Codex Diary
 
-This directory holds a durable daily diary of Codex work across repos.
+This directory holds a durable diary of Codex work across repos.
 
 ## Goal
 
-Produce one dated entry per day with a short set of plain-language bullets that
-capture what Codex helped accomplish without turning into a technical log dump.
+Produce one dated entry per automation window with a short set of plain-language
+bullets that capture what Codex helped accomplish without turning into a
+technical log dump.
 
 ## Workflow
 
 1. Each participating repo writes short local breadcrumb entries for non-trivial
    Codex work.
-2. A nightly automation scans those breadcrumbs and the day's git history.
-3. The automation writes a digest to `daily_digest/YYYY-MM-DD.md`.
+2. An automation scans those breadcrumbs and recent git history.
+3. The automation writes a digest to `daily_digest/YYYY-MM-DD.md` for a
+   one-day window or `daily_digest/YYYY-MM-DD_to_YYYY-MM-DD.md` for a
+   multi-day window.
 4. Codex turns that digest into a polished diary entry in `diary.md`, following
    `config/style_preferences.md`.
 5. A quick style check can be run with `python3 scripts/check_codex_diary_style.py`.
@@ -41,7 +44,7 @@ implementation details.
 
 ## Diary style
 
-- 3 to 8 bullets per day
+- 3 to 8 bullets per entry
 - no more than roughly half a page
 - interesting and specific
 - not overly technical
@@ -80,7 +83,7 @@ The canonical style rules live in `config/style_preferences.md`.
 
 ## Files
 
-- `config/repos.txt`: repos included in the nightly scan
+- `config/repos.txt`: repos included in the diary scan
 - `config/style_preferences.md`: durable diary tone and naming rules
-- `daily_digest/`: generated daily source material for the diary
+- `daily_digest/`: generated source material for each diary window
 - `diary.md`: the running diary itself

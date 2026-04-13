@@ -32,12 +32,12 @@ works because the repo instructions repeatedly promote it into the model
 context at the beginning of work.
 
 As I was thinking about this, I decided that Codex should keep even more
-detailed notes on what I ask it to do each day, so I can refer back to them,
-since my own memory is also not perfect. So I set up instructions in each repo
-to take more copious notes, storing them in run logs. I then asked Codex to
-help me set up functionality where it does a daily sweep of each repo's logs,
-drafts a bulleted list of a sample of things it helped me do that day, and
-turns that list into a Codex diary blog post.
+detailed notes on what I ask it to do, so I can refer back to them, since my
+own memory is also not perfect. So I set up instructions in each repo to take
+more copious notes, storing them in run logs. I then asked Codex to help me
+set up functionality where it does a regular sweep of each repo's logs, drafts
+a bulleted list of a sample of things it helped me do over the last few days,
+and turns that list into a Codex diary blog post.
 
 It strikes me as an interesting example of both the high-level possibilities
 here, using better memory retention to increase operational capacity, and the

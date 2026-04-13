@@ -64,9 +64,9 @@ Use these preferences whenever writing or revising the Claude/Codex diary.
 
 - Prioritize substantive work from research and analysis repos over workflow
   maintenance or website upkeep when choosing bullets.
-- Use at most one bullet drawn mainly from `codex-my-workflow` in a daily
+- Use at most one bullet drawn mainly from `codex-my-workflow` in a diary
   entry.
-- Use at most one bullet drawn mainly from `jakerbrown.github.io` in a daily
+- Use at most one bullet drawn mainly from `jakerbrown.github.io` in a diary
   entry.
 - If those repos mattered on a busy day, compress them into brief supporting
   context rather than letting them dominate the entry.

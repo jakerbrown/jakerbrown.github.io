@@ -475,7 +475,8 @@ def load_codex_diary_posts() -> list[Post]:
     now = datetime.now()
     matches = list(
         re.finditer(
-            r"^## (\d{4}-\d{2}-\d{2})\n(.*?)(?=^## \d{4}-\d{2}-\d{2}\n|\Z)",
+            r"^## (\d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?)\n"
+            r"(.*?)(?=^## \d{4}-\d{2}-\d{2}(?: to \d{4}-\d{2}-\d{2})?\n|\Z)",
             text,
             flags=re.MULTILINE | re.DOTALL,
         )
@@ -483,27 +484,39 @@ def load_codex_diary_posts() -> list[Post]:
 
     posts: list[Post] = []
     for match in matches:
-        iso_date = match.group(1)
+        date_label = match.group(1)
         body = match.group(2).strip()
         if not is_publishable_diary_entry(body):
             continue
 
-        date = datetime.strptime(f"{iso_date} 21:30", "%Y-%m-%d %H:%M")
+        if " to " in date_label:
+            start_iso, end_iso = date_label.split(" to ", maxsplit=1)
+            date = datetime.strptime(f"{end_iso} 21:30", "%Y-%m-%d %H:%M")
+            start_date = datetime.strptime(start_iso, "%Y-%m-%d")
+            display_date = (
+                f"{start_date.strftime('%B')} {start_date.day}, {start_date.year}"
+                f" to {date.strftime('%B')} {date.day}, {date.year}"
+            )
+            subtitle = "AI summary of the last three days of Claude and Codex work."
+            slug = f"codex-diary-{start_iso}-to-{end_iso}"
+        else:
+            date = datetime.strptime(f"{date_label} 21:30", "%Y-%m-%d %H:%M")
+            display_date = f"{date.strftime('%B')} {date.day}, {date.year}"
+            subtitle = "AI summary of today's Claude and Codex work."
+            slug = f"codex-diary-{date_label}"
         if date > now:
             continue
-        display_date = date.strftime("%B %-d, %Y")
-        subtitle = "AI summary of today's Claude and Codex work."
         simplified_body = simplify_diary_text(body)
         posts.append(
             Post(
-                slug=f"codex-diary-{iso_date}",
+                slug=slug,
                 title=f"Claude/Codex diary - {display_date}",
                 date=date,
                 publish_at=None,
                 subtitle=subtitle,
                 summary="",
                 body_html=render_markdown(simplified_body),
-                source_name=f"files/codex-diary/diary.md#{iso_date}",
+                source_name=f"files/codex-diary/diary.md#{date_label}",
             )
         )
 

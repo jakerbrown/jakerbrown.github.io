@@ -4,19 +4,19 @@
 
 - Start with a durable rule in each participating repo that every non-trivial Codex session leaves a short breadcrumb on disk before wrap-up.
 - Standardize where those breadcrumbs live so the collector has predictable places to look: `memos/codex_activity/`, `quality_reports/codex_activity/`, or `logs/codex_activity/`.
-- Standardize the breadcrumb filename pattern as `YYYY-MM-DD_slug.md` so the nightly pass can find same-day work quickly.
+- Standardize the breadcrumb filename pattern as `YYYY-MM-DD_slug.md` so the diary pass can find recent work quickly.
 - Keep the breadcrumb itself very small and very plain: what was worked on, what changed, why it mattered, and what was verified or still unresolved.
 - Put the central diary machinery in this website repo so one place owns the cross-repo summary workflow.
 - Create a repo list in `files/codex-diary/config/repos.txt` so the collector knows exactly which local repositories count as part of the diary.
-- Add `scripts/codex_diary_report.py` to scan each configured repo for same-day breadcrumbs and same-day git commits.
+- Add `scripts/codex_diary_report.py` to scan each configured repo for recent breadcrumbs and git commits across the selected diary window.
 - Make the script tolerant of imperfect repo state by checking a few candidate breadcrumb directories and skipping repos that are missing or inactive.
-- Have the script write a dated digest into `files/codex-diary/daily_digest/YYYY-MM-DD.md` so the nightly summary has a durable source document instead of depending on chat history.
+- Have the script write a dated digest into `files/codex-diary/daily_digest/` so each diary window has a durable source document instead of depending on chat history.
 - Treat git history as a backup signal, not the main narrative source, so the diary still captures why the work mattered and what was verified.
-- Add shared style rules in `files/codex-diary/config/style_preferences.md` so the final diary reads like a public-facing daily note rather than an internal technical log.
+- Add shared style rules in `files/codex-diary/config/style_preferences.md` so the final diary reads like a public-facing note rather than an internal technical log.
 - Add a breadcrumb template and README in `files/codex-diary/` so the workflow is explainable and repeatable rather than living only in prompts.
 - Add a lightweight checker in `scripts/check_codex_diary_style.py` so the final diary can be quickly sanity-checked for tone and structure.
-- Keep a running diary file at `files/codex-diary/diary.md`, with one dated section per day, so the public artifact is stable and append-only.
-- Use a nightly Codex automation to generate the daily digest and then turn that digest into a short set of polished bullets for the current day.
+- Keep a running diary file at `files/codex-diary/diary.md`, with one dated section per diary window, so the public artifact is stable and append-only.
+- Use a Codex automation to generate a digest for the current window and then turn that digest into a short set of polished bullets for that span.
 - Delay publication until late evening so the diary does not appear on the blog as a premature placeholder before the day is actually over.
 - Wire the site generator to treat dated sections from `files/codex-diary/diary.md` as blog posts automatically, so the diary becomes part of the regular publishing flow instead of a separate manual site process.
 - Tighten the style over time by revising both the rules and the actual diary entries after reading how they landed in the blog.
