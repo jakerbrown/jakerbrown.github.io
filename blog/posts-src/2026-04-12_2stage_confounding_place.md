@@ -43,7 +43,7 @@ $$P_i \perp\!\!\!\perp Y_i(p) \mid \mathbf{W}_i \quad \forall \, p$$
 
 This is the standard place-ignorability assumption. Under overlap ($0 < \Pr(P_i = p \mid \mathbf{W}_i) < 1$), it is sufficient to identify $\tau^{\text{place}}$ — the overall effect of place — because the entire bundle of place characteristics is rendered uncorrelated with potential outcomes conditional on $\mathbf{W}_i$.
 
-Note, however, that Path 1 may be innocuous for a *specific* characteristic $X$ even when place assignment is endogenous. If $X_p \perp\!\!\!\perp \mathbf{W}_i$ — that is, $X$ is orthogonal to the dimensions along which individuals sort — then the individual selection path does not confound the $X \to Y$ relationship. For instance, if people sort into cities based on job opportunities but $X$ is average annual rainfall, Path 1 may be irrelevant for $\tau^X$ even though $\tau^{\text{place}}$ is confounded.
+Note, however, that Path 1 may be innocuous for a *specific* characteristic $X$ even when place assignment is endogenous. If $X_p \perp\!\!\!\perp Y_i(p)| \mathbf{W}_i$ — that is, $X$ is orthogonal to the dimensions along which individuals sort — then the individual selection path does not confound the $X \to Y$ relationship. For instance, if people sort into cities based on job opportunities but $X$ is average annual rainfall, Path 1 may be irrelevant for $\tau^X$ even though $\tau^{\text{place}}$ is confounded.
 
 ### Path 2: Overlapping Place Characteristics
 
@@ -57,13 +57,9 @@ This is a distinct identification challenge from Path 1. It concerns the interna
 
 ![Two-stage confounding DAG](/files/two_stage_confounding_dag.svg)
 
-The two paths can be open or closed independently:
 
-- **Path 1 open, Path 2 closed.** People sort into places non-randomly, but $X$ happens to be the only place characteristic that affects $Y$ (or the only one correlated with $\mathbf{W}_i$). Solving selection is sufficient.
-- **Path 1 closed, Path 2 open.** Place assignment is as-if random (or $X$ is orthogonal to sorting), but places with different $X$ also differ in other outcome-relevant characteristics. Selection is irrelevant, but overlapping characteristics confound $\tau^X$.
-- **Both open.** The typical case. Individual selection *and* overlapping characteristics both confound $\tau^X$.
 
-$\tau^{\text{place}}$ requires closing only Path 1. $\tau^{X}$ requires closing both, or establishing that one is innocuous. The typical case is that both paths are open, making identification of causal place *characteristic* effects doubly hard. If $X$ is orthogonal to the selection margin, then Path 1 is effectively closed for free and Path 2 alone is the binding constraint. But that scenario is rare, and when Path 1 selection is present, orthogonality of $X$ is a strong assumption. 
+$\tau^{\text{place}}$ requires closing only Path 1. $\tau^{X}$ requires closing both, or establishing that one is innocuous. If people sort into places non-randomly, but $X$ happens to be the only place characteristic that affects $Y$ (or the only one correlated with $\mathbf{W}_i$), then solving selection is sufficient.  The typical case is that both paths are open, making identification of causal place *characteristic* effects doubly hard. 
 
 ## How this applies to four place effects identification strategies
 
@@ -173,5 +169,5 @@ If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X
 
 ## Last thoughts: Path 2 is a construct validity problem
 
-In practice, Path 2 is a construct validity problem. Does assignment to place measure what we think it measures? If so, as-if random assumptions about place may lead us to convincing arguments about the effect of $X_i$ on $Y_i$. This is akin to a survey experiment that aims to prime one emotion but perhaps primes other feeling as well. A design gives us credible variation in something, and whether that something corresponds to the theoretical construct we care about is a separate claim. In absence of clean identification closing Path 2, researchers fall back to [inference to the best explanation](https://arthurspirling.org/documents/whatgood.pdf), arguing for $\tau^{X}$ through abductive reasoning.
+In many settings, $X_p$ does not vary independently of $\mathbf{Z}_p$ even in principle, so $\tau^X$ may not be well-identified without additional structure or functional form assumptions. In practice, then, Path 2 is a construct validity problem. Does assignment to place measure what we think it measures? If so, as-if random assumptions about place may lead us to convincing arguments about the effect of $X_i$ on $Y_i$. This is akin to a survey experiment that aims to prime one emotion but perhaps primes other feeling as well. A design gives us credible variation in something, and whether that something corresponds to the theoretical construct we care about is a separate claim. In absence of clean identification closing Path 2, researchers fall back to [inference to the best explanation](https://arthurspirling.org/documents/whatgood.pdf), arguing for $\tau^{X}$ through abductive reasoning.
  
