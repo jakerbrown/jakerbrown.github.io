@@ -53,7 +53,7 @@ Place jointly determines $X_p$ and all other place characteristics $\mathbf{Z}_p
 
 $$X_p \perp\!\!\!\perp Y_i(x) \mid \mathbf{W}_i, \mathbf{Z}_p$$
 
-This is a distinct identification challenge from Path 1. It concerns the internal structure of places — how to separate the contribution of one characteristic from the contributions of all others — rather than the selection of individuals into places.
+This is a distinct identification challenge from Path 1. It concerns the internal structure of places — how to separate the contribution of one characteristic from the contributions of all others — rather than the selection of individuals into places. Identifying $\tau^X$ requires imagining interventions that vary $X$ independently of $\mathbf{Z}$—which is not how places vary in the data.
 
 ![Two-stage confounding DAG](/files/two_stage_confounding_dag.svg)
 
@@ -65,7 +65,7 @@ The two paths can be open or closed independently:
 - **Path 1 closed, Path 2 open.** Place assignment is as-if random (or $X$ is orthogonal to sorting), but places with different $X$ also differ in other outcome-relevant characteristics. Selection is irrelevant, but overlapping characteristics confound $\tau^X$.
 - **Both open.** The typical case. Individual selection *and* overlapping characteristics both confound $\tau^X$.
 
-$\tau^{\text{place}}$ requires closing only Path 1. $\tau^{X}$ requires closing both, or establishing that one is innocuous. The typical case is that both paths are open, making identification of causal place *characteristic* effects doubly hard. If $X$ is orthogonal to the selection margin, then Path 1 is effectively closed for free and Path 2 alone is the binding constraint. But that scenario is rare, and when Path 1 selection is present, orthogonality of $X$ is a strong assumption.
+$\tau^{\text{place}}$ requires closing only Path 1. $\tau^{X}$ requires closing both, or establishing that one is innocuous. The typical case is that both paths are open, making identification of causal place *characteristic* effects doubly hard. If $X$ is orthogonal to the selection margin, then Path 1 is effectively closed for free and Path 2 alone is the binding constraint. But that scenario is rare, and when Path 1 selection is present, orthogonality of $X$ is a strong assumption. 
 
 ## How this applies to four place effects identification strategies
 
@@ -109,17 +109,17 @@ $$Y_i = \delta_{o(i)} + \delta_{d(i)} + \mu_{d(i)} \cdot E_i + \mathbf{W}_i'\gam
 
 where $\delta_{o(i)}$ and $\delta_{d(i)}$ are origin and destination fixed effects.
 
-**Stage 1 — Solved.** The identifying assumption is:
+**Path 1 — Solved.** The identifying assumption is:
 
 $$a_i \perp\!\!\!\perp Y_i(a) \mid o(i), d(i), \mathbf{W}_i$$
 
 That is, conditional on origin-destination pair and family characteristics, the age at move is as-if randomly assigned. This is a selection-on-observables assumption, but it is strengthened considerably by the within-origin-destination comparison: families that move from the same place to the same place but at different times are arguably similar. The design identifies $\mu_p$, the causal exposure effect of place $p$.
 
-**Stage 2 — Not solved.** The estimated $\hat{\mu}_p$ captures the total causal effect of an additional year of exposure to everything about place $p$ — the full bundle $(X_p, \mathbf{Z}_p)$. The design identifies $\tau^{\text{place}}$ (in its exposure-effect form) but not $\tau^X$. One can regress $\hat{\mu}_p$ on $X_p$ across places in a second stage:
+**Path 2 — Not solved.** The estimated $\hat{\mu}_p$ captures the total causal effect of an additional year of exposure to everything about place $p$ — the full bundle $(X_p, \mathbf{Z}_p)$. The design identifies $\tau^{\text{place}}$ (in its exposure-effect form) but not $\tau^X$. One can regress $\hat{\mu}_p$ on $X_p$ across places in a second stage:
 
 $$\hat{\mu}_p = \alpha + \beta X_p + \eta_p$$
 
-but $\beta$ is subject to Stage 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places, so $\hat{\beta}$ conflates the effect of $X$ with the effects of correlated place characteristics. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains open.
+but $\beta$ is subject to Path 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places, so $\hat{\beta}$ conflates the effect of $X$ with the effects of correlated place characteristics. The backdoor path $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$ remains open.
 
 ![Childhood mover DAG](/files/dag_a_childhood_mover.svg)
 
@@ -137,19 +137,19 @@ or equivalently in first differences:
 
 $$\Delta Y_{it} = \Delta \lambda + \beta \, \Delta X_{p(i),t} + \Delta \mathbf{Z}_{p(i),t}'\gamma + \Delta \varepsilon_{it}$$
 
-**Stage 1 — Partially solved.** Individual fixed effects $\alpha_i$ absorb all *time-invariant* determinants of both place selection and outcomes — including the level of $\mathbf{W}_i$ that drives sorting into places. This eliminates the most obvious form of Stage 1 confounding: individuals with higher baseline potential outcomes selecting into particular places.
+**Path 1 — Partially solved.** Individual fixed effects $\alpha_i$ absorb all *time-invariant* determinants of both place selection and outcomes — including the level of $\mathbf{W}_i$ that drives sorting into places. This eliminates the most obvious form of Path 1 confounding: individuals with higher baseline potential outcomes selecting into particular places.
 
-However, fixed effects do not rule out *selection on trends in potential outcomes*. The residual Stage 1 assumption is:
+However, fixed effects do not rule out *selection on trends in potential outcomes*. The residual Path 1 assumption is:
 
 $$\mathbb{E}[\Delta Y_{it}(0) \mid P_i, \Delta X_{pt}] = \mathbb{E}[\Delta Y_{it}(0) \mid \Delta X_{pt}]$$
 
-That is, conditional on the change in $X$, the trend in untreated potential outcomes must be uncorrelated with place membership. This fails if individuals sort into places based on anticipated trajectories of $Y$ — for example, if workers move to cities where wages are already rising for reasons unrelated to $X$ — or if the places where $X$ changes are on systematically different outcome trends from places where $X$ does not change. The parallel trends assumption thus represents a *residual* Stage 1 requirement: weaker than cross-sectional ignorability of place assignment, but not trivially satisfied by the panel structure alone.
+That is, conditional on the change in $X$, the trend in untreated potential outcomes must be uncorrelated with place membership. This fails if individuals sort into places based on anticipated trajectories of $Y$ — for example, if workers move to cities where wages are already rising for reasons unrelated to $X$ — or if the places where $X$ changes are on systematically different outcome trends from places where $X$ does not change. The parallel trends assumption thus represents a *residual* Path 1 requirement: weaker than cross-sectional ignorability of place assignment, but not trivially satisfied by the panel structure alone.
 
-**Stage 2 — Partially addressed.** The parallel trends assumption for $\tau^X$ is:
+**Path 2 — Partially addressed.** The parallel trends assumption for $\tau^X$ is:
 
 $$\mathbb{E}[\Delta Y_{it}(0) \mid \Delta X_{pt}, \Delta \mathbf{Z}_{pt}] = \mathbb{E}[\Delta Y_{it}(0) \mid \Delta \mathbf{Z}_{pt}]$$
 
-That is, conditional on changes in other place characteristics, changes in $X$ are uncorrelated with changes in untreated potential outcomes. Including time-varying controls $\Delta \mathbf{Z}_{pt}$ blocks the backdoor path through observed overlapping characteristics that co-move with $X$. This *partially* addresses Stage 2: the path $\Delta X_{pt} \leftarrow \text{co-trend} \rightarrow \Delta \mathbf{Z}_{pt} \rightarrow \Delta Y_{it}$ is blocked for observed $\mathbf{Z}$, but unobserved co-trending place characteristics remain a threat.
+That is, conditional on changes in other place characteristics, changes in $X$ are uncorrelated with changes in untreated potential outcomes. Including time-varying controls $\Delta \mathbf{Z}_{pt}$ blocks the backdoor path through observed overlapping characteristics that co-move with $X$. This *partially* addresses Path 2: the path $\Delta X_{pt} \leftarrow \text{co-trend} \rightarrow \Delta \mathbf{Z}_{pt} \rightarrow \Delta Y_{it}$ is blocked for observed $\mathbf{Z}$, but unobserved co-trending place characteristics remain a threat.
 
 ![Difference-in-differences DAG](/files/dag_b_difference_in_differences.svg)
 
@@ -163,19 +163,19 @@ Related file: [`dag_b_difference_in_differences.svg`](/files/dag_b_difference_in
 
 $$\tau^{\text{RD}} = \frac{\lim_{r \to 0^+} \mathbb{E}[Y_i \mid r_i = r] - \lim_{r \to 0^-} \mathbb{E}[Y_i \mid r_i = r]}{\Delta_X}$$
 
-**Stage 1 — Solved.** The continuity assumption on individual characteristics at the boundary is:
+**Path 1 — Solved.** The continuity assumption on individual characteristics at the boundary is:
 
 $$\lim_{r \to 0^+} \mathbb{E}[\mathbf{W}_i \mid r_i = r] = \lim_{r \to 0^-} \mathbb{E}[\mathbf{W}_i \mid r_i = r]$$
 
 Individuals cannot precisely sort across the boundary, so those just on either side are comparable in pre-treatment characteristics. Place assignment (which side of the boundary) is as-if randomly assigned in a neighborhood of $\mathcal{B}$.
 
-**Stage 2 — Solved (conditionally).** The key additional assumption is that overlapping place characteristics are continuous at $\mathcal{B}$:
+**Path 2 — Solved (conditionally).** The key additional assumption is that overlapping place characteristics are continuous at $\mathcal{B}$:
 
 $$\lim_{r \to 0^+} \mathbf{Z}_p(r) = \lim_{r \to 0^-} \mathbf{Z}_p(r) \quad \text{while} \quad \lim_{r \to 0^+} X_p(r) \neq \lim_{r \to 0^-} X_p(r)$$
 
-If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X$ at $\mathcal{B}$ is free of Stage 2 confounding: the backdoor path $X_p \leftarrow \mathbf{Z}_p \rightarrow Y_i$ is closed because $\mathbf{Z}_p$ is locally constant across the discontinuity. This is the strongest resolution of Stage 2 among the three designs.
+If $X$ jumps at the boundary but $\mathbf{Z}$ does not, then the variation in $X$ at $\mathcal{B}$ is free of Path 2 confounding: the backdoor path $X_p \leftarrow \mathbf{Z}_p \rightarrow Y_i$ is closed because $\mathbf{Z}_p$ is locally constant across the discontinuity. This is the strongest resolution of Path 2 among the three designs.
 
-**Caveat: compound treatments.** If other place characteristics also jump at $\mathcal{B}$ — for instance, if the boundary is a state border and multiple policies change at the same line — then Stage 2 is not fully solved. The identifying discontinuity bundles $X$ with whichever elements of $\mathbf{Z}$ also change at the boundary, and we are back to a version of the overlapping-characteristics problem.
+**Caveat: compound treatments.** If other place characteristics also jump at $\mathcal{B}$ — for instance, if the boundary is a state border and multiple policies change at the same line — then Path 2 is not fully solved. The identifying discontinuity bundles $X$ with whichever elements of $\mathbf{Z}$ also change at the boundary, and we are back to a version of the overlapping-characteristics problem.
 
 ![Spatial regression discontinuity DAG](/files/dag_c_spatial_rd.svg)
 
@@ -183,7 +183,8 @@ Related file: [`dag_c_spatial_rd.svg`](/files/dag_c_spatial_rd.svg).
 
 ## Summary
 
-- **Randomized relocation.** Solves Stage 1 by design, but still identifies a bundle of neighborhood changes rather than the effect of $X$ alone.
+- **Randomized relocation.** Solves Path 1 by design, but still identifies a bundle of neighborhood changes rather than the effect of $X$ alone.
 - **Childhood mover design.** Identifies exposure effects of places, not the effect of a single place characteristic separated from other correlated attributes.
 - **Difference-in-differences.** Partially addresses both stages: fixed effects absorb time-invariant selection, and controls can absorb observed co-trending place characteristics, but residual confounding can remain on both margins.
 - **Spatial regression discontinuity.** Comes closest to identifying $\tau^X$ when both individual characteristics and overlapping place attributes are continuous at the boundary, though compound treatments remain a serious caveat.
+ 
