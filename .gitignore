@@ -1,5 +1,8 @@
 files/codex-diary/daily_digest/*.md
 !files/codex-diary/daily_digest/.gitkeep
+files/codex-diary/
+logs/codex_activity/
+logs/claude_activity/
 blog/.DS_Store
 scripts/__pycache__/
 .claude/settings.local.json

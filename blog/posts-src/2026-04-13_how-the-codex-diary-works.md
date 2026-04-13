@@ -1,5 +1,5 @@
 ---
-title: How the codex diary works
+title: How the claude/codex diary works
 subtitle:
 date: 2026-04-13 10:00
 summary:
@@ -29,9 +29,9 @@ facts. In my repos, `MEMORY.md` is usually read near the start of any
 non-trivial task because the local `AGENTS.md` files explicitly tell Codex to
 read it before proceeding. So the file is not magical application memory; it
 works because the repo instructions repeatedly promote it into the model
-context at the beginning of work.
+context at the beginning of work. Claude's design anticipates all this, and it's memory is much better and more automatic than Codex.
 
-As I was thinking about this, I decided that Codex should keep even more
+As I was thinking about this, I decided that Claude Codex should keep even more
 detailed notes on what I ask it to do, so I can refer back to them, since my
 own memory is also not perfect. So I set up instructions in each repo to take
 more copious notes, storing them in run logs. I then asked Codex to help me
@@ -44,10 +44,7 @@ here, using better memory retention to increase operational capacity, and the
 low-level ones, like using the same system to write a blog post that explains
 what these tools can do. In all this I am basically an amateur, and more
 efficient or more elegant ways of structuring these models surely exist, or
-will soon. Mostly I just ask Codex whether something is possible and then have
+will soon. Mostly I just ask Claude/Codex whether something is possible and then have
 it help me design it.
 
-The Codex notes behind the setup are
-[here](https://github.com/jakerbrown/jakerbrown.github.io/blob/main/files/codex-diary/blog_post_notes.md),
-and the overall Codex diary folder in this repo is
-[here](https://github.com/jakerbrown/jakerbrown.github.io/tree/main/files/codex-diary).
+
