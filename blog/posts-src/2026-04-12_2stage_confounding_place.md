@@ -2,7 +2,7 @@
 title: Parallel confounding in identification of place effects
 subtitle:
 date: 2026-04-12 11:00
-summary: Identifying a specific place characteristic usually requires solving both selection into place and confounding from overlapping place attributes.
+summary:
 ---
 
 Suppose I have some characteristic of place $X_p$ that I think causes an outcome $Y_i$, such as the effect of racial context on vote choice. There are two distinct sources of confounding to worry about:
