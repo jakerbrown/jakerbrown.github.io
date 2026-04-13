@@ -1,0 +1,28 @@
+---
+title: Claude v Codex II
+subtitle: Both models jump the gun on methodological critique
+date: 2026-04-12 20:00
+summary:
+---
+
+Posed this question to Claude Opus 4.6 and ChatGPT 5.4 Pro:
+
+> Please give me your thoughts on the following. Movers designs like chetty and hendren are based on the assumption timing of move is orthogonal to potential outcomes. Part of this is that the association between permanent resident outcomes of where someone moves to and their outcome can be decomposed into place effect plus selection effect. But what if it’s not additive but a product of those terms? What does that look like substantively? Please give examples.
+
+Both models responded with very sharp, mostly similar, critiques, arguing that multiplicative structure threatened internal validity because the convergence rate to destination permanent residents is contaminated by heterogeneous responses to treatment across movers. Both models offered vivid examples of how such heterogeneity might occur, highlighting reasons why different individuals might have different reactions to growing up in different places. This critique survived several rounds of clarifying questions, although these questions lacked any pointed push back. Claude even went so far as to write up a methodological critiques with (incomplete) proofs. 
+
+While initially exciting, these critiques are not correct. Mover outcomes can be written as:
+
+$$Y_i = \alpha_i + \beta_m \cdot \bar{y}_d + \varepsilon_i$$
+
+$\beta_m$ captures the degree of convergence toward destination permanent residents for a child moving at age $m$. On it's own it has no causal interpretation, but rather can be decomposed (assuming additivity) into:
+
+$$\beta_m = \gamma_m + \theta_m$$
+
+where $\gamma_m$ is the selection term: all the things that led people to move to a neighborhood with 1 unit more exposure at age $m$. And $\theta_m$ is the place effect of moving at age $m$ to the destination and spending the rest of childhood there. Under the mover designs assumption that $\gamma_m$ is constant for all $m$, $\beta_m$ - $\beta_{m+1}$ gives an unbiased estimate of the the effect of an additional year spent in a 1 unit higher exposure place. 
+
+If this decomposes to a product rather than a sum of those terms, then $\beta_m = \gamma_m \times \theta_m$, which can be rewritten as:
+
+$$\beta_m = \gamma_m \times \theta_m = \gamma$$
+
+Once this was pointed out, both capitulated pretty quickly, back tracking 

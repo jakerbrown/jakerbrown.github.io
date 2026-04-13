@@ -47,3 +47,27 @@
 - Consolidated a replication repo and verified reproducibility.
 - Published a teaching post about AI on the blog.
 
+## 2026-04-11
+
+### Claude
+
+- Expanded an elections and redistricting data pipeline to pull Washington's certified results.
+- Pulled all eighteen available Washington result files into that workflow.
+- Added a broader geometry batch for multi-state source recovery in the same project.
+
+### Codex
+
+- Built a side-by-side comparison pass for two ward-assignment methods in a political simulation project.
+- Added tests so that comparison can be checked without rerunning the full workflow.
+- Fixed a crash in the newer assignment path so a live Utah comparison run could keep going.
+
+## 2026-04-12
+
+### Claude
+
+- Expanded an elections and redistricting project to collect North Carolina results.
+- Downloaded the full North Carolina results set and forty-five shapefiles for that workflow.
+
+### Codex
+
+- Ran the nightly diary pass for the blog after the evening publish window opened.
