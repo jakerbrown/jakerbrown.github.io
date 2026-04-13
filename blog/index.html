@@ -64,6 +64,17 @@
         </div>
         <p class="post-meta">Posted: April 12, 2026 at 11:00 AM</p>
       </article>
+      <article id="how-the-codex-diary-works" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#how-the-codex-diary-works">How the claude/codex diary works</a></h2>
+        
+        <div class="post-body">
+          <p>A year ago, the main limitation of these models seemed to be memory. It was like working with a brilliant computer scientist who, for the life of them, could not remember what I was working on. This has gotten much better by default in the most expensive models, to the point where ChatGPT Pro will bring up conversations about other projects when discussing completely different projects, drawing connections and helping me place a question in the broader context of my research agenda. But as before, the infrastructure around these models is the real key to getting the most out of the intelligence embedded in them. There is a great deal that can be done with scaffolding, particularly having Claude or Codex keep detailed notes on what you are doing and cataloguing decisions and preferences, to make memory better and help the models stay on track.</p>
+          <p>So we do not have to rely on conversational recall to make Codex productive, and we can preserve memory across sessions and different computing environments by keeping track of what we do in durable files. In practice, that means storing context in repository files that Codex is told to read at the start of work, especially <code>AGENTS.md</code>, <code>KNOWLEDGE_BASE.md</code>, and <code>MEMORY.md</code>. <code>KNOWLEDGE_BASE.md</code> is for domain truth that should remain true across sessions: project definitions, architecture, naming rules, and recurring domain facts. In my repos, <code>MEMORY.md</code> is usually read near the start of any non-trivial task because the local <code>AGENTS.md</code> files explicitly tell Codex to read it before proceeding. So the file is not magical application memory; it works because the repo instructions repeatedly promote it into the model context at the beginning of work. Claude&#x27;s design anticipates all this, and it&#x27;s memory is much better and more automatic than Codex.</p>
+          <p>As I was thinking about this, I decided that Claude Codex should keep even more detailed notes on what I ask it to do, so I can refer back to them, since my own memory is also not perfect. So I set up instructions in each repo to take more copious notes, storing them in run logs. I then asked Codex to help me set up functionality where it does a regular sweep of each repo&#x27;s logs, drafts a bulleted list of a sample of things it helped me do over the last few days, and turns that list into a Codex diary blog post.</p>
+          <p>It strikes me as an interesting example of both the high-level possibilities here, using better memory retention to increase operational capacity, and the low-level ones, like using the same system to write a blog post that explains what these tools can do. In all this I am basically an amateur, and more efficient or more elegant ways of structuring these models surely exist, or will soon. Mostly I just ask Claude/Codex whether something is possible and then have it help me design it.</p>
+        </div>
+        <p class="post-meta">Posted: April 12, 2026 at 10:59 AM</p>
+      </article>
       <article id="codex-diary-2026-04-10" class="post-card">
         <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-10">Claude/Codex diary - April 10, 2026</a></h2>
         
@@ -166,15 +177,6 @@
           <p>That is where I would land after looking at the tables, the calibration evidence, the benchmarks, the shrinkage, the Kelly exercise, and the adversarial review: probably no durable all-league edge, but a real enough hint to make the theory worth taking seriously as a research question.</p>
         </div>
         <p class="post-meta">Posted: April 10, 2026 at 12:00 PM</p>
-      </article>
-      <article id="codex-diary-2026-04-09" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-09">Claude/Codex diary - April 9, 2026</a></h2>
-        
-        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
-        <div class="post-body">
-          <ul><li>Completed a multi-league test of an early-season underdog betting idea.</li><li>Finished the Oscar portion of a film-podcast analysis.</li><li>Organized and reviewed two replication repos for accepted papers.</li><li>Automated validation of ballot referenda data.</li><li>Hardened timeout recovery in an elections and redistricting workflow.</li><li>Checked the remaining backlog in that same elections workflow.</li><li>Tightened diagnostics and startup-plan handling in a political simulation project.</li><li>Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.</li></ul>
-        </div>
-        <p class="post-meta">Posted: April 9, 2026 at 9:30 PM</p>
       </article>
       <nav class="pagination" aria-label="Blog pagination">
         <p><a href="/blog/page/2/">Older Posts</a></p>

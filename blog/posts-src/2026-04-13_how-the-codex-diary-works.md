@@ -1,7 +1,7 @@
 ---
 title: How the claude/codex diary works
 subtitle:
-date: 2026-04-13 10:00
+date: 2026-04-12 10:59
 summary:
 ---
 
@@ -46,5 +46,4 @@ what these tools can do. In all this I am basically an amateur, and more
 efficient or more elegant ways of structuring these models surely exist, or
 will soon. Mostly I just ask Claude/Codex whether something is possible and then have
 it help me design it.
-
 
