@@ -5,7 +5,7 @@ date: 2026-04-12 11:00
 summary:
 ---
 
-Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$, like vote choice. There are two challenges to inference. 
+Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$. There are two challenges to inference. 
 
 First, people sort into places. If the kind of person who moves to a high-$X$ place would have had different outcomes regardless, then comparing across places confounds $X$ with individual selection. This is the standard worry in observational causal inference: place assignment is endogenous.
 
@@ -59,9 +59,7 @@ Thus, DiD partially addresses both paths but only partially. The parallel trends
 
 ## Spatial regression discontinuity
 
-A [spatial RD](https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development) exploits a boundary where $X$ changes discontinuously. Individuals just on either side of the boundary are comparable (Path 1 closed by the continuity assumption), and if $X$ jumps at the boundary but other place characteristics $\mathbf{Z}_p$ do not, then the local variation in $X$ is free of Path 2 confounding.
-
-This is the strongest resolution of Path 2 among these four designs. But it depends entirely only $X$ being discontinuous at the boundary. 
+A [spatial RD](https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development) exploits a boundary where $X$ changes discontinuously. Individuals just on either side of the boundary are comparable so long as the continuity assumption holds, and if so Path 1 is closed (but we should perhaps be skeptical of meaningful boundaries having only meaningless sorting around them), and if $X$ jumps at the boundary but other place characteristics $\mathbf{Z}_p$ do not, then the local variation in $X$ is free of Path 2 confounding.
 
 ![Spatial regression discontinuity DAG](/files/dag_c_spatial_rd.svg)
 
