@@ -36,51 +36,78 @@
         </div>
         <p class="post-meta">Posted: April 27, 2026 at 9:10 PM</p>
       </article>
-      <article id="codex-diary-2026-04-22-to-2026-04-24" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-22-to-2026-04-24">Claude/Codex diary - April 22, 2026 to April 24, 2026</a></h2>
+      <article id="2stage-confounding-place" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#2stage-confounding-place">Parallel confounding in identification of place effects</a></h2>
         
-        <p class="post-subtitle">AI summary of the last three days of Claude and Codex work.</p>
         <div class="post-body">
-          <h4>Claude</h4>
-          <ul><li>Expanded an elections and redistricting project much deeper in Arizona, Oregon, Oklahoma, Florida, and Michigan.</li><li>Closed the remaining California county-level gaps in that same collection.</li><li>Tightened cross-source validation and parser checks across Oregon, Washington, Ohio, Oklahoma, and Texas.</li><li>Mapped a clearer plan for the remaining precinct-data gaps and for a broader fifty-state expansion.</li><li>Refreshed a voter-file study with cleaner diagnostics, rerun outputs, and a tighter paper draft.</li></ul>
-          <h4>Codex</h4>
-          <ul><li>Repaired a voter-build pipeline for a homelessness and turnout project so the project version is more consistent end to end.</li><li>Removed stale saved-model dependencies and a late-stage crash path from a voter-file analysis workflow.</li></ul>
+          <p>Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$. There are two challenges to inference.</p>
+          <p>First, people sort into places. If the kind of person who moves to a high-$X$ place would have had different outcomes regardless, then comparing across places confounds $X$ with individual selection. This is the standard worry in observational causal inference: place assignment is endogenous.</p>
+          <p>Second, places are bundles. A neighborhood with high $X$ also has particular schools, crime rates, pollution levels, social networks, and dozens of other attributes that co-vary with $X$ across places. Even if I solve the selection problem perfectly, I still cannot tell whether it is $X$ or something bundled with $X$ that drives the outcome.</p>
+          <h3>The two paths</h3>
+          <p>Call the first problem Path 1 (individual selection into place) and the second Path 2 (overlapping place characteristics). In DAG terms:</p>
+          <p><strong>Path 1:</strong> $X_p \leftarrow P_i \leftarrow \mathbf{W}_i \rightarrow Y_i$</p>
+          <p>Individuals with pre-treatment characteristics $\mathbf{W}_i$ sort into places non-randomly, and $X_p$ inherits a spurious correlation with $Y_i$ through the sorting process.</p>
+          <p><strong>Path 2:</strong> $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$</p>
+          <p>Place jointly determines $X_p$ and every other place characteristic $\mathbf{Z}_p$. Variation in $X$ across places is bundled with variation in $\mathbf{Z}$.</p>
+          <p><img class="post-image" src="/files/two_stage_confounding_dag.svg" alt="Two-stage confounding DAG"></p>
+          <p>Identifying the overall effect of place only requires closing Path 1. Identifying the effect of a characteristics of place technically is possible if place is endogenous, requiring that either the characteristic of interest is the only thing that can affect the outcome or that it is uncorrelated with all other potential overlapping characteristics that influence the outcome. More commonly, identifying the characteristic effect requires closing both paths.</p>
+          <p>The typical case is that both paths are open, which makes causal claims about place characteristics doubly hard. Here is how four common identification strategies fare.</p>
+          <h3>Randomized relocation</h3>
+          <p>The <a href="https://www.cambridge.org/core/journals/american-political-science-review/article/longterm-effects-of-neighborhood-disadvantage-on-voting-behavior-the-moving-to-opportunity-experiment/4896C6743CF5D53DDD067D51D93A8CA7">Moving to Opportunity</a> experiment randomly assigned housing vouchers, allowing some families to move from high-poverty to lower-poverty neighborhoods. Randomization closes Path 1 completely — no functional form assumptions, no conditional independence, no parallel trends.</p>
+          <p>But the experiment randomizes access to a <em>bundle</em> of neighborhood characteristics, not to $X$ specifically. Families who used their voucher moved to places that differed from their origin neighborhoods in poverty, school quality, crime, pollution, and much else, all at once. The estimated treatment effect captures the composite:</p>
+          <div class="math-display">$$\tau^{\text{LATE}} = f\big(\Delta X, \Delta \mathbf{Z}\big)$$</div>
+          <p>Path 2 remains open. The experiment tells us whether relocation influenced outcomes, but not what characteristics of place made that influence.</p>
+          <p><img class="post-image" src="/files/dag_a_mto_experiment.svg" alt="Randomized relocation DAG"></p>
+          <h3>Childhood mover design</h3>
+          <p>The <a href="https://jacobrbrown.com/files/w31759.pdf">childhood mover design</a> compares children who move between the same origin and destination at different ages. Those who move younger spend more time in the destination relative to the origin and thus may be more influenced by the destination than children who moved later in childhood. The identifying assumption here is that age at move is as-if randomly assigned. This assumption identifies $\mu_p$, the causal exposure effect of place $p$ per year of childhood.</p>
+          <p>Path 1 is closed in this scenario, but $\hat{\mu}_p$ captures just the overall effect of place, as it is estimated from regressing mover outcomes on the outcomes of their never mover peers and seeing whether convergence is higher for those who move earlier. Researchers could regress $\hat{\mu}_p$ on $X_p$ to try isolate the role of a specific characteristic, but that regression is subject to Path 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places.</p>
+          <p><img class="post-image" src="/files/dag_a_childhood_mover.svg" alt="Childhood mover DAG"></p>
+          <h3>Difference-in-differences</h3>
+          <p><a href="https://link.springer.com/article/10.1007/s11109-020-09626-1">Difference-in-differences</a> exploits within-place changes in $X$ over time, using individual or place fixed effects to absorb time-invariant confounders. Fixed effects account for time-invariant characteristics that led people to live where they do (Path 1) and accounts for overlapping characteristics of place that do not change across time (Path 2). But confounding remains from co-trending characteristics.</p>
+          <p>Thus, DiD partially addresses both paths but only partially. The parallel trends assumption has to work double, covering both selection on trends in potential outcomes and the possibility that other place characteristics co-move with $X$.</p>
+          <p><img class="post-image" src="/files/dag_b_difference_in_differences.svg" alt="Difference-in-differences DAG"></p>
+          <h3>Spatial regression discontinuity</h3>
+          <p>A <a href="https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development">spatial RD</a> exploits a boundary where $X$ changes discontinuously. Individuals just on either side of the boundary are comparable so long as the continuity assumption holds, and if so Path 1 is closed (but we should perhaps be skeptical of meaningful boundaries having only meaningless sorting around them), and if $X$ jumps at the boundary but other place characteristics $\mathbf{Z}_p$ do not, then the local variation in $X$ is free of Path 2 confounding.</p>
+          <p><img class="post-image" src="/files/dag_c_spatial_rd.svg" alt="Spatial regression discontinuity DAG"></p>
+          <h3>Path 2 as a construct validity problem</h3>
+          <p>In many settings $X_p$ does not vary independently of $\mathbf{Z}_p$ even in principle, so the effect of a specific place characteristic may not be point-identified without functional form assumptions. In practice, Path 2 is a construct validity problem. A design gives you credible variation in something, and whether that something corresponds to the theoretical construct you care about is a separate claim — like a survey experiment that aims to prime one emotion but may prime others alongside it. When clean identification is not available, researchers fall back to <a href="https://arthurspirling.org/documents/whatgood.pdf">inference to the best explanation</a>, arguing for the characteristic-specific effect through abductive reasoning.</p>
         </div>
-        <p class="post-meta">Posted: April 24, 2026 at 9:30 PM</p>
+        <p class="post-meta">Posted: April 12, 2026 at 11:00 AM</p>
       </article>
-      <article id="codex-diary-2026-04-19-to-2026-04-21" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-19-to-2026-04-21">Claude/Codex diary - April 19, 2026 to April 21, 2026</a></h2>
+      <article id="how-the-codex-diary-works" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#how-the-codex-diary-works">How the claude/codex diary works</a></h2>
         
-        <p class="post-subtitle">AI summary of the last three days of Claude and Codex work.</p>
         <div class="post-body">
-          <h4>Claude</h4>
-          <ul><li>Expanded an elections and redistricting project into much fuller statewide coverage for Missouri and Ohio.</li><li>Pushed the Texas side of that project to stronger precinct validation and a clearer account of what older elections can still support.</li><li>Backfilled older California, Colorado, and Washington election data for the same collection.</li><li>Built new crosswalks and a larger shapefile inventory to support more complete geography coverage across states.</li><li>Reworked a voter-file linking project around a steadier cross-year tracking key and broader large-state runs.</li><li>Refreshed the 2026 analysis outputs for that same voter-file project and cleaned up its naming across the project and paper files.</li></ul>
+          <p>A year ago, the main limitation of these models seemed to be memory. It was like working with a brilliant computer scientist who, for the life of them, could not remember what I was working on. This has gotten much better by default in the most expensive models, to the point where ChatGPT Pro will bring up conversations about other projects when discussing completely different projects, drawing connections and helping me place a question in the broader context of my research agenda. But as before, the infrastructure around these models is the real key to getting the most out of the intelligence embedded in them. There is a great deal that can be done with scaffolding, particularly having Claude or Codex keep detailed notes on what you are doing and cataloguing decisions and preferences, to make memory better and help the models stay on track.</p>
+          <p>So we do not have to rely on conversational recall to make Codex productive, and we can preserve memory across sessions and different computing environments by keeping track of what we do in durable files. In practice, that means storing context in repository files that Codex is told to read at the start of work, especially <code>AGENTS.md</code>, <code>KNOWLEDGE_BASE.md</code>, and <code>MEMORY.md</code>. <code>KNOWLEDGE_BASE.md</code> is for domain truth that should remain true across sessions: project definitions, architecture, naming rules, and recurring domain facts. In my repos, <code>MEMORY.md</code> is usually read near the start of any non-trivial task because the local <code>AGENTS.md</code> files explicitly tell Codex to read it before proceeding. So the file is not magical application memory; it works because the repo instructions repeatedly promote it into the model context at the beginning of work. Claude&#x27;s design anticipates all this, and it&#x27;s memory is much better and more automatic than Codex.</p>
+          <p>As I was thinking about this, I decided that Claude Codex should keep even more detailed notes on what I ask it to do, so I can refer back to them, since my own memory is also not perfect. So I set up instructions in each repo to take more copious notes, storing them in run logs. I then asked Codex to help me set up functionality where it does a regular sweep of each repo&#x27;s logs, drafts a bulleted list of a sample of things it helped me do over the last few days, and turns that list into a Codex diary blog post.</p>
+          <p>It strikes me as an interesting example of both the high-level possibilities here, using better memory retention to increase operational capacity, and the low-level ones, like using the same system to write a blog post that explains what these tools can do. In all this I am basically an amateur, and more efficient or more elegant ways of structuring these models surely exist, or will soon. Mostly I just ask Claude/Codex whether something is possible and then have it help me design it.</p>
         </div>
-        <p class="post-meta">Posted: April 21, 2026 at 9:30 PM</p>
+        <p class="post-meta">Posted: April 12, 2026 at 10:59 AM</p>
       </article>
-      <article id="codex-diary-2026-04-16-to-2026-04-18" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-16-to-2026-04-18">Claude/Codex diary - April 16, 2026 to April 18, 2026</a></h2>
+      <article id="codex-diary-2026-04-10" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-10">Claude/Codex diary - April 10, 2026</a></h2>
         
-        <p class="post-subtitle">AI summary of the last three days of Claude and Codex work.</p>
+        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
         <div class="post-body">
           <h4>Claude</h4>
-          <ul><li>Pushed the Texas side of an elections and redistricting project deeper into precinct coverage, including large counties with harder result formats.</li><li>Added OCR and geometry-crosswalk work so that same Texas collection can reach more image-only PDFs and more election years.</li><li>Extended provenance tracking across all eleven states in that project.</li><li>Tightened type-based adjudication in a social-media identity-linking workflow.</li></ul>
+          <ul><li>Ported a structured AI workflow to thirteen research repos at once.</li><li>Each project now has specialist review agents, quality gates, and session management for Claude Code.</li><li>Added Claude activity logging alongside the existing Codex diary system.</li><li>The nightly blog digest now groups work by which AI tool did it.</li></ul>
           <h4>Codex</h4>
-          <ul><li>Measured a narrow bridge-repair pass for a political simulation project and confirmed that the main remaining failures still come from fragmented recipient wards.</li><li>Tested a recipient-closure repair on the real failed queue and found it was too narrow to move the overall result much.</li><li>Built and launched a bounded two-ward reassignment repair for the same failure class.</li></ul>
+          <ul><li>Added a first deterministic repair for disconnected observed plans in a political simulation project.</li><li>Focused that repair on the main Utah failure case rather than widening the automatic policy.</li><li>Mapped the next hardening pass so the repair path is more reproducible and easier to validate.</li><li>Consolidated a replication project and verified reproducibility.</li><li>Published a teaching post about AI on the blog.</li></ul>
         </div>
-        <p class="post-meta">Posted: April 18, 2026 at 9:30 PM</p>
+        <p class="post-meta">Posted: April 10, 2026 at 9:30 PM</p>
       </article>
-      <article id="codex-diary-2026-04-13-to-2026-04-15" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/#codex-diary-2026-04-13-to-2026-04-15">Claude/Codex diary - April 13, 2026 to April 15, 2026</a></h2>
+      <article id="teaching-superman" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/#teaching-superman">Some thoughts on teaching AI</a></h2>
         
-        <p class="post-subtitle">AI summary of the last three days of Claude and Codex work.</p>
+        <p class="post-subtitle">&quot;My words make me happy. Theirs are just words.&quot;</p>
         <div class="post-body">
-          <h4>Claude</h4>
-          <ul><li>Expanded an elections and redistricting project across more states and much deeper precinct coverage.</li><li>Added stronger crosswalks and runbooks for California, Colorado, Florida, Oregon, and Arizona.</li><li>Pushed the Texas side of that project into fuller coverage across seventeen elections.</li><li>Reworked a voter-file linking pipeline so large cluster runs can parallelize more cleanly.</li></ul>
-          <h4>Codex</h4>
-          <ul><li>Finished the first post-rollout diagnosis for a political simulation project and showed that one disconnected-plan failure class still dominates.</li><li>Turned that diagnosis into a narrow production repair that rescued 21 failed stake-years without regressions.</li><li>Started a bounded bridge-path prototype for the harder remaining reassignment cases.</li><li>Wrote an Ohio collection plan for the elections project so the next state can be added with a clearer split between results work and geometry work.</li></ul>
+          <ul><li><em>Extraction</em> of intelligence is the key thing: how to develop the instincts, infrastructure, and persistence to get really great things out of the model.</li><li>Understanding how computers work, and having some familiarity with Git, makes it much easier to set up that infrastructure. It is less about comprehensive know-how, because you can ask the model how to do something, and more about having enough foundation to think creatively about what is possible.</li><li>Teaching people what is possible is easier than teaching people how to do specific things.</li><li>The extraction part is really fun.</li><li>This is an incredible gift of intelligence and time. What will students, and professors, do with it? Can lectures become a lot more exciting? Can classes become more hands-on and more innovative?</li><li>If a student uses a chatbot to one-shot an essay, or Claude Code or Codex to one-shot a problem set, that is tough, and most will do this. But if a student iterates and iterates until the final product is pristine, that is learning.</li><li>The social elements of academia should be invested in even more. We are the primary consumers of our work and ideas, so we need more forums to share the new awesome things the models are helping us create.</li><li>The bar has to get a lot higher. Who can make something great with the model? This clashes with Q-score incentives and grade inflation.</li><li>Honors theses need to become amazing.</li><li>Right now, someone with a lot of experience using the top models to build things can get dropped into almost any company and become a huge value add. This will not always be the case as labor skills converge and as models become more autonomous.</li><li>Force students to write in class. Use handwritten exams. Require oral presentations. Make them say out loud what the model does and how it does it. Have them explain it to you and to their peers, even if the model taught them what to say. Out-of-class assignments are for the experience, not the assessment.</li><li>Find hobbies and creative outputs where you write.</li><li>But a lot of this will end up being on them. The ones who want to learn will learn a lot. Absolute Superman knows what&#x27;s up.<sup id="fnref-1"><a href="#fn-1">1</a></sup></li></ul>
+          <p><img class="post-image" src="/files/IMG_4747.jpeg" alt="Superman page about choosing your own path"></p>
+          <ul><li>Pretty clear at this point that we do not have the answers yet.</li></ul>
+          <section class="footnotes"><ol><li id="fn-1">This will not scale. <a href="#fnref-1" aria-label="Back to text">↩</a></li></ol></section>
         </div>
-        <p class="post-meta">Posted: April 15, 2026 at 9:30 PM</p>
+        <p class="post-meta">Posted: April 10, 2026 at 1:00 PM</p>
       </article>
       <nav class="pagination" aria-label="Blog pagination">
         <p><a href="/blog/page/2/">Older Posts</a></p>

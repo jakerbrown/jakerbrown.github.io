@@ -17,6 +17,7 @@ BLOG_DIR = ROOT / "blog"
 PAGE_DIR = BLOG_DIR / "page"
 DIARY_PATH = ROOT / "files" / "codex-diary" / "diary.md"
 POSTS_PER_PAGE = 5
+LAST_PUBLIC_DIARY_DATE = datetime.strptime("2026-04-12 23:59", "%Y-%m-%d %H:%M")
 
 
 @dataclass
@@ -504,6 +505,8 @@ def load_codex_diary_posts() -> list[Post]:
             display_date = f"{date.strftime('%B')} {date.day}, {date.year}"
             subtitle = "AI summary of today's Claude and Codex work."
             slug = f"codex-diary-{date_label}"
+        if date > LAST_PUBLIC_DIARY_DATE:
+            continue
         if date > now:
             continue
         simplified_body = simplify_diary_text(body)
