@@ -2,7 +2,7 @@
 title: Barbed wire
 subtitle: 
 date: 2026-04-27 21:10
-summary: Two quotations on barbed wire as a technology that turns open land into property, prisons, and borders.
+summary:
 ---
 
 Taylor Sheridan, *1883*:
