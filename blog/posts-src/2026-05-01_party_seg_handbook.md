@@ -9,7 +9,7 @@ Prepared a [piece](https://jacobrbrown.com/files/partisan_seg_chapter.pdf) for t
 
 > Researchers and policymakers must hold in their minds two truths: that geographic polarization, across urban-rural divisions, is close to as high as it has ever been in the country’s history, and that Americans are not completely isolated geographically from people who disagree with them politically.
 
-In a 50-50 country, segregation would have to be quite extreme to truly bring cross-partisan proximity to zero. So despite areas of high [isolation](https://www.nature.com/articles/s41562-021-01066-z), many voters do live in places with large numbers of out-partisans, and as we move beyond the neighborhood level to larger geographies we see more cases of mixed geographies.
+In a 50-50 country, segregation would have to be quite extreme to truly bring cross-partisan proximity to zero. So despite areas of high [isolation](https://www.nature.com/articles/s41562-021-01066-z), many voters do live in places with large numbers of out-partisans, and as we move beyond the neighborhood level to larger geographies we see more cases of mixed partisan composition.
 
 Still the urban-rural divide is [strong](https://www.amazon.com/Rural-Versus-Urban-Threatens-Democracy/dp/0691264384), and the [data](https://econweb.umd.edu/~kaplan/big_sort_APSA.pdf) suggests that partisan segregation rapidly increased starting around the 1970s through the 2000s, and continuing to increase more modestly up through 2020.
 
