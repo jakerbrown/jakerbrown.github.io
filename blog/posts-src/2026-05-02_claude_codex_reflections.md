@@ -1,8 +1,8 @@
 ---
 title: Reflections on ~2 months with Claude Code/Codex
 subtitle: Come on in, the water is warm and we have plenty of tokens.
-date: 2026-05-02 11:00
-publish_at: 2026-05-02 11:00
+date: 2026-05-02 10:51
+publish_at: 2026-05-02 10:51
 summary:
 ---
 
