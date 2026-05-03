@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = ROOT / "blog" / "posts-src"
 BLOG_DIR = ROOT / "blog"
 PAGE_DIR = BLOG_DIR / "page"
+POSTS_DIR = BLOG_DIR / "posts"
 DIARY_PATH = ROOT / "files" / "codex-diary" / "diary.md"
 POSTS_PER_PAGE = 5
 LAST_PUBLIC_DIARY_DATE = datetime.strptime("2026-04-12 23:59", "%Y-%m-%d %H:%M")
@@ -45,6 +46,14 @@ class Post:
 def slugify(value: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     return slug or "post"
+
+
+def post_path(slug: str) -> Path:
+    return POSTS_DIR / slug / "index.html"
+
+
+def post_url(slug: str) -> str:
+    return f"/blog/posts/{slug}/"
 
 
 def parse_front_matter(text: str) -> tuple[dict[str, str], str]:
@@ -118,6 +127,16 @@ def restore_math(text: str, placeholders: dict[str, str]) -> str:
     return restored
 
 
+def normalize_blog_link(url: str) -> str:
+    match = re.match(
+        r"^(?:https://jacobrbrown\.com)?/blog(?:/page/\d+)?/#([a-z0-9-]+)$",
+        url,
+    )
+    if match:
+        return post_url(match.group(1))
+    return url
+
+
 def render_inline(text: str, footnotes: dict[str, str] | None = None) -> str:
     protected_text, math_placeholders = protect_math(text)
     escaped = html.escape(protected_text)
@@ -148,7 +167,7 @@ def render_inline(text: str, footnotes: dict[str, str] | None = None) -> str:
     escaped = re.sub(
         r"\[([^\]]+)\]\(([^)]+)\)",
         lambda match: (
-            f'<a href="{html.escape(match.group(2), quote=True)}">'
+            f'<a href="{html.escape(normalize_blog_link(match.group(2)), quote=True)}">'
             f"{match.group(1)}</a>"
         ),
         escaped,
@@ -571,8 +590,7 @@ def page_template(title: str, body: str, description: str) -> str:
 """
 
 
-def render_post(post: Post, page_number: int) -> str:
-    permalink = f"{page_url(page_number)}#{post.slug}"
+def render_post(post: Post, title_href: str) -> str:
     summary_html = ""
     if post.summary:
         summary_html = f'\n        <p class="blog-summary">{render_inline(post.summary)}</p>'
@@ -581,7 +599,7 @@ def render_post(post: Post, page_number: int) -> str:
     if post.subtitle:
         subtitle_html = f'\n        <p class="post-subtitle">{render_inline(post.subtitle)}</p>'
     return f"""      <article id="{post.slug}" class="post-card">
-        <h2 class="post-card-title"><a href="{permalink}">{html.escape(post.title)}</a></h2>
+        <h2 class="post-card-title"><a href="{title_href}">{html.escape(post.title)}</a></h2>
         {subtitle_html}{summary_html}
         <div class="post-body">
           {post.body_html.replace(chr(10), chr(10) + "          ")}
@@ -607,7 +625,7 @@ def render_pagination(current_page: int, total_pages: int) -> str:
 
 
 def build_page(page_number: int, posts: list[Post], total_pages: int) -> None:
-    rendered_posts = "\n".join(render_post(post, page_number) for post in posts)
+    rendered_posts = "\n".join(render_post(post, post_url(post.slug)) for post in posts)
     body = f"""      <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
 {rendered_posts}
@@ -619,10 +637,22 @@ def build_page(page_number: int, posts: list[Post], total_pages: int) -> None:
     path.write_text(page_template(title, body, description))
 
 
+def build_post_page(post: Post) -> None:
+    archive_link = "/blog/"
+    body = f"""      <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
+      <p class="lede">Data science, teaching, and other stuff.</p>
+      <p class="post-nav"><a href="{archive_link}">Back to blog</a></p>
+{render_post(post, post_url(post.slug))}
+"""
+    description = post.summary or post.subtitle or "Data science, teaching, and other stuff."
+    path = post_path(post.slug)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(page_template(post.title, body, description))
+
+
 def clean_generated_dirs(total_pages: int) -> None:
-    posts_dir = BLOG_DIR / "posts"
-    if posts_dir.exists():
-        shutil.rmtree(posts_dir)
+    if POSTS_DIR.exists():
+        shutil.rmtree(POSTS_DIR)
 
     if PAGE_DIR.exists():
         for child in PAGE_DIR.iterdir():
@@ -645,6 +675,11 @@ def main() -> None:
     posts.extend(load_codex_diary_posts())
     posts.sort(key=lambda post: post.date, reverse=True)
 
+    slugs = [post.slug for post in posts]
+    if len(slugs) != len(set(slugs)):
+        duplicates = sorted({slug for slug in slugs if slugs.count(slug) > 1})
+        raise ValueError(f"Duplicate post slug(s): {', '.join(duplicates)}")
+
     total_pages = max(1, math.ceil(len(posts) / POSTS_PER_PAGE))
     clean_generated_dirs(total_pages)
 
@@ -653,9 +688,14 @@ def main() -> None:
         end = start + POSTS_PER_PAGE
         build_page(page_number, posts[start:end], total_pages)
 
+    for post in posts:
+        build_post_page(post)
+
     print(f"Built {len(posts)} blog post(s) across {total_pages} page(s).")
     for page_number in range(1, total_pages + 1):
         print(f"- {page_path(page_number).relative_to(ROOT)}")
+    for post in posts:
+        print(f"- {post_path(post.slug).relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

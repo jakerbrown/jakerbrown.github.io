@@ -10,11 +10,11 @@ summary:
 
 - Integrated essentially my entire research workflow, except for actual writing, with Claude Code and Codex: chatbots as sounding boards when developing ideas, methodological questions, data sources, background literature, Claude Code/Codex for data collection, coding, package design, code review, formatting, replication verification, and so forth.
 
-- Truly autonomous research still feels far off, but not due to lack of intelligence, just lack of memory/sufficient context window for complex projects. But I have been optimizing for human-with-agents workflow, with autonomous stuff being more [experimental](https://jacobrbrown.com/blog/page/3/#belmont-coyote-clusters).
+- Truly autonomous research still feels far off, but not due to lack of intelligence, just lack of memory/sufficient context window for complex projects. But I have been optimizing for human-with-agents workflow, with autonomous stuff being more [experimental](https://jacobrbrown.com/blog/posts/belmont-coyote-clusters/).
 
 - Working with agents is quite *immersive* and *fun*.
 
-- Moving back and forth with both models is pretty seamless, [scaffolding](https://jacobrbrown.com/blog/page/3/#forking-a-claude-workflow-into-codex) helps a lot, especially with Codex.
+- Moving back and forth with both models is pretty seamless, [scaffolding](https://jacobrbrown.com/blog/posts/forking-a-claude-workflow-into-codex/) helps a lot, especially with Codex.
 
 - Claude Code's autonomy is compelling, at its best when reorganizing an entire codebase, or working across multiple sessions on long data collection projects
 

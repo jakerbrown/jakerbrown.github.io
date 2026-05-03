@@ -36,8 +36,13 @@ The generator rebuilds the blog as paginated long-form pages:
 - `blog/index.html` for the newest posts
 - `blog/page/2/index.html`, `blog/page/3/index.html`, and so on for older posts
 
-Posts are rendered on those pages directly rather than as separate standalone
-post URLs.
+The generator also creates stable standalone post URLs under:
+
+- `blog/posts/<slug>/index.html`
+
+Use those standalone `/blog/posts/<slug>/` URLs for links between posts and for
+sharing. The paginated archive pages remain the main browse experience, but
+their page numbers can shift as new posts are published.
 
 The generator also automatically includes dated entries from
 `files/codex-diary/diary.md` as blog posts titled `Codex diary`, using the
