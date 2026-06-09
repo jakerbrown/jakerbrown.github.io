@@ -25,6 +25,26 @@
     <div class="content blog-content">
       <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
+      <article id="codex-diary-2026-04-09" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/posts/codex-diary-2026-04-09/">Claude/Codex diary - April 9, 2026</a></h2>
+        
+        <p class="post-subtitle">AI summary of today&#x27;s Claude and Codex work.</p>
+        <div class="post-body">
+          <ul><li>Completed a multi-league test of an early-season underdog betting idea.</li><li>Finished the Oscar portion of a film-podcast analysis.</li><li>Organized and reviewed two replication repos for accepted papers.</li><li>Automated validation of ballot referenda data.</li><li>Hardened timeout recovery in an elections and redistricting workflow.</li><li>Checked the remaining backlog in that same elections workflow.</li><li>Tightened diagnostics and startup-plan handling in a political simulation project.</li><li>Cleaned up footnotes, spacing, and privacy-sensitive figures on the coyotes blog post.</li></ul>
+        </div>
+        <p class="post-meta">Posted: April 9, 2026 at 9:30 PM</p>
+      </article>
+      <article id="knausgaard" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/posts/knausgaard/">Knausgaard on neighborhood effects</a></h2>
+        
+        <div class="post-body">
+          <p>From A Man in Love:</p>
+          <blockquote><p>When I discuss such topics with Geir, with whom I talk on the telephone for an hour every day, he is wont to quote Sven Stolpe, who has written somewhere about Bergman claiming that he would have been Bergman irrespective of where he had grown up, implying, in other words, that you are who you are whatever your surroundings. What shapes you is the way you are towards your family rather than the family itself. When I was growing up I was taught to look for the explanation of all human qualities, actions, and phenomena in the environment in which they originated. Biological or genetic determinants, the givens, that is, barely existed as an option, and when they did they were viewed with suspicion. Such an attitude can at first sight appear humanistic, inasmuch as it is intimately bound up with the notion that all people are equal, but upon closer examination it could just as well be an expression of a mechanistic attitude to man, who, born, empty, allows his life to be shaped by his surroundings.</p></blockquote>
+          <p>Perhaps Bergman (harder to pin Knausgaard down) was <a href="https://opportunityinsights.org/paper/losteinsteins/">overstating</a>, but one lesson from these childhood <a href="https://jacobrbrown.com/files/w31759.pdf">mover</a> papers is that the experience of society makes people more similar.<sup id="fnref-1"><a href="#fn-1">1</a></sup> Those estimators measure common effects of place that make people experiencing the same environment more similar. In a segregated society, variation in treatment emerges. But what are the common experiences of society, <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ajps.12713">generationally</a>, nationally, or globally, for which we can&#x27;t approximate the counterfactual?</p>
+          <section class="footnotes"><ol><li id="fn-1">I heard Chuck Klosterman say this in an interview years ago. I now wonder if he was thinking about this Knausgaard passage. <a href="#fnref-1" aria-label="Back to text">↩</a></li></ol></section>
+        </div>
+        <p class="post-meta">Posted: April 9, 2026 at 1:00 PM</p>
+      </article>
       <article id="belmont-coyote-clusters" class="post-card">
         <h2 class="post-card-title"><a href="/blog/posts/belmont-coyote-clusters/">Automation experiment II: Do Belmont&#x27;s coyote clusters show where coyotes are, or where people report them?</a></h2>
         
@@ -213,47 +233,8 @@
         </div>
         <p class="post-meta">Posted: April 8, 2026 at 8:30 PM</p>
       </article>
-      <article id="forking-a-claude-workflow-into-codex" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/posts/forking-a-claude-workflow-into-codex/">Claude v Codex I</a></h2>
-        
-        <p class="post-subtitle">Porting Claude workflow to Codex</p>
-        <div class="post-body">
-          <p>It is increasingly clear that the infrastructure <em>around</em> the model is a force multiplier for what the model can achieve. I am still skeptical that I can always tell when one top model is better than a competitor. But I am curious and ready to be proven wrong. Partly as an educational exercise, and partly to expand Codex&#x27;s capacity in my workflow to do more autonomous work, I worked with ChatGPT and Codex to translate Pedro Sant&#x27;Anna&#x27;s <a href="https://github.com/pedrohcgs/claude-code-my-workflow"><code>claude-code-my-workflow</code></a> repo so that as much of the same functionality as possible could be emulated in Codex. I was particularly interested in the specialist agent capabilities (R reviewer, proofreader, writer, etc.) and the adversarial agent that critiques presentational work and code so the model iterates on itself to make the final product and pipeline stronger. So far, Codex seems great for building out codebases in fairly frequent contact with the human researcher, which I mostly prefer as a workflow because it is easier to keep track of the project. But it was not immediately clear how to get it to fully run away and write a paper on its own.</p>
-          <p>So this port was an attempt to learn more about how Codex and Claude work while also expanding what I can do with the models. Specifically: how much of the Claude workflow from Sant&#x27;Anna&#x27;s repo can be preserved when the assistant changes from Claude to Codex?</p>
-          <p>You can find the repo for this project here: <a href="https://github.com/jakerbrown/codex-my-workflow">codex-my-workflow</a></p>
-          <p>As Codex explains it to me:</p>
-          <blockquote><p>The simplest way to think about a workflow repo is as a toolbox plus a rulebook for working with an AI assistant.</p></blockquote>
-          <blockquote><p>- instructions about how to behave</p></blockquote>
-          <blockquote><p>- templates for plans and reports</p></blockquote>
-          <blockquote><p>- reusable specialist roles</p></blockquote>
-          <blockquote><p>- project memory that survives past one conversation</p></blockquote>
-          <blockquote><p>- verification steps so &quot;done&quot; means something real</p></blockquote>
-          <blockquote><p>That structure turns an AI assistant from &quot;a smart autocomplete window&quot; into</p></blockquote>
-          <p>something closer to a junior contractor with a clipboard, a checklist, and a filing cabinet.</p>
-          <p>The Claude Code setup was appealing because it treated reliability as a workflow problem. It had several appealing features:</p>
-          <ul><li>Plan first. This is pretty standard operating procedure with Codex or Claude (&quot;enter plan mode&quot; or &quot;make a plan&quot;).</li><li>Keep durable notes on disk so context is not trapped in one chat window.</li><li>Use specialists when one general reviewer is not enough.</li><li>Verify outputs instead of trusting fluent prose.</li><li>Gate completion with explicit quality thresholds.</li><li>Use an adversarial critic/fixer loop instead of a single pass.</li></ul>
-          <p>So I forked the repo, then asked ChatGPT 5.4 Pro in the browser how I could work with Codex to port it into a Codex-focused version with as much of the same functionality as possible. ChatGPT helped draft initial <code>AGENTS.md</code> and plan documents to guide the Codex rewrite, and it also helped draft the prompt that got Codex started on the translation. Codex then evaluated the Claude repo and decided which documents could generally be preserved, what had to be adapted, and what could not be recreated one-for-one.</p>
-          <p>The first lesson is that, at a high level, Claude and Codex are similar enough that a port is genuinely possible. They can both read repository content, edit files, follow detailed instructions, run shell commands, work iteratively, and use role-like specializations. They also both benefit greatly from foundational project guidance rather than one-off prompts. But the interesting part of porting this workflow was where they differ.</p>
-          <p>As Codex put it:</p>
-          <blockquote><p>Claude and Codex are similar in the way two kitchens are similar: both have heat, knives, and counters, but the appliances are in different places and some of them work differently. A recipe can survive that move, but not by copying the layout blindly.</p></blockquote>
-          <p>There are some important differences. The syntax of guiding documents varies, so the repo structure through which Claude and Codex receive guidance differs. Codex translated Claude project guidance into root and nested <code>AGENTS.md</code> files. Claude settings became Codex config, hooks, and rules. Claude agent definitions became <code>.codex/agents/*.toml</code>. Claude skills became repo-local skills under <code>.agents/skills/</code>.</p>
-          <p>Another difference is that Codex makes explicitness more important. Codex is less likely to automatically spawn agents such as the adversarial reviewer or specialist agents. This functionality can still be achieved, but prompts need to ask for it explicitly to better ensure those agents get deployed. That changes how the workflow has to be written.</p>
-          <p>One takeaway is that in the original Claude-centered workflow, Claude can feel more anticipatory of likely researcher desires, and therefore more autonomous. In Codex, the safer pattern is to be more explicit. Prompts generally should name the specialists to be spun up, tell Codex what to do with them, and state verification expectations directly. Codex thus feels a little less magical and in need of a bit more handholding from the researcher and the workflow structure around it. But this is one of the most useful lessons from the port. When platforms differ, a good fallback is often not &quot;invent more automation.&quot; It is &quot;store the important files so the model can read them and stay on target.&quot;</p>
-        </div>
-        <p class="post-meta">Posted: April 8, 2026 at 8:00 PM</p>
-      </article>
-      <article id="welcome" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/posts/welcome/">Welcome</a></h2>
-        
-        <p class="blog-summary">first post</p>
-        <div class="post-body">
-          <p>Exciting times for data science. So this is a new space for random thoughts on research, teaching, hobbyistic data science experiments, and trying to extract the highest intelligence from new AI tools.</p>
-          <p>Some posts automated using AI, noted as such.</p>
-        </div>
-        <p class="post-meta">Posted: April 8, 2026 at 9:00 AM</p>
-      </article>
       <nav class="pagination" aria-label="Blog pagination">
-        <p><a href="/blog/page/2/">Newer Posts</a></p>
+        <p><a href="/blog/page/2/">Newer Posts</a> | <a href="/blog/page/4/">Older Posts</a></p>
       </nav>
 
     </div>
