@@ -75,7 +75,7 @@ a:hover {
     margin-right: 20px;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center;
+    object-position: right center;
 }
 
 @media (max-width: 600px) {
