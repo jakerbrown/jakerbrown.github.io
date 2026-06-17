@@ -69,13 +69,27 @@ a:hover {
     margin-bottom: 20px;
 }
 
+.profile-photo {
+    max-width: 200px;
+    margin: 0 20px 0 0;
+    text-align: center;
+}
+
 .photo {
+    display: block;
     width: 200px;
     height: 200px;
-    margin-right: 20px;
+    margin: 0;
     border-radius: 50%;
     object-fit: cover;
     object-position: right center;
+}
+
+.photo-credit {
+    margin-top: 6px;
+    color: #555;
+    font-size: 0.65rem;
+    line-height: 1.25;
 }
 
 @media (max-width: 600px) {
@@ -84,7 +98,7 @@ a:hover {
         align-items: flex-start;
     }
 
-    .photo {
+    .profile-photo {
         margin-right: 0;
         margin-bottom: 20px;
     }
