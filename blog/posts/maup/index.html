@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAUP</title>
+    <meta name="description" content="Data science, teaching, and other stuff.">
+    <link rel="stylesheet" href="/css/site-base.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </head>
+  <body>
+    <div class="content blog-content">
+      <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
+      <p class="lede">Data science, teaching, and other stuff.</p>
+      <p class="post-nav"><a href="/blog/">Back to blog</a></p>
+      <article id="maup" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/posts/maup/">MAUP</a></h2>
+        
+        <div class="post-body">
+          <p><img class="post-image" src="/files/Don_Quixote_fighting_windmills.jpg" alt="Don Quixote fighting windmills"></p>
+          <p>A common vein in my research has been tilting against challenges in geographic measurement. Barriers to ecological inference drive an emphasis on <a href="https://www.journals.uchicago.edu/doi/10.1086/732981">individual-level</a> geographic data. The limits of aspatial segregation measures motivate efforts to develop more <a href="https://www.nature.com/articles/s41562-021-01066-z">flexible</a> approaches. Ambiguity about what constitutes a neighborhood motivates progress on <a href="https://doi.org/10.1017/S0003055423001429">subjective</a> and <a href="https://www.nature.com/articles/s41597-025-05329-6">objective</a> definitions. Residential selection that confounds estimates of place effects leads to <a href="https://jacobrbrown.com/files/w31759.pdf">designs</a> with more <a href="https://jacobrbrown.com/blog/posts/2stage-confounding-place/">credible</a> assumptions.</p>
+          <p>During a PhD visit, I was told that, based on my interests, I would always have to reckon with the Modifiable Areal Unit Problem (MAUP). I did not know what that was, but it became an outsized presence in how I think about my research. If there are infinitely many ways to draw the map, and the available areal units are at least somewhat arbitrary, to what extent are we capturing actual underlying spatial relationships? A couple of new projects (<a href="https://www.nature.com/articles/s44284-026-00459-3.epdf?sharing_token=ZiS2oqNMnc7wTQHGhbxFc9RgN0jAjWel9jnR3ZoTv0MGsyNcK3y_9uRfDmucelrbtDcw7ORc4ovFobd7tu4FDzGP4IgjkIuW4GjrBIKYBEZSeAz34YCBlX4YguU5V6UNs_BzC6D-XUGth4_vDf1vVichsnYkojkjQijGhDnAuZ0%3D">one</a>, <a href="https://osf.io/preprints/socarxiv/gpq32_v1">another</a>) grapple directly with this problem, adapting redistricting algorithms to provide a simple solution to the problem of many possible maps: drawing many maps to represent the underlying geography as a distribution rather than as a single boundary choice. This allows researchers not to rely on any single aggregate representation and to measure MAUP sensitivity directly: by drawing comparable units with different boundary choices or by drawing units at much larger or smaller scales.</p>
+        </div>
+        <p class="post-meta">Posted: July 14, 2026 at 9:03 AM</p>
+      </article>
+
+    </div>
+  </body>
+</html>

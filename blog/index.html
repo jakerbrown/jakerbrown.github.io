@@ -25,6 +25,16 @@
     <div class="content blog-content">
       <p class="site-links"><a href="/">Home</a> | <a href="mailto:jbrown13@bu.edu">Email</a></p>
       <p class="lede">Data science, teaching, and other stuff.</p>
+      <article id="maup" class="post-card">
+        <h2 class="post-card-title"><a href="/blog/posts/maup/">MAUP</a></h2>
+        
+        <div class="post-body">
+          <p><img class="post-image" src="/files/Don_Quixote_fighting_windmills.jpg" alt="Don Quixote fighting windmills"></p>
+          <p>A common vein in my research has been tilting against challenges in geographic measurement. Barriers to ecological inference drive an emphasis on <a href="https://www.journals.uchicago.edu/doi/10.1086/732981">individual-level</a> geographic data. The limits of aspatial segregation measures motivate efforts to develop more <a href="https://www.nature.com/articles/s41562-021-01066-z">flexible</a> approaches. Ambiguity about what constitutes a neighborhood motivates progress on <a href="https://doi.org/10.1017/S0003055423001429">subjective</a> and <a href="https://www.nature.com/articles/s41597-025-05329-6">objective</a> definitions. Residential selection that confounds estimates of place effects leads to <a href="https://jacobrbrown.com/files/w31759.pdf">designs</a> with more <a href="https://jacobrbrown.com/blog/posts/2stage-confounding-place/">credible</a> assumptions.</p>
+          <p>During a PhD visit, I was told that, based on my interests, I would always have to reckon with the Modifiable Areal Unit Problem (MAUP). I did not know what that was, but it became an outsized presence in how I think about my research. If there are infinitely many ways to draw the map, and the available areal units are at least somewhat arbitrary, to what extent are we capturing actual underlying spatial relationships? A couple of new projects (<a href="https://www.nature.com/articles/s44284-026-00459-3.epdf?sharing_token=ZiS2oqNMnc7wTQHGhbxFc9RgN0jAjWel9jnR3ZoTv0MGsyNcK3y_9uRfDmucelrbtDcw7ORc4ovFobd7tu4FDzGP4IgjkIuW4GjrBIKYBEZSeAz34YCBlX4YguU5V6UNs_BzC6D-XUGth4_vDf1vVichsnYkojkjQijGhDnAuZ0%3D">one</a>, <a href="https://osf.io/preprints/socarxiv/gpq32_v1">another</a>) grapple directly with this problem, adapting redistricting algorithms to provide a simple solution to the problem of many possible maps: drawing many maps to represent the underlying geography as a distribution rather than as a single boundary choice. This allows researchers not to rely on any single aggregate representation and to measure MAUP sensitivity directly: by drawing comparable units with different boundary choices or by drawing units at much larger or smaller scales.</p>
+        </div>
+        <p class="post-meta">Posted: July 14, 2026 at 9:03 AM</p>
+      </article>
       <article id="translation" class="post-card">
         <h2 class="post-card-title"><a href="/blog/posts/translation/">Translation</a></h2>
         
@@ -97,44 +107,6 @@
           <blockquote><p>Define, on the two-dimensional surface of the earth, lines across which motion is to be prevented, and you have one of the key themes of history. With a closed line (i.e., a curve enclosing a figure), and the prevention of motion from outside the line to its inside, you derive the idea of property. With the same line, and the prevention of motion from inside to outside, you derive the idea of prison. With an open line (i.e., a curve that does not enclose a figure), and the prevention of motion in either direction, you derive the idea of border. Properties, prisons, borders: it is through the prevention of motion that space enters history.</p></blockquote>
         </div>
         <p class="post-meta">Posted: April 27, 2026 at 9:10 PM</p>
-      </article>
-      <article id="2stage-confounding-place" class="post-card">
-        <h2 class="post-card-title"><a href="/blog/posts/2stage-confounding-place/">Parallel confounding in identification of place effects</a></h2>
-        
-        <div class="post-body">
-          <p>Suppose I want to know whether some characteristic of a place $X_p$ affects an individual outcome $Y_i$. There are two challenges to inference.</p>
-          <p>First, people sort into places. If the kind of person who moves to a high-$X$ place would have had different outcomes regardless, then comparing across places confounds $X$ with individual selection. This is the standard worry in observational causal inference: place assignment is endogenous.</p>
-          <p>Second, places are bundles. A neighborhood with high $X$ also has particular schools, crime rates, pollution levels, social networks, and dozens of other attributes that co-vary with $X$ across places. Even if I solve the selection problem perfectly, I still cannot tell whether it is $X$ or something bundled with $X$ that drives the outcome.</p>
-          <h3>The two paths</h3>
-          <p>Call the first problem Path 1 (individual selection into place) and the second Path 2 (overlapping place characteristics). In DAG terms:</p>
-          <p><strong>Path 1:</strong> $X_p \leftarrow P_i \leftarrow \mathbf{W}_i \rightarrow Y_i$</p>
-          <p>Individuals with pre-treatment characteristics $\mathbf{W}_i$ sort into places non-randomly, and $X_p$ inherits a spurious correlation with $Y_i$ through the sorting process.</p>
-          <p><strong>Path 2:</strong> $X_p \leftarrow P_i \rightarrow \mathbf{Z}_p \rightarrow Y_i$</p>
-          <p>Place jointly determines $X_p$ and every other place characteristic $\mathbf{Z}_p$. Variation in $X$ across places is bundled with variation in $\mathbf{Z}$.</p>
-          <p><img class="post-image" src="/files/two_stage_confounding_dag.svg" alt="Two-stage confounding DAG"></p>
-          <p>Identifying the overall effect of place only requires closing Path 1. Identifying the effect of a characteristics of place technically is possible if place is endogenous, requiring that either the characteristic of interest is the only thing that can affect the outcome or that it is uncorrelated with all other potential overlapping characteristics that influence the outcome. More commonly, identifying the characteristic effect requires closing both paths.</p>
-          <p>The typical case is that both paths are open, which makes causal claims about place characteristics doubly hard. Here is how four common identification strategies fare.</p>
-          <h3>Randomized relocation</h3>
-          <p>The <a href="https://www.cambridge.org/core/journals/american-political-science-review/article/longterm-effects-of-neighborhood-disadvantage-on-voting-behavior-the-moving-to-opportunity-experiment/4896C6743CF5D53DDD067D51D93A8CA7">Moving to Opportunity</a> experiment randomly assigned housing vouchers, allowing some families to move from high-poverty to lower-poverty neighborhoods. Randomization closes Path 1 completely — no functional form assumptions, no conditional independence, no parallel trends.</p>
-          <p>But the experiment randomizes access to a <em>bundle</em> of neighborhood characteristics, not to $X$ specifically. Families who used their voucher moved to places that differed from their origin neighborhoods in poverty, school quality, crime, pollution, and much else, all at once. The estimated treatment effect captures the composite:</p>
-          <div class="math-display">$$\tau^{\text{LATE}} = f\big(\Delta X, \Delta \mathbf{Z}\big)$$</div>
-          <p>Path 2 remains open. The experiment tells us whether relocation influenced outcomes, but not what characteristics of place made that influence.</p>
-          <p><img class="post-image" src="/files/dag_a_mto_experiment.svg" alt="Randomized relocation DAG"></p>
-          <h3>Childhood mover design</h3>
-          <p>The <a href="https://jacobrbrown.com/files/w31759.pdf">childhood mover design</a> compares children who move between the same origin and destination at different ages. Those who move younger spend more time in the destination relative to the origin and thus may be more influenced by the destination than children who moved later in childhood. The identifying assumption here is that age at move is as-if randomly assigned. This assumption identifies $\mu_p$, the causal exposure effect of place $p$ per year of childhood.</p>
-          <p>Path 1 is closed in this scenario, but $\hat{\mu}_p$ captures just the overall effect of place, as it is estimated from regressing mover outcomes on the outcomes of their never mover peers and seeing whether convergence is higher for those who move earlier. Researchers could regress $\hat{\mu}_p$ on $X_p$ to try isolate the role of a specific characteristic, but that regression is subject to Path 2 confounding: $\text{Cov}(X_p, \mathbf{Z}_p) \neq 0$ across places.</p>
-          <p><img class="post-image" src="/files/dag_a_childhood_mover.svg" alt="Childhood mover DAG"></p>
-          <h3>Difference-in-differences</h3>
-          <p><a href="https://link.springer.com/article/10.1007/s11109-020-09626-1">Difference-in-differences</a> exploits within-place changes in $X$ over time, using individual or place fixed effects to absorb time-invariant confounders. Fixed effects account for time-invariant characteristics that led people to live where they do (Path 1) and accounts for overlapping characteristics of place that do not change across time (Path 2). But confounding remains from co-trending characteristics.</p>
-          <p>Thus, DiD partially addresses both paths but only partially. The parallel trends assumption has to work double, covering both selection on trends in potential outcomes and the possibility that other place characteristics co-move with $X$.</p>
-          <p><img class="post-image" src="/files/dag_b_difference_in_differences.svg" alt="Difference-in-differences DAG"></p>
-          <h3>Spatial regression discontinuity</h3>
-          <p>A <a href="https://www.econometricsociety.org/publications/econometrica/2025/11/01/Gangs-Labor-Mobility-and-Development">spatial RD</a> exploits a boundary where $X$ changes discontinuously. Individuals just on either side of the boundary are comparable so long as the continuity assumption holds, and if so Path 1 is closed (but we should perhaps be skeptical of meaningful boundaries having only meaningless sorting around them), and if $X$ jumps at the boundary but other place characteristics $\mathbf{Z}_p$ do not, then the local variation in $X$ is free of Path 2 confounding.</p>
-          <p><img class="post-image" src="/files/dag_c_spatial_rd.svg" alt="Spatial regression discontinuity DAG"></p>
-          <h3>Path 2 as a construct validity problem</h3>
-          <p>In many settings $X_p$ does not vary independently of $\mathbf{Z}_p$ even in principle, so the effect of a specific place characteristic may not be point-identified without functional form assumptions. In practice, Path 2 is a construct validity problem. A design gives you credible variation in something, and whether that something corresponds to the theoretical construct you care about is a separate claim — like a survey experiment that aims to prime one emotion but may prime others alongside it. When clean identification is not available, researchers fall back to <a href="https://arthurspirling.org/documents/whatgood.pdf">inference to the best explanation</a>, arguing for the characteristic-specific effect through abductive reasoning.</p>
-        </div>
-        <p class="post-meta">Posted: April 12, 2026 at 11:00 AM</p>
       </article>
       <nav class="pagination" aria-label="Blog pagination">
         <p><a href="/blog/page/2/">Older Posts</a></p>
